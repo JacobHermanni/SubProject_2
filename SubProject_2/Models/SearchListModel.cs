@@ -5,10 +5,16 @@ using System.Threading.Tasks;
 
 namespace WebService.Models
 {
-    public class PostModel
+    public class SearchListModel
     {
         public string Url { get; set; }
 
         public int post_id { get; set; }
+
+        public string body { get; set; }
+
+        public int score { get; set; }
+
+        public string title { get; set; }
     }
 }

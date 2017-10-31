@@ -9,10 +9,14 @@ namespace ConsoleDev
         {
             var sovadb = new DataService();
 
-            var postList = sovadb.GetPosts();
-            for (int i = 0; i < 10; i++)
+            var returnedPrc = sovadb.GetPostsByString("how to", 0, 10);
+            Console.WriteLine(returnedPrc);
+
+            foreach (var searchList in returnedPrc)
             {
-                Console.WriteLine(postList[i].post_id);
+                Console.WriteLine();
+                Console.WriteLine($"{searchList.post_id}, {searchList.score}");
+                Console.WriteLine();
             }
 
             Console.Read();

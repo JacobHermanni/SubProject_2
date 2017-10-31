@@ -10,6 +10,8 @@ namespace DAL
     public class SOVAContext : DbContext
     {
         public DbSet<Post> Post { get; set; }
+
+        public DbSet<SearchList> SearchLists { get; set; }
        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

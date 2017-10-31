@@ -17,5 +17,13 @@ namespace DAL
             }
         }
 
+        public int GetNumberOfPosts()
+        {
+            using (var db = new SOVAContext())
+            {
+                return db.Post.Count();
+            }
+        }
+
     }
 }

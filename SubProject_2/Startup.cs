@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebService.Models;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace SubProject_2
 {
@@ -36,6 +38,17 @@ namespace SubProject_2
             }
 
             app.UseMvc();
+        }
+
+        public IMapper CreateMapper()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Post, PostModel>()
+                    .ReverseMap();
+            });
+
+            return config.CreateMapper();
         }
     }
 }

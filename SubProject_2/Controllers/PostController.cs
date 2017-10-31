@@ -21,34 +21,34 @@ namespace WebService
             _mapper = mapper;
         }
 
-        //[HttpGet(Name = nameof(GetPosts))]
-        //public IActionResult GetPosts(int page = 0, int pageSize = 5)
-        //{
-        //    CheckPageSize(ref pageSize);
+        [HttpGet(Name = nameof(GetPosts))]
+        public IActionResult GetPosts(int page = 0, int pageSize = 5)
+        {
+            CheckPageSize(ref pageSize);
 
-        //    var total = _dataService.GetNumberOfPosts();
-        //    var totalPages = GetTotalPages(pageSize, total);
+            var total = _dataService.GetNumberOfPosts();
+            var totalPages = GetTotalPages(pageSize, total);
 
-        //    var data = _dataService.GetPosts(page, pageSize)
-        //        .Select(x => new PostModel
-        //        {
-        //            Url = Url.Link(nameof(GetPost), new { id = x.post_id }),
-        //            post_id = x.post_id
-        //        });
+            var data = _dataService.GetPosts(page, pageSize)
+                .Select(x => new PostModel
+                {
+                    Url = Url.Link(nameof(GetPost), new { id = x.post_id }),
+                    post_id = x.post_id
+                });
 
-        //    var result = new
-        //    {
-        //        Total = total,
-        //        Pages = totalPages,
-        //        Page = page,
-        //        Prev = Link(nameof(GetPosts), page, pageSize, -1, () => page > 0),
-        //        Next = Link(nameof(GetPosts), page, pageSize, 1, () => page < totalPages - 1),
-        //        Url = Link(nameof(GetPosts), page, pageSize),
-        //        Data = data
-        //    };
+            var result = new
+            {
+                Total = total,
+                Pages = totalPages,
+                Page = page,
+                Prev = Link(nameof(GetPosts), page, pageSize, -1, () => page > 0),
+                Next = Link(nameof(GetPosts), page, pageSize, 1, () => page < totalPages - 1),
+                Url = Link(nameof(GetPosts), page, pageSize),
+                Data = data
+            };
 
-        //    return Ok(result);
-        //}
+            return Ok(result);
+        }
 
         [HttpGet("{id}", Name = nameof(GetPost))]
         public IActionResult GetPost(int id)
@@ -62,18 +62,11 @@ namespace WebService
             return Ok(model);
         }
 
-        [HttpGet("{searchstring}", Name = nameof(GetPostsByString))]
-        public IActionResult GetPostsByString(/*[FromBody]*/string searchstring/*, int page = 0, int pageSize = 5*/)
+        [HttpGet("name/{searchstring}", Name = nameof(GetPostsByString))]
+        public IActionResult GetPostsByString(string searchstring, int page = 0, int pageSize = 5)
         {
-            int page = 0;
-            int pageSize = 5;
-
-
             CheckPageSize(ref pageSize);
-
-            var total = _dataService.GetNumberOfPosts();
-            var totalPages = GetTotalPages(pageSize, total);
-
+            
             var data = _dataService.GetPostsByString(searchstring, page, pageSize)
                 .Select(x => new SearchListModel()
                 {
@@ -83,6 +76,9 @@ namespace WebService
                     Url = Url.Link(nameof(GetPost), new { id = x.post_id }),
                     post_id = x.post_id
                 });
+
+            var total = _dataService.GetNumberOfSearchresults();
+            var totalPages = GetTotalPages(pageSize, total);
 
             var result = new
             {

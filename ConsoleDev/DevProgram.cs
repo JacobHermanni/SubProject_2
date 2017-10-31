@@ -7,20 +7,29 @@ namespace ConsoleDev
     {
         static void Main(string[] args)
         {
+            
+
+        }
+
+        void PostTest()
+        {
             var sovadb = new DataService();
 
-            var returnedPrc = sovadb.GetPostsByString("how to", 0, 10);
-            Console.WriteLine(returnedPrc);
+            var post = sovadb.GetPost(19);
 
-            foreach (var searchList in returnedPrc)
+            Console.WriteLine(post.question.title);
+
+            Console.WriteLine(post.user.user_display_name);
+
+            foreach (var postComment in post.Comments)
             {
+                Console.WriteLine(postComment.user.user_display_name + ":");
                 Console.WriteLine();
-                Console.WriteLine($"{searchList.post_id}, {searchList.score}");
+                Console.WriteLine(postComment.comment_text);
                 Console.WriteLine();
             }
 
             Console.Read();
-
 
         }
     }

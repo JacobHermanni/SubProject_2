@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL
@@ -12,6 +13,12 @@ namespace DAL
         public DbSet<Post> Post { get; set; }
 
         public DbSet<SearchList> SearchLists { get; set; }
+
+        public DbSet<Question> Question { get; set; }
+        
+        public DbSet<User> User { get; set; }
+
+        public DbSet<Comment> Comment { get; set; }
        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

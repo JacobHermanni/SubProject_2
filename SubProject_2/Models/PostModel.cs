@@ -10,5 +10,24 @@ namespace WebService.Models
         public string Url { get; set; }
 
         public int post_id { get; set; }
+
+        public int score { get; set; }
+
+        public DateTime creation_date { get; set; }
+
+        public string body { get; set; }
+
+        public int user_id { get; set; }
+
+        public UserModel user { get; set; }
+
+        public int post_type_id { get; set; }
+
+        public QuestionModel question { get; set; }
+
+        public AnswerModel answer { get; set; }
+
+        public List<CommentModel> Comments { get; set; }
+
     }
 }

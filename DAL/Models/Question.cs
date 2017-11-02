@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using System.Linq;
 
 namespace DAL.Models
 {
@@ -18,6 +20,28 @@ namespace DAL.Models
 
         public int post_id { get; set; }
 
-        
+        [NotMapped]
+        public List<Post> ChildrenPosts
+        {
+            get
+            {
+                using (var db = new SOVAContext())
+                {
+                    var getAnswers = db.Answer.Where(a => a.parent_Id == post_id).ToList();
+
+                    if (getAnswers.Count == 0) return null;
+
+                    var children = new List<Post>();
+
+                    foreach (var answer in getAnswers)
+                    {
+                        children.Add(db.Post.Where(p => p.post_id == answer.post_id).First());
+                    }
+
+                    return children.OrderBy(c => c.creation_date).ToList();
+                }
+            }
+            set { }
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DAL;
+using DAL.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +48,14 @@ namespace SubProject_2
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Post, PostModel>()
+                    .ReverseMap();
+                cfg.CreateMap<User, UserModel>()
+                    .ReverseMap();
+                cfg.CreateMap<Question, QuestionModel>()
+                    .ReverseMap();
+                cfg.CreateMap<Answer, AnswerModel>()
+                    .ReverseMap();
+                cfg.CreateMap<Comment, CommentModel>()
                     .ReverseMap();
             });
 

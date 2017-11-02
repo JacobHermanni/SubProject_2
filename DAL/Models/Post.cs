@@ -43,15 +43,30 @@ namespace DAL
                     var getQuestions = db.Question.Where(q => q.post_id == post_id);
                     if (getQuestions.Count() == 0) return null;
 
-                    var getQuestion = getQuestions.First();
-
-                    return getQuestion;
+                    return getQuestions.First();
                 }
             }
             set { }
         }
-        
-        public List<Comment> Comments { get
+
+        public Answer answer
+        {
+            get
+            {
+                using (var db = new SOVAContext())
+                {
+                    var getAnswers = db.Answer.Where(a => a.post_id == post_id);
+                    if (getAnswers.Count() == 0) return null;
+
+                    return getAnswers.First();
+                }
+            }
+            set { }
+        }
+
+        public List<Comment> Comments
+        {
+            get
             {
                 using (var db = new SOVAContext())
                 {
@@ -64,6 +79,7 @@ namespace DAL
                     return getComments;
                 }
             }
-            set { } }
+            set { }
+        }
     }
 }

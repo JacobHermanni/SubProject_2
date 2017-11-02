@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using DAL;
+using DAL.Models;
 using WebService.Models;
 
 namespace WebService

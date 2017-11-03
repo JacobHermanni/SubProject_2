@@ -30,7 +30,7 @@ namespace ConsoleDev
             }
             Console.WriteLine("------------------------------ End of comments ------------------------------");
 
-            var children = post.question.ChildrenPosts;
+            var children = post.question.Answers;
 
             foreach (var child in children)
             {

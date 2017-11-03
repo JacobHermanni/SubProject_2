@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,11 +24,13 @@ namespace WebService.Models
 
         public int post_type_id { get; set; }
 
-        public QuestionModel question { get; set; }
+        [NotMapped]
+        public object PostType { get; set; }
 
-        public AnswerModel answer { get; set; }
+        //public QuestionModel question { get; set; }
+
+        //public AnswerModel answer { get; set; }
 
         public List<CommentModel> Comments { get; set; }
-
     }
 }

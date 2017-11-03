@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DAL.Models
 {
-    public class Question
+    public class Question : PostType
     {
         [Key]
         public int question_id { get; set; }
@@ -21,7 +21,7 @@ namespace DAL.Models
         public int post_id { get; set; }
 
         [NotMapped]
-        public List<Post> ChildrenPosts
+        public List<Post> Answers
         {
             get
             {
@@ -38,7 +38,7 @@ namespace DAL.Models
                         children.Add(db.Post.Where(p => p.post_id == answer.post_id).First());
                     }
 
-                    return children.OrderBy(c => c.creation_date).ToList();
+                    return children.OrderByDescending(c => c.score).ToList();
                 }
             }
             set { }

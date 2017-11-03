@@ -73,5 +73,27 @@ namespace DAL
                     .ToList();
             }
         }
+
+        public List<History> GetHistory(int page, int pageSize){
+
+            using (var db = new SOVAContext())
+            {
+                return db.History
+                    .OrderBy(x => x.history_timestamp)
+                    .Skip(page * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+            } 
+        }
+
+        public int GetNumberOfHistorySearches()
+        {
+            using (var db = new SOVAContext())
+            {
+                return db.History.Count();
+            }
+        }
+
+
     }
 }

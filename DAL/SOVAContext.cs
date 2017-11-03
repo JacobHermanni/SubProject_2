@@ -21,6 +21,8 @@ namespace DAL
         public DbSet<Comment> Comment { get; set; }
 
         public DbSet<Answer> Answer { get; set; }
+
+        public DbSet<History> History { get; set; }
        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -13,5 +13,9 @@ namespace DAL
         List<SearchList> GetPostsByString(string search, int page, int pageSize);
 
         int GetNumberOfSearchresults();
+
+        List<History> GetHistory(int page, int pageSize);
+
+        int GetNumberOfHistorySearches();
     }
 }

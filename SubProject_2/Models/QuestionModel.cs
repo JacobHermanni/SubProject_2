@@ -17,6 +17,6 @@ namespace WebService.Models
 
         public int post_id { get; set; }
 
-        public List<PostModel> ChildrenPosts { get; set; }
+        public List<PostModel> Answers { get; set; }
     }
 }

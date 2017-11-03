@@ -34,6 +34,33 @@ namespace DAL
 
         public int post_type_id { get; set; }
 
+        //public PostType postType
+        //{
+        //    get
+        //    {
+        //        using (var db = new SOVAContext())
+        //        {
+        //            if (post_type_id == 1)
+        //            {
+
+        //                var getQuestions = db.Question.Where(q => q.post_id == post_id);
+        //                if (getQuestions.Count() == 0) return null;
+
+        //                return getQuestions.First();
+        //            }
+        //            else
+        //            {
+        //                var getAnswers = db.Answer.Where(a => a.post_id == post_id);
+        //                if (getAnswers.Count() == 0) return null;
+
+        //                return getAnswers.First();
+        //            }
+        //        }
+
+        //    }
+        //    set { }
+        //}
+
         public Question question
         {
             get

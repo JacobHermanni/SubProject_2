@@ -12,7 +12,9 @@ namespace DAL
     {
         public DbSet<Post> Post { get; set; }
 
-        public DbSet<SearchList> SearchLists { get; set; }
+        public DbSet<Result> SearchList { get; set; }
+
+        public DbSet<Result> Result { get; set; }
 
         public DbSet<Question> Question { get; set; }
         
@@ -32,7 +34,7 @@ namespace DAL
                 "server=localhost;" +
                 "database=SOVA;" +
                 "uid=root;" +
-                "pwd=theis9953;"
+                "pwd=root;"
             );
 
         }

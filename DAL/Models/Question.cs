@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DAL.Models
 {
-    public class Question : PostType
+    public class Question
     {
         [Key]
         public int question_id { get; set; }

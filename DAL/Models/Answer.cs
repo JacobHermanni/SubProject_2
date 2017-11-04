@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DAL.Models
 {
-    public class Answer : PostType
+    public class Answer 
     {
         [Key]
         public int answer_id { get; set; }

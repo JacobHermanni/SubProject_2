@@ -10,7 +10,7 @@ namespace DAL
 
         Post GetPost(int id);
 
-        List<SearchList> GetPostsByString(string search, int page, int pageSize);
+        List<Result> GetPostsByString(string search, int page, int pageSize);
 
         int GetNumberOfSearchresults();
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DAL
 {
-    public class SearchList
+    public class Result
     {
         [Key]
         public int post_id { get; set; }

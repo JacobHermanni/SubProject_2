@@ -54,5 +54,14 @@ namespace WebService
             if (note == null) return NotFound();
             return Created("http://localhost:5001/api/favorite/note" + note.favorite_id, note);
         }
+
+        [HttpDelete("{favID}", Name = nameof(DeleteNote))]
+        public IActionResult DeleteNote(int favID)
+        {
+            var note = _dataService.DeleteNote(favID);
+
+            if (note) return Ok();
+            return NotFound();
+        }
     }
 }

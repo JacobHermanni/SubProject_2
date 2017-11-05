@@ -69,7 +69,7 @@ namespace WebService
             CheckPageSize(ref pageSize);
             
             var data = _dataService.GetPostsByString(searchstring, page, pageSize)
-                .Select(x => new SearchListModel()
+                .Select(x => new ResultModel()
                 {
                     title = x.title,
                     body = x.body,

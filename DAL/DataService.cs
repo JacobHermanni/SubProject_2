@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL
@@ -149,5 +150,61 @@ namespace DAL
             }
             return false;
         }
+
+        public bool DeleteFavorite(int favID)
+        {
+            using (var db = new SOVAContext())
+            {
+                var existingFavorite = db.Favorite.Find(favID);
+
+                if (existingFavorite != null)
+                {
+                    db.Favorite.Remove(existingFavorite);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            return false;
+        }
+        public List<FavoriteList> GetFavorites(int page, int pageSize)
+        {
+            using (var db = new SOVAContext())
+            {
+                return db.FavoriteList.FromSql("call get_favorites()")
+                    .OrderByDescending(x => x.favorite_id)
+                    .Skip(page * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+            }
+        }
+
+        public int GetNumberOfFavorites()
+        {
+            using (var db = new SOVAContext())
+            {
+                return db.Favorite.Count();
+            }
+        }
+
+        public Favorite CreateFavorite(int post_id)
+        {
+            using (var db = new SOVAContext())
+            {
+                var newFav = db.Favorite.Select(x => x.post_id == post_id);
+                if (newFav != null) return null;
+
+                var fav = new Favorite()
+                {
+                    post_id = post_id
+                };
+
+                db.Favorite.Add(fav);
+
+                db.SaveChanges();
+
+                return fav;
+            }
+        }
     }
 }
+

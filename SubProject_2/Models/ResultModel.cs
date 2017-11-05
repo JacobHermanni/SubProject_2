@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebService.Models
 {
-    public class SearchListModel
+    public class ResultModel
     {
         public string Url { get; set; }
 

@@ -59,6 +59,10 @@ namespace SubProject_2
                     .ReverseMap();
                 cfg.CreateMap<Note, NoteModel>()
                     .ReverseMap();
+                cfg.CreateMap<Favorite, FavoriteModel>()
+                    .ReverseMap();
+                cfg.CreateMap<FavoriteList, FavoriteListModel>()
+                    .ReverseMap();
             });
 
             return config.CreateMapper();

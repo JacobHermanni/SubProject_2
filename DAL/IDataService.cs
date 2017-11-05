@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DAL.Models;
 
 namespace DAL
 {
@@ -25,5 +26,13 @@ namespace DAL
         Note UpdateNote(int favID, string body);
 
         bool DeleteNote(int favID);
+
+        bool DeleteFavorite(int favID);
+
+        List<FavoriteList> GetFavorites(int page, int pageSize);
+
+        int GetNumberOfFavorites();
+
+        Favorite CreateFavorite(int post_id);
     }
 }

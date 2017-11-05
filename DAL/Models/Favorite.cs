@@ -13,12 +13,11 @@ namespace DAL
             get;
             set;
         }
-    
+
         public int post_id
         {
             get;
             set;
         }
-    
     }
 }

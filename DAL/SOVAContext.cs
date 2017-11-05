@@ -27,6 +27,10 @@ namespace DAL
         public DbSet<History> History { get; set; }
 
         public DbSet<Note> Note { get; set; }
+
+        public DbSet<Favorite> Favorite { get; set; }
+
+        public DbSet<FavoriteList> FavoriteList { get; set; }
        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

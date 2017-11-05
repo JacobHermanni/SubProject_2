@@ -25,9 +25,6 @@ namespace WebService.Models
 
         public int post_type_id { get; set; }
 
-        //[NotMapped]
-        //public object PostType { get; set; }
-
         public QuestionModel question { get; set; }
 
         public AnswerModel answer { get; set; }

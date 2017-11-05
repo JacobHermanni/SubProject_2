@@ -36,19 +36,12 @@ namespace WebService
             return Ok(model);
         }
 
-        //[HttpPost("{favId}", Name = nameof(CreateNote))]
         [HttpPost]
-        public IActionResult CreateNote(object test)
+        public IActionResult CreateNote([FromBody]Note sentNote)
         {
-            //    var note = _dataService.CreateNote(favId, body);
-            //    if (note == null) return NotFound();
-
-            //    var model = _mapper.Map<NoteModel>(note);
-
-
-            return Created("", null);
+            var note = _dataService.CreateNote(sentNote.favorite_id, sentNote.body);
+            return Created("http://localhost:5001/api/favorite/note" + note.favorite_id, note);
         }
-
 
 
     }

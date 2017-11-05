@@ -46,6 +46,13 @@ namespace WebService
             return Created("http://localhost:5001/api/favorite/note" + note.favorite_id, note);
         }
 
+        [HttpPut]
+        public IActionResult UpdateNote([FromBody]Note sentNote)
+        {
+            var note = _dataService.UpdateNote(sentNote.favorite_id, sentNote.body);
 
+            if (note == null) return NotFound();
+            return Created("http://localhost:5001/api/favorite/note" + note.favorite_id, note);
+        }
     }
 }

@@ -50,23 +50,24 @@ namespace DAL
             using (var db = new SOVAContext())
             {
                 return db.SearchList.FromSql("call search_pass({0})", searchString)
-                         .OrderByDescending(x => x.score)
+                    .OrderByDescending(x => x.score)
                     .Skip(page * pageSize)
                     .Take(pageSize)
                     .ToList();
             }
         }
 
-        public List<History> GetHistory(int page, int pageSize){
+        public List<History> GetHistory(int page, int pageSize)
+        {
 
             using (var db = new SOVAContext())
             {
                 return db.History
-                         .OrderByDescending(x => x.history_timestamp)
+                    .OrderByDescending(x => x.history_timestamp)
                     .Skip(page * pageSize)
                     .Take(pageSize)
                     .ToList();
-            } 
+            }
         }
 
         public int GetNumberOfHistorySearches()
@@ -82,7 +83,7 @@ namespace DAL
             using (var db = new SOVAContext())
             {
                 return db.Note.Find(favID);
-            } 
+            }
         }
 
         public Note CreateNote(int favID, string body)
@@ -108,7 +109,45 @@ namespace DAL
             }
         }
 
+        public Note UpdateNote(int favID, string body)
+        {
+            using (var db = new SOVAContext())
+            {
+                var existingNote = GetNote(favID);
 
+                if (existingNote == null) return null;
 
+                var note = new Note
+                {
+                    favorite_id = favID,
+                    body = body,
+                    created_timestamp = existingNote.created_timestamp
+                };
+
+                DeleteNote(favID);
+
+                db.Note.Add(note);
+
+                db.SaveChanges();
+
+                return GetNote(favID);
+            }
+        }
+
+        public bool DeleteNote(int favID)
+        {
+            using (var db = new SOVAContext())
+            {
+                var existingNote = GetNote(favID);
+
+                if (existingNote != null)
+                {
+                    db.Note.Remove(existingNote);
+                    db.SaveChanges();
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

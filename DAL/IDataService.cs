@@ -22,5 +22,8 @@ namespace DAL
 
         Note GetNote(int favID);
 
+        Note UpdateNote(int favID, string body);
+
+        bool DeleteNote(int favID);
     }
 }

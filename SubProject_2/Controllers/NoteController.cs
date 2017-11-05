@@ -36,16 +36,18 @@ namespace WebService
             return Ok(model);
         }
 
-        //[HttpPost{id}", Name = nameof(CreateNote))]
-        //public IActionResult CreateNote(int favId, string body)
-        //{
-        //    var note = _dataService.CreateNote(favId, body);
-        //    if (note == null) return NotFound();
+        //[HttpPost("{favId}", Name = nameof(CreateNote))]
+        [HttpPost]
+        public IActionResult CreateNote(object test)
+        {
+            //    var note = _dataService.CreateNote(favId, body);
+            //    if (note == null) return NotFound();
 
-        //    var model = _mapper.Map<NoteModel>(note);
+            //    var model = _mapper.Map<NoteModel>(note);
 
-        //    return CreatedResult()
-        //}
+
+            return Created("", null);
+        }
 
 
 

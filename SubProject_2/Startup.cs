@@ -57,6 +57,8 @@ namespace SubProject_2
                     .ReverseMap();
                 cfg.CreateMap<Comment, CommentModel>()
                     .ReverseMap();
+                cfg.CreateMap<Note, NoteModel>()
+                    .ReverseMap();
             });
 
             return config.CreateMapper();

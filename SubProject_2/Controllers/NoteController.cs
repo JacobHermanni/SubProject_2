@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using DAL;
@@ -40,6 +41,8 @@ namespace WebService
         public IActionResult CreateNote([FromBody]Note sentNote)
         {
             var note = _dataService.CreateNote(sentNote.favorite_id, sentNote.body);
+
+            if (note == null) return StatusCode(409);
             return Created("http://localhost:5001/api/favorite/note" + note.favorite_id, note);
         }
 

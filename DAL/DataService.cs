@@ -77,6 +77,34 @@ namespace DAL
             }
         }
 
+        public Note GetNote(int favID)
+        {
+            using (var db = new SOVAContext())
+            {
+                return db.Note.Find(favID);
+            } 
+        }
+
+        public Note CreateNote(int favID, string body)
+        {
+            using (var db = new SOVAContext())
+            {
+                var note = new Note
+                {
+                    favorite_id = favID,
+                    body = body,
+                    created_timestamp = DateTime.Now
+                };
+
+                db.Note.Add(note);
+
+                db.SaveChanges();
+
+                return GetNote(favID);
+            }
+        }
+
+
 
     }
 }

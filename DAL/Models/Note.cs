@@ -6,13 +6,8 @@ namespace DAL
 {
     public class Note
     {
+        
         [Key]
-        public int note_id
-        {
-            get;
-            set;
-        }
-
         public int favorite_id
         {
             get;

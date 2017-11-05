@@ -25,6 +25,8 @@ namespace DAL
         public DbSet<Answer> Answer { get; set; }
 
         public DbSet<History> History { get; set; }
+
+        public DbSet<Note> Note { get; set; }
        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -34,7 +36,7 @@ namespace DAL
                 "server=localhost;" +
                 "database=SOVA;" +
                 "uid=root;" +
-                "pwd=root;"
+                "pwd=theis9953;"
             );
 
         }

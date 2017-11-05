@@ -17,5 +17,10 @@ namespace DAL
         List<History> GetHistory(int page, int pageSize);
 
         int GetNumberOfHistorySearches();
+
+        Note CreateNote(int favID, string body);
+
+        Note GetNote(int favID);
+
     }
 }

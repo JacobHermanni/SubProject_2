@@ -49,8 +49,8 @@ namespace DAL
         {
             using (var db = new SOVAContext())
             {
-                return db.SearchList.FromSql("call search_pass({0})", searchString).
-                    OrderByDescending(x => x.score)
+                return db.SearchList.FromSql("call search_pass({0})", searchString)
+                         .OrderByDescending(x => x.score)
                     .Skip(page * pageSize)
                     .Take(pageSize)
                     .ToList();
@@ -62,7 +62,7 @@ namespace DAL
             using (var db = new SOVAContext())
             {
                 return db.History
-                    .OrderBy(x => x.history_timestamp)
+                         .OrderByDescending(x => x.history_timestamp)
                     .Skip(page * pageSize)
                     .Take(pageSize)
                     .ToList();

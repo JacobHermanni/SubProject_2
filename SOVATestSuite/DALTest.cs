@@ -37,7 +37,7 @@ namespace SOVATestSuite
             service.DeleteFavorite(favorite.favorite_id);
         }
 
-<<<<<<< HEAD
+
         [Fact]
         public void CreateNote_ValidObject_NoteAlreadyExists_ReturnsNull()
         {
@@ -70,67 +70,6 @@ namespace SOVATestSuite
 
             Assert.Equal(note, null);
         }
-
-=======
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         [Fact]
         public void UpdateNote_NewBody_UpdateWithNewValues()
@@ -183,15 +122,5 @@ namespace SOVATestSuite
             Assert.False(result);
         }
 
-
-
-
-
-
-
-
-
-
->>>>>>> 78f4ca8... tests for update and delete Note
     }
 }

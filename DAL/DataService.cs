@@ -190,8 +190,8 @@ namespace DAL
         {
             using (var db = new SOVAContext())
             {
-                var newFav = db.Favorite.Select(x => x.post_id == post_id);
-                if (newFav != null) return null;
+                var newFav = db.Favorite.Where(x => x.post_id == post_id);
+                if (newFav.Any()) return null;
 
                 var fav = new Favorite()
                 {

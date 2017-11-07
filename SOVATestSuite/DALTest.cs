@@ -6,134 +6,7 @@ namespace SOVATestSuite
 {
     public class DALTest
     {
-<<<<<<< HEAD
-        // Read-only Get tests of posts
-=======
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 1122a12... Post get
         [Fact]
         public void GetPost_ValidId_ReturnsPostObjectWithProperID()
         {
@@ -141,8 +14,6 @@ namespace SOVATestSuite
             var post = service.GetPost(71); // we know from the databse, that 71 is a valid id.
             Assert.Equal(71, post.post_id);
         }
-
-<<<<<<< HEAD
 
         // Create tests of Notes
         [Fact]
@@ -258,7 +129,6 @@ namespace SOVATestSuite
             Assert.False(result);
         }
 
-=======
         [Fact]
         public void GetPost_invalidID_ReturnNull()
         {
@@ -287,7 +157,7 @@ namespace SOVATestSuite
             Assert.Equal(35, post.user.user_age);
             Assert.Equal("Chris Jester - Young", post.user.user_display_name);
         }
->>>>>>> 1122a12... Post get
+
     }
 }
 

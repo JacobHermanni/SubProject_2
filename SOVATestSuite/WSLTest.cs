@@ -6,8 +6,6 @@ using Xunit;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
-using DAL;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using WebService.Models;
@@ -18,153 +16,208 @@ namespace SOVATestSuite
     {
         private const string PostsApi = "http://localhost:5001/api/posts";
         private const string NoteApi = "http://localhost:5001/api/favorite/note";
+        private const string FavoriteApi = "http://localhost:5001/api/favorite";
 
 
         // Create tests of Notes
         [Fact]
-        public void CreateNote_ValidObject_ReturnsNoteObject()
+        public void NoteApi_CreateNoteWithValidObject_CreatedAndObjectAndUrl()
         {
-            var service = new DataService();
-
             // Create favorite to ensure a favorite exists.
-            var favorite = service.CreateFavorite(19);
+            var (favorite, ingoreStatusCode) = PostData($"{FavoriteApi}/", 19);
 
-            var exampleBody = "this is a note test";
+            FavoriteModel favoriteModel = JsonConvert.DeserializeObject<FavoriteModel>(favorite);
 
-            var createdNote = service.CreateNote(favorite.favorite_id, exampleBody);
+            var data = new
+            {
+                favorite_id = favoriteModel.favorite_id,
+                body = "testing NoteApi_CreateNoteWithValidObject_CreatedAndObjectAndUrl"
+            };
 
-            Assert.Equal(favorite.favorite_id, createdNote.favorite_id);
-            Assert.Equal(exampleBody, createdNote.body);
-            Assert.NotNull(createdNote.created_timestamp);
+            var (note, StatusCode) = PostData($"{NoteApi}", data);
 
-            // Cleanup from creating favorite
-            service.DeleteFavorite(favorite.favorite_id);
-            service.DeleteNote(favorite.favorite_id);
+            Assert.Equal(HttpStatusCode.Created, StatusCode);
+
+            NoteModel createdNote = JsonConvert.DeserializeObject<NoteModel>(note);
+
+            Assert.Equal(favoriteModel.favorite_id, createdNote.favorite_id);
+            Assert.Equal(data.body, createdNote.body);
+
+            // Cleanup from creating favorite and note
+            DeleteData($"{NoteApi}/" + favoriteModel.favorite_id);
+            DeleteData($"{FavoriteApi}/" + favoriteModel.favorite_id);
         }
 
 
         [Fact]
-        public void CreateNote_ValidObject_NoteAlreadyExists_ReturnsNull()
+        public void NoteApi_CreateNoteWhereNoteAlreadyExists_Conflict()
         {
-            var service = new DataService();
-
             // Create favorite to ensure a favorite exists.
-            var favorite = service.CreateFavorite(19);
+            var (favorite, ignoreStatusCode) = PostData($"{FavoriteApi}/", 19);
 
-            var exampleBody = "this is a note test";
+            FavoriteModel favoriteModel = JsonConvert.DeserializeObject<FavoriteModel>(favorite);
 
-            var createdNote1 = service.CreateNote(favorite.favorite_id, exampleBody);
+            var data = new
+            {
+                favorite_id = favoriteModel.favorite_id,
+                body = "testing first note NoteApi_CreateNoteWhereNoteAlreadyExists_Conflict"
+            };
+
+            var (note, StatusCode) = PostData($"{NoteApi}", data);
+
+            NoteModel createdNote = JsonConvert.DeserializeObject<NoteModel>(note);
 
             // Create note with same favorite_id as created note above
+            
+            var (note2, StatusCode2) = PostData($"{NoteApi}", data);
+            
+            Assert.True(string.IsNullOrEmpty(note2));
 
-            var createdNote2 = service.CreateNote(createdNote1.favorite_id, exampleBody);
+            Assert.Equal(HttpStatusCode.Conflict, StatusCode2);
 
-            Assert.Equal(createdNote2, null);
-
-            // Cleanup from creating favorite
-            service.DeleteFavorite(createdNote1.favorite_id);
-            service.DeleteNote(favorite.favorite_id);
+            // Cleanup from creating favorite and note
+            DeleteData($"{NoteApi}/" + favoriteModel.favorite_id);
+            DeleteData($"{FavoriteApi}/" + favoriteModel.favorite_id);
         }
 
         [Fact]
-        public void CreateNote_InvalidFavoriteId_ReturnsNull()
+        public void NoteApi_InvalidFavoriteId_Conflict()
         {
-            var service = new DataService();
+            var data = new
+            {
+                favorite_id = -1,
+                body = "testing NoteApi_InvalidFavoriteId_Conflict"
+            };
 
-            // favorite id 1 does not exist
-            var note = service.CreateNote(-1, "");
+            var (note, StatusCode) = PostData($"{NoteApi}", data);
 
-            Assert.Null(note);
+            Assert.True(string.IsNullOrEmpty(note));
+
+            Assert.Equal(HttpStatusCode.Conflict, StatusCode);
         }
 
 
-        // Note update tests
+        // Note update/put tests
         [Fact]
-        public void UpdateNote_NewBody_UpdateWithNewValues()
+        public void NoteApi_PutNoteWithValidId_Ok()
         {
-            var service = new DataService();
-
             // Create favorite so that we can create a note on it
-            var fav = service.CreateFavorite(19);
+            var (fav, statusCodeToIgnore) = PostData(FavoriteApi, 19);
 
-            var note = service.CreateNote(fav.favorite_id, "Created note for test of UpdateNote()");
+            FavoriteModel favoriteModel = JsonConvert.DeserializeObject<FavoriteModel>(fav);
 
-            service.UpdateNote(note.favorite_id, "Updated body for test");
+            var data = new
+            {
+                favorite_id = favoriteModel.favorite_id,
+                body = "Created note for test of Put"
+            };
 
-            note = service.GetNote(note.favorite_id);
+            PostData(NoteApi, data);
 
-            Assert.Equal("Updated body for test", note.body);
+            var data2 = new
+            {
+                favorite_id = favoriteModel.favorite_id,
+                body = "Updated body for test"
+            };
+
+            var putStatusCode = PutData(NoteApi, data2);
+
+            Assert.Equal(HttpStatusCode.Created, putStatusCode);
+
+            var (result, statusCode) = GetObject($"{NoteApi}/" + favoriteModel.favorite_id);
+
+            NoteModel noteModel = JsonConvert.DeserializeObject<NoteModel>(result);
+
+            Assert.Equal("Updated body for test", noteModel.body);
 
             // cleanup
-            service.DeleteNote(note.favorite_id);
-            service.DeleteFavorite(fav.favorite_id);
+            DeleteData($"{FavoriteApi}/{noteModel.favorite_id}");
+            DeleteData($"{NoteApi}/{noteModel.favorite_id}");
         }
 
         [Fact]
-        public void UpdateNote_InvalidID_ReturnsFalse()
+        public void NoteApit_PutNote_InvalidID_NotFound()
         {
-            var service = new DataService();
-            var result = service.UpdateNote(-1, "Update");
-            Assert.Null(result);
+            var statusCode = PutData($"{NoteApi}/", -1);
+
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
         }
 
         // Note delete tests
         [Fact]
-        public void DeleteNote_ValidId_RemoveTheNote()
+        public void NoteApi_DeleteNoteWithValidId_Ok()
         {
-            var service = new DataService();
 
             // Create favorite so that we can create a note on it
-            var fav = service.CreateFavorite(19);
+            var (fav, statusCodeToIgnore) = PostData(FavoriteApi, 19);
 
-            var note = service.CreateNote(fav.favorite_id, "Created note for test of DeleteNote()");
+            FavoriteModel favoriteModel = JsonConvert.DeserializeObject<FavoriteModel>(fav);
 
-            var result = service.DeleteNote(note.favorite_id);
-            Assert.True(result);
+            var data = new
+            {
+                favorite_id = favoriteModel.favorite_id,
+                body = "Created note for test of DeleteNote()"
+            };
 
-            // Cleanup
-            service.DeleteFavorite(fav.favorite_id);
+            PostData(NoteApi, data);
+
+            var statusCode = DeleteData($"{NoteApi}/{favoriteModel.favorite_id}");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+
+            //clean up
+            DeleteData($"{FavoriteApi}/{favoriteModel.favorite_id}");
         }
 
         [Fact]
-        public void DeleteNote_InvalidId_ReturnsFalse()
+        public void NoteApi_DeleteNoteWithInvalidId_NotFound()
         {
-            var service = new DataService();
-            var result = service.DeleteNote(-1);
-            Assert.False(result);
+            var statusCode = DeleteData($"{NoteApi}/-1");
+
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
         }
+
 
 
         // Posts readonly tests
         [Fact]
-        public void GetPost_ValidId_ReturnsPostObjectWithProperID()
+        public void PostApi_GetPostWithValidId_OkAndObjectWithProperID()
         {
-            var service = new DataService();
-            var post = service.GetPost(71); // we know from the databse, that 71 is a valid id.
-            Assert.Equal(71, post.post_id);
+            var (post, statusCode) = GetObject($"{PostsApi}/71");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+
+            PostModel postModel = JsonConvert.DeserializeObject<PostModel>(post);
+
+            Assert.Equal(71, postModel.post_id);
+            Assert.Equal(PostsApi + "/71", postModel.Url);
         }
 
         [Fact]
-        public void GetPost_invalidID_ReturnNull()
+        public void PostApi_GetPostWithInvalidID_NotFound()
         {
-            var service = new DataService();
-            var post = service.GetPost(-1);
-            Assert.Null(post);
-        }
-
-        [Fact]
-        public void GetPost_ValidId_ReturnsPostObject()
-        {
-            var service = new DataService();
-            var post = service.GetPost(19);
-            Assert.Equal(164, post.score);
-            Assert.Equal(13, post.user_id);
-            Assert.Equal(1, post.post_type_id);
+            var (post, statusCode) = GetObject($"{PostsApi}/-1");
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
 
         }
 
         [Fact]
         public void PostApi_GetPostWithValidId_OkAndPostObject()
+        {
+            var (post, statusCode) = GetObject($"{PostsApi}/19");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+
+            PostModel postModel = JsonConvert.DeserializeObject<PostModel>(post);
+
+            Assert.Equal(164, postModel.score);
+            Assert.Equal(13, postModel.user_id);
+            Assert.Equal(1, postModel.post_type_id);
+            Assert.Equal(PostsApi + "/19", postModel.Url);
+        }
+
+        [Fact]
+        public void PostApi_GetAnswerPostWithValidId_OkAndPostObject()
         {
             var (post, statusCode) = GetObject($"{PostsApi}/19");
 
@@ -180,15 +233,28 @@ namespace SOVATestSuite
             Assert.Equal(PostsApi + "/19", postModel.Url);
         }
 
-        // Helpers
-
-        (string, HttpStatusCode) GetArray(string url)
+        [Fact]
+        public void PostApi_GetSearchResultFromString_OkAndResultListObject()
         {
-            var client = new HttpClient();
-            var response = client.GetAsync(url).Result;
-            var data = response.Content.ReadAsStringAsync().Result;
-            return (data, response.StatusCode);
+            // Search for java
+            var (result, StatusCode) = GetObject($"{PostsApi}" + "/search/java");
+
+            var jObject = (JObject) JsonConvert.DeserializeObject(result);
+
+            var resultModel = jObject["data"].ToObject<List<ResultModel>>();
+
+            // The first result has the post_id 388242
+            Assert.Equal(388242, resultModel.First().post_id);
+
+            // The first result has a score of 4271
+            Assert.Equal(4271, resultModel.First().score);
+
+            // Url for 388242 should be http://localhost:5001/api/posts/388242
+            Assert.Equal("http://localhost:5001/api/posts/388242", resultModel.First().Url);
         }
+
+
+        // Helpers
 
         (string, HttpStatusCode) GetObject(string url)
         {

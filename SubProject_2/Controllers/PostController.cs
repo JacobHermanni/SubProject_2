@@ -63,7 +63,7 @@ namespace WebService
             return Ok(model);
         }
 
-        [HttpGet("name/{searchstring}", Name = nameof(GetPostsByString))]
+        [HttpGet("search/{searchstring}", Name = nameof(GetPostsByString))]
         public IActionResult GetPostsByString(string searchstring, int page = 0, int pageSize = 5)
         {
             CheckPageSize(ref pageSize);

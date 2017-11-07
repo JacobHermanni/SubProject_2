@@ -37,6 +37,7 @@ namespace SOVATestSuite
             service.DeleteFavorite(favorite.favorite_id);
         }
 
+<<<<<<< HEAD
         [Fact]
         public void CreateNote_ValidObject_NoteAlreadyExists_ReturnsNull()
         {
@@ -70,5 +71,127 @@ namespace SOVATestSuite
             Assert.Equal(note, null);
         }
 
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        [Fact]
+        public void UpdateNote_NewBody_UpdateWithNewValues()
+        {
+            var service = new DataService();
+
+            // Create favorite so that we can create a note on it
+            service.CreateFavorite(19);
+
+            var note = service.CreateNote(1, "Created note for test of UpdateNote()");
+
+            var result = service.UpdateNote(note.favorite_id, "Updated body for test");
+
+            note = service.GetNote(note.favorite_id);
+
+            Assert.Equal("Updated body for test", note.body);
+            Assert.Equal("childrencontent", note.child.body);
+
+            // cleanup
+            service.DeleteNote(note.favorite_id);
+        }
+
+        [Fact]
+        public void UpdateNote_InvalidID_ReturnsFalse()
+        {
+            var service = new DataService();
+            var result = service.UpdateNote(-1, "Update");
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void DeleteNote_ValidId_RemoveTheNote()
+        {
+            var service = new DataService();
+
+            // Create favorite so that we can create a note on it
+            service.CreateFavorite(19);
+
+            var note = service.CreateNote(1, "Created note for test of DeleteNote()");
+
+            var result = service.DeleteNote(note.favorite_id);
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void DeleteNote_InvalidId_ReturnsFalse()
+        {
+            var service = new DataService();
+            var result = service.DeleteNote(-1);
+            Assert.False(result);
+        }
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 78f4ca8... tests for update and delete Note
     }
 }

@@ -6,7 +6,134 @@ namespace SOVATestSuite
 {
     public class DALTest
     {
+<<<<<<< HEAD
         // Read-only Get tests of posts
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 1122a12... Post get
         [Fact]
         public void GetPost_ValidId_ReturnsPostObjectWithProperID()
         {
@@ -15,6 +142,7 @@ namespace SOVATestSuite
             Assert.Equal(71, post.post_id);
         }
 
+<<<<<<< HEAD
 
         // Create tests of Notes
         [Fact]
@@ -130,5 +258,36 @@ namespace SOVATestSuite
             Assert.False(result);
         }
 
+=======
+        [Fact]
+        public void GetPost_invalidID_ReturnNull()
+        {
+            var service = new DataService();
+            var post = service.GetPost(1);
+            Assert.Null(post.post_id);
+        }
+
+        [Fact]
+        public void GetPost_ValidId_ReturnsPostObject()
+        {
+            var service = new DataService();
+            var post = service.GetPost(19);
+            Assert.Equal(164, post.score);
+            Assert.Equal(13, post.user_id);
+            Assert.Equal(1, post.post_type_id);
+
+        }
+
+        [Fact]
+        public void GetPost_ValidId_ReturnsPostObjectWithChildren()
+        {
+            var service = new DataService();
+            var post = service.GetPost(19);
+            Assert.Equal(13, post.user_id);
+            Assert.Equal(35, post.user.user_age);
+            Assert.Equal("Chris Jester - Young", post.user.user_display_name);
+        }
+>>>>>>> 1122a12... Post get
     }
 }
+

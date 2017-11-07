@@ -34,5 +34,7 @@ namespace DAL
         int GetNumberOfFavorites();
 
         Favorite CreateFavorite(int post_id);
+
+
     }
 }

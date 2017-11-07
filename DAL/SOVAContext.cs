@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
@@ -40,7 +40,13 @@ namespace DAL
                 "server=localhost;" +
                 "database=SOVA;" +
                 "uid=root;" +
+<<<<<<< HEAD
                 "pwd=root;"
+=======
+                "pwd=Arsenal05;"
+
+
+>>>>>>> 1122a12... Post get
             );
 
         }

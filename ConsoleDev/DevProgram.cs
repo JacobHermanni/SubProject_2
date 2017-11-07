@@ -8,7 +8,18 @@ namespace ConsoleDev
         static void Main(string[] args)
         {
             //AnswerTest();
-            QuestionTest();
+            //QuestionTest();
+            var service = new DataService();
+
+            // Create favorite to ensure a favorite exists.
+            var favorite = service.CreateFavorite(19);
+
+            var exampleBody = "this is a note test";
+
+            var createdNote = service.CreateNote(favorite.favorite_id, exampleBody);
+
+            Console.WriteLine(createdNote.favorite_id);
+            Console.WriteLine(createdNote.body);
         }
 
         static void QuestionTest()

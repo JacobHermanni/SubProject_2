@@ -164,20 +164,20 @@ namespace SOVATestSuite
         }
 
         [Fact]
-        public void GetPost_ValidId_ReturnsPostObjectWithChildren()
+        public void PostApi_GetPostWithValidId_OkAndPostObject()
         {
             var (post, statusCode) = GetObject($"{PostsApi}/19");
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
 
-            PostModel postModel = null;
-            post.JsonConvert.PopulateObject(postModel);
-                
+            PostModel postModel = JsonConvert.DeserializeObject<PostModel>(post);
 
-            Assert.Equal(13, post.user_id);
-            Assert.Equal(35, post.user.user_age);
-            Assert.Equal("Chris Jester-Young", post.user.user_display_name);
-            Assert.True(post.question.Answers.Count > 0); // We know that post 19 is a question post with mutliple answers.
+
+            Assert.Equal(13, postModel.user_id);
+            Assert.Equal(35, postModel.user.user_age);
+            Assert.Equal("Chris Jester-Young", postModel.user.user_display_name);
+            Assert.True(postModel.question.Answers.Count > 0); // We know that post 19 is a question post with mutliple answers.
+            Assert.Equal(PostsApi + "/19", postModel.Url);
         }
 
         // Helpers
@@ -190,12 +190,12 @@ namespace SOVATestSuite
             return ((JArray)JsonConvert.DeserializeObject(data), response.StatusCode);
         }
 
-        (JObject, HttpStatusCode) GetObject(string url)
+        (string, HttpStatusCode) GetObject(string url)
         {
             var client = new HttpClient();
             var response = client.GetAsync(url).Result;
             var data = response.Content.ReadAsStringAsync().Result;
-            return ((JObject)JsonConvert.DeserializeObject(data), response.StatusCode);
+            return (data, response.StatusCode);
         }
 
         (JObject, HttpStatusCode) PostData(string url, object content)

@@ -121,7 +121,7 @@ namespace SOVATestSuite
         }
 
 
-        // Posts readonly tests
+        // Posts read only tests
         [Fact]
         public void GetPost_ValidId_ReturnsPostObjectWithProperID()
         {

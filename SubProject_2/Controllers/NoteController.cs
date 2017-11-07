@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using DAL;
 using WebService.Models;
 
-
-
 namespace WebService
 {
     [Route("/api/favorite/note")]

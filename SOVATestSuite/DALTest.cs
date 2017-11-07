@@ -6,15 +6,6 @@ namespace SOVATestSuite
 {
     public class DALTest
     {
-
-        [Fact]
-        public void GetPost_ValidId_ReturnsPostObjectWithProperID()
-        {
-            var service = new DataService();
-            var post = service.GetPost(71); // we know from the databse, that 71 is a valid id.
-            Assert.Equal(71, post.post_id);
-        }
-
         // Create tests of Notes
         [Fact]
         public void CreateNote_ValidObject_ReturnsNoteObject()
@@ -67,7 +58,7 @@ namespace SOVATestSuite
             var service = new DataService();
 
             // favorite id 1 does not exist
-            var note = service.CreateNote(1, "");
+            var note = service.CreateNote(-1, "");
 
             Assert.Null(note);
         }
@@ -129,12 +120,22 @@ namespace SOVATestSuite
             Assert.False(result);
         }
 
+
+        // Posts readonly tests
+        [Fact]
+        public void GetPost_ValidId_ReturnsPostObjectWithProperID()
+        {
+            var service = new DataService();
+            var post = service.GetPost(71); // we know from the databse, that 71 is a valid id.
+            Assert.Equal(71, post.post_id);
+        }
+
         [Fact]
         public void GetPost_invalidID_ReturnNull()
         {
             var service = new DataService();
-            var post = service.GetPost(1);
-            Assert.Null(post.post_id);
+            var post = service.GetPost(-1);
+            Assert.Null(post);
         }
 
         [Fact]
@@ -155,7 +156,8 @@ namespace SOVATestSuite
             var post = service.GetPost(19);
             Assert.Equal(13, post.user_id);
             Assert.Equal(35, post.user.user_age);
-            Assert.Equal("Chris Jester - Young", post.user.user_display_name);
+            Assert.Equal("Chris Jester-Young", post.user.user_display_name);
+            Assert.True(post.question.Answers.Count > 0); // We know that post 19 is a question post with mutliple answers.
         }
 
     }

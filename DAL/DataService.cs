@@ -92,8 +92,9 @@ namespace DAL
             using (var db = new SOVAContext())
             {
                 var existingNote = GetNote(favID);
+                var favorite = db.Favorite.Find(favID);
 
-                if (existingNote != null) return null;
+                if (existingNote != null || favorite == null) return null;
 
                 var note = new Note
                 {

@@ -35,6 +35,7 @@ namespace SOVATestSuite
 
             // Cleanup from creating favorite
             service.DeleteFavorite(favorite.favorite_id);
+            service.DeleteNote(favorite.favorite_id);
         }
 
 
@@ -58,6 +59,7 @@ namespace SOVATestSuite
 
             // Cleanup from creating favorite
             service.DeleteFavorite(createdNote1.favorite_id);
+            service.DeleteNote(favorite.favorite_id);
         }
 
         [Fact]
@@ -68,28 +70,30 @@ namespace SOVATestSuite
             // favorite id 1 does not exist
             var note = service.CreateNote(1, "");
 
-            Assert.Equal(note, null);
+            Assert.Null(note);
         }
 
+
+        // Note update tests
         [Fact]
         public void UpdateNote_NewBody_UpdateWithNewValues()
         {
             var service = new DataService();
 
             // Create favorite so that we can create a note on it
-            service.CreateFavorite(19);
+            var fav = service.CreateFavorite(19);
 
-            var note = service.CreateNote(1, "Created note for test of UpdateNote()");
+            var note = service.CreateNote(fav.favorite_id, "Created note for test of UpdateNote()");
 
-            var result = service.UpdateNote(note.favorite_id, "Updated body for test");
+            service.UpdateNote(note.favorite_id, "Updated body for test");
 
             note = service.GetNote(note.favorite_id);
 
             Assert.Equal("Updated body for test", note.body);
-            Assert.Equal("childrencontent", note.child.body);
 
             // cleanup
             service.DeleteNote(note.favorite_id);
+            service.DeleteFavorite(fav.favorite_id);
         }
 
         [Fact]
@@ -100,18 +104,22 @@ namespace SOVATestSuite
             Assert.Null(result);
         }
 
+        // Note delete tests
         [Fact]
         public void DeleteNote_ValidId_RemoveTheNote()
         {
             var service = new DataService();
 
             // Create favorite so that we can create a note on it
-            service.CreateFavorite(19);
+            var fav = service.CreateFavorite(19);
 
-            var note = service.CreateNote(1, "Created note for test of DeleteNote()");
+            var note = service.CreateNote(fav.favorite_id, "Created note for test of DeleteNote()");
 
             var result = service.DeleteNote(note.favorite_id);
             Assert.True(result);
+
+            // Cleanup
+            service.DeleteFavorite(fav.favorite_id);
         }
 
         [Fact]

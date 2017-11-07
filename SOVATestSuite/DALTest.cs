@@ -37,5 +37,38 @@ namespace SOVATestSuite
             service.DeleteFavorite(favorite.favorite_id);
         }
 
+        [Fact]
+        public void CreateNote_ValidObject_NoteAlreadyExists_ReturnsNull()
+        {
+            var service = new DataService();
+
+            // Create favorite to ensure a favorite exists.
+            var favorite = service.CreateFavorite(19);
+
+            var exampleBody = "this is a note test";
+
+            var createdNote1 = service.CreateNote(favorite.favorite_id, exampleBody);
+
+            // Create note with same favorite_id as created note above
+
+            var createdNote2 = service.CreateNote(createdNote1.favorite_id, exampleBody);
+
+            Assert.Equal(createdNote2, null);
+
+            // Cleanup from creating favorite
+            service.DeleteFavorite(createdNote1.favorite_id);
+        }
+
+        [Fact]
+        public void CreateNote_InvalidFavoriteId_ReturnsNull()
+        {
+            var service = new DataService();
+
+            // favorite id 1 does not exist
+            var note = service.CreateNote(1, "");
+
+            Assert.Equal(note, null);
+        }
+
     }
 }

@@ -182,12 +182,12 @@ namespace SOVATestSuite
 
         // Helpers
 
-        (JArray, HttpStatusCode) GetArray(string url)
+        (string, HttpStatusCode) GetArray(string url)
         {
             var client = new HttpClient();
             var response = client.GetAsync(url).Result;
             var data = response.Content.ReadAsStringAsync().Result;
-            return ((JArray)JsonConvert.DeserializeObject(data), response.StatusCode);
+            return (data, response.StatusCode);
         }
 
         (string, HttpStatusCode) GetObject(string url)
@@ -198,7 +198,7 @@ namespace SOVATestSuite
             return (data, response.StatusCode);
         }
 
-        (JObject, HttpStatusCode) PostData(string url, object content)
+        (string, HttpStatusCode) PostData(string url, object content)
         {
             var client = new HttpClient();
             var requestContent = new StringContent(
@@ -207,7 +207,7 @@ namespace SOVATestSuite
                 "application/json");
             var response = client.PostAsync(url, requestContent).Result;
             var data = response.Content.ReadAsStringAsync().Result;
-            return ((JObject)JsonConvert.DeserializeObject(data), response.StatusCode);
+            return (data, response.StatusCode);
         }
 
         HttpStatusCode PutData(string url, object content)

@@ -62,10 +62,7 @@ namespace WebService.Controllers
                     favoriteListModel.note.Url =
                         Url.Link(nameof(noteCtrl.GetNote),
                         new { favId = favoriteListModel.favorite_id });
-                    Console.WriteLine(Url.Link(nameof(noteCtrl.GetNote),
-                        new { favId = favoriteListModel.favorite_id }));
                 }
-
             }
 
             var total = _dataService.GetNumberOfFavorites();

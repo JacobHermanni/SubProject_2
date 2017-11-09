@@ -115,6 +115,7 @@ namespace DAL
         {
             using (var db = new SOVAContext())
             {
+                // Check if note for favorite_id exists
                 var existingNote = GetNote(favID);
 
                 if (existingNote == null) return null;
@@ -191,8 +192,12 @@ namespace DAL
         {
             using (var db = new SOVAContext())
             {
+                // Check if post_id is valid AsNoTracking to avoid duplicate tracking of user
+                var post = db.Post.AsNoTracking().Where(x => x.post_id == post_id);
+
+                // Check if favorite for post_id already exists
                 var newFav = db.Favorite.Where(x => x.post_id == post_id);
-                if (newFav.Any()) return null;
+                if (newFav.Any() || !post.Any()) return null;
 
                 var fav = new Favorite()
                 {

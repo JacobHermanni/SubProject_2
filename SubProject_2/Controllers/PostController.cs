@@ -22,6 +22,8 @@ namespace WebService
             _mapper = mapper;
         }
 
+
+        // Obsolete
         [HttpGet(Name = nameof(GetPosts))]
         public IActionResult GetPosts(int page = 0, int pageSize = 5)
         {
@@ -60,6 +62,15 @@ namespace WebService
             var model = _mapper.Map<PostModel>(post);
             model.Url = Url.Link(nameof(GetPost), new { id = post.post_id });
 
+            // Add self-referencing urls to posts in the case of the returned post being a question.
+            if (model.question != null)
+            {
+                foreach (var answer in model.question.Answers)
+                {
+                    answer.Url = Url.Link(nameof(GetPost), new { id = answer.post_id });
+                }
+            }
+
             return Ok(model);
         }
 
@@ -67,7 +78,7 @@ namespace WebService
         public IActionResult GetPostsByString(string searchstring, int page = 0, int pageSize = 5)
         {
             CheckPageSize(ref pageSize);
-            
+
             var data = _dataService.GetPostsByString(searchstring, page, pageSize)
                 .Select(x => new ResultModel()
                 {

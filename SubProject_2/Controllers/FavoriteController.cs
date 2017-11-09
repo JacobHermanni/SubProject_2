@@ -37,19 +37,37 @@ namespace WebService.Controllers
         {
             CheckPageSize(ref pageSize);
 
+            var postCtrl = new PostController(_dataService, _mapper);
+            var noteCtrl = new NoteController(_dataService, _mapper);
+
+
             var favorites = _dataService.GetFavorites(page, pageSize)
                   .Select(x => new FavoriteListModel()
                   {
                       post_id = x.post_id,
-                      Url = Url.Link(nameof(GetPost), new { id = x.post_id }),
+                      Url = Url.Link(nameof(postCtrl.GetPost), new { id = x.post_id }),
                       favorite_id = x.favorite_id,
                       title = x.title,
                       body = x.body,
                       score = x.score,
                       accepted_answer_id = x.accepted_answer_id,
                       note = _mapper.Map<NoteModel>(x.note)
-                  });
+                  }).ToList();
             
+            // Set urls for all notes
+            foreach (var favoriteListModel in favorites)
+            {
+                if (favoriteListModel.note != null)
+                {
+                    favoriteListModel.note.Url =
+                        Url.Link(nameof(noteCtrl.GetNote),
+                        new { favId = favoriteListModel.favorite_id });
+                    Console.WriteLine(Url.Link(nameof(noteCtrl.GetNote),
+                        new { favId = favoriteListModel.favorite_id }));
+                }
+
+            }
+
             var total = _dataService.GetNumberOfFavorites();
             var totalPages = GetTotalPages(pageSize, total);
 
@@ -64,7 +82,6 @@ namespace WebService.Controllers
                 Data = favorites
             };
 
-
             return Ok(result);
         }
 
@@ -75,17 +92,6 @@ namespace WebService.Controllers
 
             if (fav == null) return StatusCode(409);
             return Created("http://localhost:5001/api/favorite/" + fav.favorite_id, fav);
-        }
-
-        public IActionResult GetPost(int id)
-        {
-            var post = _dataService.GetPost(id);
-            if (post == null) return NotFound();
-
-            var model = _mapper.Map<PostModel>(post);
-            model.Url = Url.Link(nameof(GetPost), new { id = post.post_id });
-
-            return Ok(model);
         }
     }
 }

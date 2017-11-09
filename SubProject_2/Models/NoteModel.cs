@@ -8,7 +8,13 @@ namespace WebService.Models
 {
     public class NoteModel
     {
-        public string Url { get; set; }
+        private string url { get; set; }
+
+        public string Url
+        {
+            get { return url; }
+            set { url = value; }
+        }
 
         public int favorite_id { get; set; }
 

@@ -33,7 +33,7 @@ namespace WebService.Controllers
         }
 
         [HttpGet(Name = nameof(GetFavorites))]
-        public IActionResult GetFavorites(int page = 0, int pageSize = 5)
+        public IActionResult GetFavorites(int page = 0, int pageSize = 25)
         {
             CheckPageSize(ref pageSize);
 

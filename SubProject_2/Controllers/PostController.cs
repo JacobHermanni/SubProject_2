@@ -25,7 +25,7 @@ namespace WebService
 
         // Obsolete
         [HttpGet(Name = nameof(GetPosts))]
-        public IActionResult GetPosts(int page = 0, int pageSize = 5)
+        public IActionResult GetPosts(int page = 0, int pageSize = 25)
         {
             CheckPageSize(ref pageSize);
 
@@ -75,7 +75,7 @@ namespace WebService
         }
 
         [HttpGet("search/{searchstring}", Name = nameof(GetPostsByString))]
-        public IActionResult GetPostsByString(string searchstring, int page = 0, int pageSize = 5)
+        public IActionResult GetPostsByString(string searchstring, int page = 0, int pageSize = 25)
         {
             CheckPageSize(ref pageSize);
 

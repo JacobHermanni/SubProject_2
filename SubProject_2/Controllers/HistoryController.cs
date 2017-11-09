@@ -22,7 +22,7 @@ namespace WebService
         }
 
         [HttpGet(Name = nameof(GetHistory))]
-        public IActionResult GetHistory(int page = 0, int pageSize = 5)
+        public IActionResult GetHistory(int page = 0, int pageSize = 25)
         {
             CheckPageSize(ref pageSize);
 

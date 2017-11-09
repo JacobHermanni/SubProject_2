@@ -26,13 +26,15 @@ namespace WebService
         {
             CheckPageSize(ref pageSize);
 
+            var postCtrl = new PostController(_dataService, _mapper);
+
             var total = _dataService.GetNumberOfHistorySearches();
             var totalPages = GetTotalPages(pageSize, total);
 
             var data = _dataService.GetHistory(page, pageSize)
                 .Select(x => new HistoryModel
                 {
-                URL = "http://localhost:5001/api/posts/search/" + x.search_string.Replace(" ", "%20"),
+                    URL = Url.Link(nameof(postCtrl.GetPostsByString), new { searchstring = x.search_string }),
                     history_id = x.history_id,
                     search_string = x.search_string,
                     history_timestamp = x.history_timestamp

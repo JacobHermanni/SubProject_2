@@ -41,7 +41,7 @@ namespace WebService
             var note = _dataService.CreateNote(sentNote.favorite_id, sentNote.body);
 
             if (note == null) return StatusCode(409);
-            return Created("http://localhost:5001/api/favorite/note" + note.favorite_id, note);
+            return Created(Url.Link(nameof(GetNote), new {favId = note.favorite_id }), note);
         }
 
         [HttpPut]
@@ -50,7 +50,7 @@ namespace WebService
             var note = _dataService.UpdateNote(sentNote.favorite_id, sentNote.body);
 
             if (note == null) return NotFound();
-            return Created("http://localhost:5001/api/favorite/note" + note.favorite_id, note);
+            return Created(Url.Link(nameof(GetNote), new {favId = note.favorite_id}), note);
         }
 
         [HttpDelete("{favID}", Name = nameof(DeleteNote))]

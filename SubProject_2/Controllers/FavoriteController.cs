@@ -32,7 +32,7 @@ namespace WebService.Controllers
             return NotFound();
         }
 
-        [HttpGet]
+        [HttpGet(Name = nameof(GetFavorites))]
         public IActionResult GetFavorites(int page = 0, int pageSize = 5)
         {
             CheckPageSize(ref pageSize);
@@ -91,7 +91,7 @@ namespace WebService.Controllers
             var fav = _dataService.CreateFavorite(post_id);
 
             if (fav == null) return StatusCode(409);
-            return Created("http://localhost:5001/api/favorite/" + fav.favorite_id, fav);
+            return Created(Url.Link(nameof(GetFavorites), null), fav);
         }
     }
 }

@@ -7,6 +7,8 @@ namespace WebService.Models
 {
     public class UserModel
     {
+        public string Url { get; set; }
+
         public int user_id { get; set; }
 
         public string user_display_name { get; set; }
@@ -16,5 +18,9 @@ namespace WebService.Models
         public Nullable<int> user_age { get; set; }
 
         public string user_location { get; set; }
+
+        public List<ResultModel> posts { get; set; }
+
+        //public List<ResultModel> comments { get; set; }
     }
 }

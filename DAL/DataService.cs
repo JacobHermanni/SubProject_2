@@ -211,6 +211,34 @@ namespace DAL
                 return fav;
             }
         }
+
+        public List<User> GetUsers(int page, int pageSize)
+        {
+            using (var db = new SOVAContext())
+            {
+                return db.User
+                    .OrderBy(x => x.user_id)
+                    .Skip(page * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+            }
+        }
+
+        public int GetNumberOfUsers()
+        {
+            using (var db = new SOVAContext())
+            {
+                return db.User.Count();
+            }
+        }
+
+        public User GetUser(int id)
+        {
+            using (var db = new SOVAContext())
+            {
+                return db.User.Find(id);
+            }
+        }
     }
 }
 

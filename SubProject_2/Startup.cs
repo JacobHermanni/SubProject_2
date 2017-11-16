@@ -63,6 +63,8 @@ namespace SubProject_2
                     .ReverseMap();
                 cfg.CreateMap<FavoriteList, FavoriteListModel>()
                     .ReverseMap();
+                cfg.CreateMap<Result, ResultModel>()
+                    .ReverseMap();
             });
 
             return config.CreateMapper();

@@ -138,7 +138,12 @@ namespace SOVATestSuite
         [Fact]
         public void NoteApit_PutNote_InvalidID_NotFound()
         {
-            var statusCode = PutData($"{NoteApi}/", -1);
+            var data = new
+            {
+                favorite_id = -1,
+                body = "invalid id"
+            };
+            var statusCode = PutData(NoteApi, data);
 
             Assert.Equal(HttpStatusCode.NotFound, statusCode);
         }

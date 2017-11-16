@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http.Headers;
 using DAL.Models;
 
 namespace DAL
@@ -35,6 +36,10 @@ namespace DAL
 
         Favorite CreateFavorite(int post_id);
 
+        List<User> GetUsers(int page, int pageSize);
 
+        int GetNumberOfUsers();
+
+        User GetUser(int id);
     }
 }

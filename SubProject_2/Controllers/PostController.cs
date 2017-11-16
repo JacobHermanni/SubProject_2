@@ -62,6 +62,7 @@ namespace WebService
             var model = _mapper.Map<PostModel>(post);
             model.Url = Url.Link(nameof(GetPost), new { id = post.post_id });
 
+            // TODO: self-reference users.
             // Add self-referencing urls to posts in the case of the returned post being a question.
             if (model.question != null)
             {

@@ -42,7 +42,6 @@ namespace DAL
                 "uid=root;" +
                 "pwd=root;"
             );
-
         }
     }
 }

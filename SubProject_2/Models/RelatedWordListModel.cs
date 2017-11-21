@@ -5,6 +5,6 @@ namespace WebService.Models
     {
         public string term { get; set; }
 
-        public double rank { get; set; }
+        public decimal rank { get; set; }
     }
 }

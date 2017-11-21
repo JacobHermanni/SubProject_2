@@ -244,7 +244,7 @@ namespace DAL
 
             using (var db = new SOVAContext())
             {
-                return db.RelatedWordList.FromSql("call findRelatedWords({0})", word)
+                return db.RelatedWordList.FromSql("call findRelatedWords_tf_idf({0})", word)
                     .ToList();
             }
         }

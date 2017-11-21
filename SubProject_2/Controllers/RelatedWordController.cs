@@ -22,33 +22,17 @@ namespace WebService
             _mapper = mapper;
         }
 
-        //[HttpGet("{word}", Name = nameof(GetRelatedWords))]
-        //public IActionResult GetRelatedWords(string word)
-        //{
-
-
-
-        //    var data = _dataService.GetRelatedWords(word)
-        //        .Select(x => new RelatedWordListModel()
-        //        {
-        //        term = x.term,
-        //        rank = x.rank
-        //        });
-
-        //    return Ok(data);
-        //}
-
         [HttpGet("{word}", Name = nameof(GetRelatedWords))]
         public IActionResult GetRelatedWords(string word)
         {
-            var model = _dataService.GetRelatedWords(word);
-            if (model == null) return NotFound();
+            var data = _dataService.GetRelatedWords(word)
+                .Select(x => new RelatedWordListModel()
+                {
+                term = x.term,
+                rank = x.rank
+                });
 
-            var test = _mapper.Map<RelatedWordListModel>(model);
-            return Ok(test);
+            return Ok(data);
         }
-
-
-
     }
 }

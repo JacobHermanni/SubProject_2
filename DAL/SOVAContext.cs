@@ -31,6 +31,9 @@ namespace DAL
         public DbSet<Favorite> Favorite { get; set; }
 
         public DbSet<FavoriteList> FavoriteList { get; set; }
+
+        public DbSet<RelatedWordList> RelatedWordList { get; set; }
+
        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

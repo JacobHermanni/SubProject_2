@@ -239,6 +239,16 @@ namespace DAL
                 return db.User.Find(id);
             }
         }
+
+        public List<RelatedWordList> GetRelatedWords (string word){
+
+            using (var db = new SOVAContext())
+            {
+                return db.RelatedWordList.FromSql("call findRelatedWords({0})", word)
+                    .ToList();
+            }
+        }
+
     }
 }
 

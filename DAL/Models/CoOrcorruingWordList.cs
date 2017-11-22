@@ -7,12 +7,11 @@ using System.Linq;
 
 namespace DAL.Models
 {
-    public class RelatedWordList
+    public class CoOrcorruingWordList
     {
         [Key]
-        public string term { get; set; }
+        public string co_term { get; set; }
 
-        public decimal rank { get; set; }
-
+        public int score { get; set; }
     }
 }

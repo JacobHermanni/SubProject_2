@@ -34,6 +34,8 @@ namespace DAL
 
         public DbSet<RelatedWordList> RelatedWordList { get; set; }
 
+        public DbSet<CoOrcorruingWordList> CoOrcorruingWordList { get; set; }
+
        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

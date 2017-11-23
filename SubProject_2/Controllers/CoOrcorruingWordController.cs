@@ -30,8 +30,9 @@ namespace WebService
                {
                 co_term = x.co_term,
                 score = x.score
-               });
+            }).ToList();
 
+            if (data == null) return NotFound();
             return Ok(data);
         }
         

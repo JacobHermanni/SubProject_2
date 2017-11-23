@@ -273,8 +273,14 @@ namespace DAL
 
             using (var db = new SOVAContext())
             {
-                return db.CoOrcorruingWordList.FromSql("call findCoOrcorruingWords({0})", word)
+                var wordList = db.CoOrcorruingWordList.FromSql("call findCoOrcorruingWords({0})", word)
                     .ToList();
+
+                if (!wordList.Any())
+                {
+                    return null;
+                }
+                return wordList;
             }
         }
 

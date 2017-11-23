@@ -17,6 +17,8 @@ namespace SOVATestSuite
         private const string PostsApi = "http://localhost:5001/api/posts";
         private const string NoteApi = "http://localhost:5001/api/favorite/note";
         private const string FavoriteApi = "http://localhost:5001/api/favorite";
+        //JOEY
+        private const string CocrcorruingwordsApi = "http://localhost:5001/api/cocrcorruingwords";
 
 
         // Create tests of Notes
@@ -298,5 +300,28 @@ namespace SOVATestSuite
             var response = client.DeleteAsync(url).Result;
             return response.StatusCode;
         }
+        //JOEY
+
+        [Fact]
+        public void CoOrcooruingApi_GetCoOrcorruingWord_OkAndCoOrcooruingObject()
+        {
+            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/layout");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+
+            CoOrcorruingWordListModel coOrcorruingWordListModel = JsonConvert.DeserializeObject<CoOrcorruingWordListModel>(data);
+
+            Assert.Equal("tabular", coOrcorruingWordListModel.co_term);
+            Assert.Equal(4, coOrcorruingWordListModel.score);
+        }
+
+        [Fact]
+        public void CoOrcooruingApi_GetCoOrcorruingWordInvalidTerm_NotFound()
+        {
+            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/");
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
+
+        }
+
     }
 }

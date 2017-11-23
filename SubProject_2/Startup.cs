@@ -67,6 +67,8 @@ namespace SubProject_2
                     .ReverseMap();
                 cfg.CreateMap<RelatedWordList, RelatedWordListModel>()
                     .ReverseMap();
+                cfg.CreateMap<CoOrcorruingWordList, CoOrcorruingWordListModel>()
+                    .ReverseMap();
             });
 
             return config.CreateMapper();

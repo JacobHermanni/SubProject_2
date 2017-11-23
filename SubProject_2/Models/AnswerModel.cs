@@ -12,5 +12,7 @@ namespace WebService.Models
         public int post_id { get; set; }
 
         public int parent_Id { get; set; }
+
+        public string parentUrl { get; set; }
     }
 }

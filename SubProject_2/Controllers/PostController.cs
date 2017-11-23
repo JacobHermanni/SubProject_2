@@ -62,17 +62,19 @@ namespace WebService
 
             var model = _mapper.Map<PostModel>(post);
             model.Url = Url.Link(nameof(GetPost), new { id = post.post_id });
+            if(model.answer != null) model.answer.parentUrl = Url.Link(nameof(GetPost), new { id = model.answer.parent_Id });
 
             // Adding self-referencing urls to posts in the case of the returned post being a question.
             if (model.question != null)
             {
-                foreach (var answer in model.question.Answers)
+                foreach (var answerPost in model.question.Answers)
                 {
-                    answer.Url = Url.Link(nameof(GetPost), new { id = answer.post_id });
+                    answerPost.Url = Url.Link(nameof(GetPost), new { id = answerPost.post_id });
+                    answerPost.answer.parentUrl = Url.Link(nameof(GetPost), new { id = answerPost.answer.parent_Id });
                 }
                 
                 // Adding self-referencing urls to users in posts and comments.
-                InsertUserUrls(model);
+                model = InsertUserUrls(model);
             }
 
             return Ok(model);
@@ -81,6 +83,8 @@ namespace WebService
         [HttpGet("search/{searchstring}", Name = nameof(GetWeightedPostsByString))]
         public IActionResult GetWeightedPostsByString(string searchstring, int page = 0, int pageSize = 25)
         {
+            if (string.IsNullOrEmpty(searchstring)) return BadRequest();
+
             CheckPageSize(ref pageSize);
 
             var data = _dataService.GetWeightedPostsByString(searchstring, page, pageSize)
@@ -156,23 +160,25 @@ namespace WebService
             var userCtrl = new UserController(_dataService, _mapper);
 
             // Set post user link.
-            model.user.Url = Url.Link(nameof(userCtrl.GetUser), new {id = model.user_id});
+            model.userUrl = Url.Link(nameof(userCtrl.GetUser), new {id = model.user_id});
 
-            // Set post comments users links.
+            // Set post comments users links and comments post links
             foreach (var modelComment in model.Comments)
             {
-                modelComment.user.Url = Url.Link(nameof(userCtrl.GetUser), new { id = modelComment.user_id });
+                modelComment.userUrl = Url.Link(nameof(userCtrl.GetUser), new { id = modelComment.user_id });
+                modelComment.postUrl = Url.Link(nameof(GetPost), new { id = modelComment.post_id });
             }
 
             // Set answers user links.
             foreach (var answer in model.question.Answers)
             {
-                answer.user.Url = Url.Link(nameof(userCtrl.GetUser), new { id = answer.user_id });
+                answer.userUrl = Url.Link(nameof(userCtrl.GetUser), new { id = answer.user_id });
 
-                // Set comments users links.
+                // Set comments users links and comments post links
                 foreach (var answerComment in answer.Comments)
                 {
-                    answerComment.user.Url = Url.Link(nameof(userCtrl.GetUser), new { id = answerComment.user_id });
+                    answerComment.userUrl = Url.Link(nameof(userCtrl.GetUser), new { id = answerComment.user_id });
+                    answerComment.postUrl = Url.Link(nameof(GetPost), new { id = answerComment.post_id });
                 }
             }
 

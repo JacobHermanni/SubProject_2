@@ -46,7 +46,7 @@ namespace SOVATestSuite
 
             var createdNote2 = service.CreateNote(createdNote1.favorite_id, exampleBody);
 
-            Assert.Equal(createdNote2, null);
+            Assert.Null(createdNote2);
 
             // Cleanup from creating favorite
             service.DeleteFavorite(createdNote1.favorite_id);
@@ -156,8 +156,7 @@ namespace SOVATestSuite
             var service = new DataService();
             var post = service.GetPost(19);
             Assert.Equal(13, post.user_id);
-            Assert.Equal(35, post.user.user_age);
-            Assert.Equal("Chris Jester-Young", post.user.user_display_name);
+            Assert.Equal("Chris Jester-Young", post.user_display_name);
             Assert.True(post.question.Answers.Count > 0); // We know that post 19 is a question post with mutliple answers.
         }
 

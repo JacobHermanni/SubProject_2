@@ -21,6 +21,6 @@ namespace WebService.Models
 
         public List<ResultModel> posts { get; set; }
 
-        //public List<ResultModel> comments { get; set; }
+        public List<CommentModel> comments { get; set; }
     }
 }

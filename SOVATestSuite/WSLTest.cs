@@ -232,8 +232,7 @@ namespace SOVATestSuite
 
 
             Assert.Equal(13, postModel.user_id);
-            Assert.Equal(35, postModel.user.user_age);
-            Assert.Equal("Chris Jester-Young", postModel.user.user_display_name);
+            Assert.Equal("Chris Jester-Young", postModel.user_display_name);
             Assert.True(postModel.question.Answers.Count > 0); // We know that post 19 is a question post with mutliple answers.
             Assert.Equal(PostsApi + "/19", postModel.Url);
         }

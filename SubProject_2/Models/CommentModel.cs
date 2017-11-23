@@ -15,10 +15,14 @@ namespace WebService.Models
 
         public string comment_text { get; set; }
 
-        public UserModel user { get; set; }
+        public string user_display_name { get; set; }
 
         public int user_id { get; set; }
 
+        public string userUrl { get; set; }
+
         public int post_id { get; set; }
+
+        public string postUrl { get; set; }
     }
 }

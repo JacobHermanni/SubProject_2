@@ -20,13 +20,14 @@ namespace DAL
 
         public int user_id { get; set; }
 
-        public User user
+        [NotMapped]
+        public string user_display_name
         {
             get
             {
                 using (var db = new SOVAContext())
                 {
-                    return db.User.Find(user_id);
+                    return db.User.Find(user_id).user_display_name;
                 }
             }
             set { }
@@ -41,7 +42,7 @@ namespace DAL
                 using (var db = new SOVAContext())
                 {
                     var getQuestions = db.Question.Where(q => q.post_id == post_id);
-                    if (getQuestions.Count() == 0) return null;
+                    if (!getQuestions.Any()) return null;
 
                     return getQuestions.First();
                 }
@@ -56,7 +57,7 @@ namespace DAL
                 using (var db = new SOVAContext())
                 {
                     var getAnswers = db.Answer.Where(a => a.post_id == post_id);
-                    if (getAnswers.Count() == 0) return null;
+                    if (!getAnswers.Any()) return null;
 
                     return getAnswers.First();
                 }
@@ -74,7 +75,7 @@ namespace DAL
                         .OrderBy(x => x.comment_creation_date)
                         .ToList();
 
-                    if (getComments.Count() == 0) return null;
+                    if (!getComments.Any()) return null;
 
                     return getComments;
                 }

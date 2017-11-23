@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace DAL.Models
@@ -16,13 +17,14 @@ namespace DAL.Models
 
         public string comment_text { get; set; }
 
-        public User user
+        [NotMapped]
+        public string user_display_name
         {
             get
             {
                 using (var db = new SOVAContext())
                 {
-                    return db.User.Find(user_id);
+                    return db.User.Find(user_id).user_display_name;
                 }
             }
             set { }

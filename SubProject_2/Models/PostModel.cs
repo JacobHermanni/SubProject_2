@@ -21,7 +21,9 @@ namespace WebService.Models
 
         public int user_id { get; set; }
 
-        public UserModel user { get; set; }
+        public string user_display_name { get; set; }
+
+        public string userUrl { get; set; }
 
         public int post_type_id { get; set; }
 

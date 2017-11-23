@@ -80,6 +80,15 @@ namespace WebService.Controllers
                 }
             }
 
+            // Add post-referencing urls to comments.
+            if (model.comments != null)
+            {
+                foreach (var commentModel in model.comments)
+                {
+                    commentModel.postUrl = Url.Link(nameof(postCtrl.GetPost), new { id = commentModel.post_id });
+                }
+            }
+
             return Ok(model);
         }
     }

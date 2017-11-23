@@ -25,14 +25,15 @@ namespace WebService
         [HttpGet("{word}", Name = nameof(GetCoOrcorruingWord))]
         public IActionResult GetCoOrcorruingWord(string word)
         {
-        var data = _dataService.GetCoOrcorruingWord (word)
-                   .Select(x => new CoOrcorruingWordListModel()
+            var data = _dataService.GetCoOrcorruingWord(word);
+            if (data == null) return NotFound();
+            var datamodel = data.Select(x => new CoOrcorruingWordListModel()
+                           
                {
                 co_term = x.co_term,
                 score = x.score
             }).ToList();
 
-            if (data == null) return NotFound();
             return Ok(data);
         }
         

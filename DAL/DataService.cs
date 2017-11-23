@@ -265,10 +265,17 @@ namespace DAL
 
             using (var db = new SOVAContext())
             {
-                return db.RelatedWordList.FromSql("call findRelatedWords_tf_idf({0})", word)
+                var relatedword = db.RelatedWordList.FromSql("call findRelatedWords_tf_idf({0})", word)
                     .ToList();
+
+                if (! relatedword.Any())
+                {
+                    return null;
+                }
+                return relatedword;
             }
         }
+
         public List<CoOrcorruingWordList> GetCoOrcorruingWord (string word){
 
             using (var db = new SOVAContext())

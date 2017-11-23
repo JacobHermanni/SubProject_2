@@ -25,9 +25,11 @@ namespace WebService
         [HttpGet("{word}", Name = nameof(GetRelatedWords))]
         public IActionResult GetRelatedWords(string word)
         {
-            
-            var data = _dataService.GetRelatedWords(word)
-                .Select(x => new RelatedWordListModel()
+
+            var data = _dataService.GetRelatedWords(word);
+            if (data == null) return NotFound();
+            var datamodel = data.Select(x => new RelatedWordListModel()
+                
                 {
                 term = x.term,
                 rank = x.rank

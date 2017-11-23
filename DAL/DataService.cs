@@ -46,12 +46,33 @@ namespace DAL
             }
         }
 
+        public int GetNumberOfWeightedSearchresults()
+        {
+            using (var db = new SOVAContext())
+            {
+                return db.Weighted_Result.Count();
+            }
+        }
+
         public List<Result> GetPostsByString(string searchString, int page, int pageSize)
         {
             using (var db = new SOVAContext())
             {
                 return db.SearchList.FromSql("call search_pass({0})", searchString)
                     .OrderByDescending(x => x.score)
+                    .Skip(page * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+            }
+        }
+
+        public List<WeightedResult> GetWeightedPostsByString(string searchString, int page, int pageSize)
+        {
+            if (string.IsNullOrEmpty(searchString)) return null;
+            using (var db = new SOVAContext())
+            {
+                return db.Weighted_Result.FromSql("call weightedSearch({0})", searchString)
+                    .OrderByDescending(x => x.rank)
                     .Skip(page * pageSize)
                     .Take(pageSize)
                     .ToList();

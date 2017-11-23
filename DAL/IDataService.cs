@@ -15,6 +15,9 @@ namespace DAL
         List<Result> GetPostsByString(string search, int page, int pageSize);
 
         int GetNumberOfSearchresults();
+        List<WeightedResult> GetWeightedPostsByString(string search, int page, int pageSize);
+
+        int GetNumberOfWeightedSearchresults();
 
         List<History> GetHistory(int page, int pageSize);
 

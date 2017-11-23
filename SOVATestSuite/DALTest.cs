@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Xunit;
 using DAL;
 
@@ -160,6 +161,50 @@ namespace SOVATestSuite
             Assert.True(post.question.Answers.Count > 0); // We know that post 19 is a question post with mutliple answers.
         }
 
+        // Search procedure tests
+
+        [Fact]
+        public void GetWeightedSearchResult_ReturnsWeightedResult()
+        {
+            var service = new DataService();
+            var weightedResults = service.GetWeightedPostsByString("java", 0, 200);
+
+            // Asserting af few things we know from the procedure call in mysql
+            Assert.Equal(200, weightedResults.Count);
+            Assert.Equal(72739, weightedResults.First().post_id);
+
+            // Ranking should be descending. Therefore first item should have highest rank
+            Assert.True(weightedResults.Max(x => x.rank) == weightedResults.First().rank);
+
+            // We know that the first result is an answer post, so it has a parent_id
+            Assert.NotNull(weightedResults.First().parent_id);
+        }
+
+        [Fact]
+        public void GetWeightedSearchResult_NonsenseSearchString_ReturnsEmptyList()
+        {
+            var service = new DataService();
+            var weightedResults = service.GetWeightedPostsByString("nonsensenonsense", 0, 200);
+
+            // Asserting this nonsense search should not return any result. It has been checked in database to be so.
+            Assert.Empty(weightedResults);
+        }
+
+        [Fact]
+        public void GetWeightedSearchResult_InvalidSearchString_ReturnsNull()
+        {
+            var service = new DataService();
+            var weightedResults = service.GetWeightedPostsByString("", 0, 200);
+
+            // Asserting searching with empty argument returns null
+            Assert.Null(weightedResults);
+
+            weightedResults = service.GetWeightedPostsByString(null, 0, 200);
+
+            // Asserting searching with null argument returns null
+            Assert.Null(weightedResults);
+
+        }
     }
 }
 

@@ -30,6 +30,8 @@ namespace DAL
 
         public DbSet<Favorite> Favorite { get; set; }
 
+        public DbSet<WeightedResult> Weighted_Result { get; set; }
+
         public DbSet<FavoriteList> FavoriteList { get; set; }
        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

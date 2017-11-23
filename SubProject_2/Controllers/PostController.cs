@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using DAL;
 using DAL.Models;
+using WebService.Controllers;
 using WebService.Models;
 
 namespace WebService
@@ -62,20 +63,63 @@ namespace WebService
             var model = _mapper.Map<PostModel>(post);
             model.Url = Url.Link(nameof(GetPost), new { id = post.post_id });
 
-            // TODO: self-reference users.
-            // Add self-referencing urls to posts in the case of the returned post being a question.
+            // Adding self-referencing urls to posts in the case of the returned post being a question.
             if (model.question != null)
             {
                 foreach (var answer in model.question.Answers)
                 {
                     answer.Url = Url.Link(nameof(GetPost), new { id = answer.post_id });
                 }
+                
+                // Adding self-referencing urls to users in posts and comments.
+                InsertUserUrls(model);
             }
 
             return Ok(model);
         }
 
-        [HttpGet("search/{searchstring}", Name = nameof(GetPostsByString))]
+        [HttpGet("search/{searchstring}", Name = nameof(GetWeightedPostsByString))]
+        public IActionResult GetWeightedPostsByString(string searchstring, int page = 0, int pageSize = 25)
+        {
+            CheckPageSize(ref pageSize);
+
+            var data = _dataService.GetWeightedPostsByString(searchstring, page, pageSize)
+                .Select(x => new WeightedResultModel()
+                {
+                    body = x.body,
+                    score = x.score,
+                    url = Url.Link(nameof(GetPost), new { id = x.post_id }),
+                    post_id = x.post_id,
+                    parent_id = x.parent_id
+                }).ToList();
+
+            if (!data.Any()) return NotFound();
+
+           // Set answer posts urls to reference to parent post
+            foreach (var model in data)
+            {
+                if (model.parent_id != null) model.url = Url.Link(nameof(GetPost), new {id = model.parent_id});
+            }
+
+            var total = _dataService.GetNumberOfWeightedSearchresults();
+            var totalPages = GetTotalPages(pageSize, total);
+
+            var result = new
+            {
+                Total = total,
+                Pages = totalPages,
+                Page = page,
+                Prev = Link(nameof(GetWeightedPostsByString), page, pageSize, -1, () => page > 0),
+                Next = Link(nameof(GetWeightedPostsByString), page, pageSize, 1, () => page < totalPages - 1),
+                Url = Link(nameof(GetWeightedPostsByString), page, pageSize),
+                Data = data
+            };
+
+            return Ok(result);
+        }
+
+        // Obsolete
+        //[HttpGet("search/{searchstring}", Name = nameof(GetPostsByString))]
         public IActionResult GetPostsByString(string searchstring, int page = 0, int pageSize = 25)
         {
             CheckPageSize(ref pageSize);
@@ -105,6 +149,34 @@ namespace WebService
             };
 
             return Ok(result);
+        }
+
+        private PostModel InsertUserUrls(PostModel model)
+        {
+            var userCtrl = new UserController(_dataService, _mapper);
+
+            // Set post user link.
+            model.user.Url = Url.Link(nameof(userCtrl.GetUser), new {id = model.user_id});
+
+            // Set post comments users links.
+            foreach (var modelComment in model.Comments)
+            {
+                modelComment.user.Url = Url.Link(nameof(userCtrl.GetUser), new { id = modelComment.user_id });
+            }
+
+            // Set answers user links.
+            foreach (var answer in model.question.Answers)
+            {
+                answer.user.Url = Url.Link(nameof(userCtrl.GetUser), new { id = answer.user_id });
+
+                // Set comments users links.
+                foreach (var answerComment in answer.Comments)
+                {
+                    answerComment.user.Url = Url.Link(nameof(userCtrl.GetUser), new { id = answerComment.user_id });
+                }
+            }
+
+            return model;
         }
     }
 }

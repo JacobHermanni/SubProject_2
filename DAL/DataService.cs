@@ -260,6 +260,24 @@ namespace DAL
                 return db.User.Find(id);
             }
         }
+
+        public List<RelatedWordList> GetRelatedWords (string word){
+
+            using (var db = new SOVAContext())
+            {
+                return db.RelatedWordList.FromSql("call findRelatedWords_tf_idf({0})", word)
+                    .ToList();
+            }
+        }
+        public List<CoOrcorruingWordList> GetCoOrcorruingWord (string word){
+
+            using (var db = new SOVAContext())
+            {
+                return db.CoOrcorruingWordList.FromSql("call findCoOrcorruingWords({0})", word)
+                    .ToList();
+            }
+        }
+
     }
 }
 

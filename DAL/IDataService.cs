@@ -44,5 +44,10 @@ namespace DAL
         int GetNumberOfUsers();
 
         User GetUser(int id);
+
+        List<RelatedWordList> GetRelatedWords(string word);
+
+        List<CoOrcorruingWordList> GetCoOrcorruingWord(string word);
+
     }
 }

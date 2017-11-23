@@ -33,6 +33,11 @@ namespace DAL
         public DbSet<WeightedResult> Weighted_Result { get; set; }
 
         public DbSet<FavoriteList> FavoriteList { get; set; }
+
+        public DbSet<RelatedWordList> RelatedWordList { get; set; }
+
+        public DbSet<CoOrcorruingWordList> CoOrcorruingWordList { get; set; }
+
        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -42,7 +47,7 @@ namespace DAL
                 "server=localhost;" +
                 "database=SOVA;" +
                 "uid=root;" +
-                "pwd=root;"
+                "pwd=Arsenal05;"
             );
         }
     }

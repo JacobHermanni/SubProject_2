@@ -36,6 +36,12 @@ namespace WebService
 
             return Ok(datamodel);
         }
+
+        [HttpGet]
+        public IActionResult GetCoOrcorruingWordBadRequest()
+        {
+            return BadRequest();
+        }
         
     }
 }

@@ -37,5 +37,10 @@ namespace WebService
 
             return Ok(data);
         }
+        [HttpGet]
+        public IActionResult GetRelatedWordsBadRequest()
+        {
+            return BadRequest();
+        }
     }
 }

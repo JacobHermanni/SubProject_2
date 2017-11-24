@@ -19,6 +19,7 @@ namespace SOVATestSuite
         private const string FavoriteApi = "http://localhost:5001/api/favorite";
         //JOEY
         private const string CocrcorruingwordsApi = "http://localhost:5001/api/cocrcorruingwords";
+        private const string RelatedWordApi = "http://localhost:5001/api/relatedwords";
 
 
         // Create tests of Notes
@@ -300,7 +301,7 @@ namespace SOVATestSuite
             var response = client.DeleteAsync(url).Result;
             return response.StatusCode;
         }
-        //JOEY
+        //JOEY CoOrcooruingApi
 
         [Fact]
         public void CoOrcooruingApi_GetCoOrcorruingWord_OkAndCoOrcooruingObject()
@@ -316,10 +317,46 @@ namespace SOVATestSuite
         }
 
         [Fact]
+        public void CoOrcooruingApi_GetCoOrcorruingWordInvalidTerm_BadRequest()
+        {
+            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/");
+            Assert.Equal(HttpStatusCode.BadRequest, statusCode);
+
+        }
+
+        [Fact]
         public void CoOrcooruingApi_GetCoOrcorruingWordInvalidTerm_NotFound()
         {
             var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/4");
-            Assert.Equal(HttpStatusCode.NotFound, statusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, statusCode);
+
+        }
+        //JOEY 
+        [Fact]
+        public void RelatedWordApi_GetRelatedWords_OkAndCoOrcooruingObject()
+        {
+            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/sql");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+
+            var jArray = (JArray)JsonConvert.DeserializeObject(data);
+
+            Assert.Equal("SQL", jArray.First()["term"]);
+            Assert.Equal(0.02793, jArray.First()["rank"]);
+        }
+
+        [Fact]
+        public void RelatedWordApi_GetRelatedWordsInvalidTerm_BadRequest()
+        {
+            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/");
+            Assert.Equal(HttpStatusCode.BadRequest, statusCode);
+
+        }
+        [Fact]
+        public void RelatedWordApi_GetRelatedWordsInvalidTerm_NotFound()
+        {
+            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/4");
+            Assert.Equal(HttpStatusCode.BadRequest, statusCode);
 
         }
 

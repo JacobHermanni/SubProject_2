@@ -47,7 +47,7 @@ namespace DAL
                 "server=localhost;" +
                 "database=SOVA;" +
                 "uid=root;" +
-                "pwd=Arsenal05;"
+                "pwd=root;"
             );
         }
     }

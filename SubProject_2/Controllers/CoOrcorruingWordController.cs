@@ -34,7 +34,7 @@ namespace WebService
                 score = x.score
             }).ToList();
 
-            return Ok(data);
+            return Ok(datamodel);
         }
         
     }

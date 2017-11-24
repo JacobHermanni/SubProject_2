@@ -309,16 +309,16 @@ namespace SOVATestSuite
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
 
-            CoOrcorruingWordListModel coOrcorruingWordListModel = JsonConvert.DeserializeObject<CoOrcorruingWordListModel>(data);
+            var jArray = (JArray) JsonConvert.DeserializeObject(data);
 
-            Assert.Equal("tabular", coOrcorruingWordListModel.co_term);
-            Assert.Equal(4, coOrcorruingWordListModel.score);
+            Assert.Equal("tabular", jArray.First()["co_term"]);
+            Assert.Equal(2, jArray.First()["score"]);
         }
 
         [Fact]
         public void CoOrcooruingApi_GetCoOrcorruingWordInvalidTerm_NotFound()
         {
-            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/");
+            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/4");
             Assert.Equal(HttpStatusCode.NotFound, statusCode);
 
         }

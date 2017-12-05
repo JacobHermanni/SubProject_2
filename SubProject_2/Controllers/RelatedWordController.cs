@@ -35,7 +35,7 @@ namespace WebService
                 rank = x.rank
                 });
 
-            return Ok(data);
+            return Ok(datamodel);
         }
         [HttpGet]
         public IActionResult GetRelatedWordsBadRequest()

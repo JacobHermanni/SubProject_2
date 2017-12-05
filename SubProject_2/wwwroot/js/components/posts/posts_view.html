@@ -1,0 +1,11 @@
+﻿<h1>All Posts</h1>
+
+<button data-bind="click: search">Search for posts</button>
+<ul data-bind="foreach: posts">
+    <li>
+        <a href="#" data-bind="text: $data.title, click: $parent.getPost"></a>
+        <!--<button data-bind="click: getPost">Read post</button>-->
+    </li>
+</ul>
+<button data-bind="click: prevPage, enable: displayPrev">Prev</button>
+<button data-bind="click: nextPage, enable: displayNext">Next</button>

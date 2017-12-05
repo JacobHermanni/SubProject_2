@@ -1,0 +1,13 @@
+﻿<h1>Single Post</h1>
+<button data-bind="click: back">back</button>
+<h2 data-bind="text: postTitle"></h2>
+<h3 data-bind="text: creationDate"></h3>
+<b data-bind="text: score"></b>
+<div data-bind="html: body"></div>
+<ul data-bind="foreach: answers">
+    <li>
+        <p data-bind="text: $data.creationDate"></p>
+        <div data-bind="html: $data.body"></div>
+        <p data-bind="text: $data.score"></p>
+    </li>
+</ul>

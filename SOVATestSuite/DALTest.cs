@@ -169,7 +169,7 @@ namespace SOVATestSuite
             var weightedResults = service.GetWeightedPostsByString("java", 0, 200);
 
             // Asserting af few things we know from the procedure call in mysql
-            Assert.Equal(200, weightedResults.Count);
+            Assert.Equal(123, weightedResults.Count);
             Assert.Equal(72739, weightedResults.First().post_id);
 
             // Ranking should be descending. Therefore first item should have highest rank

@@ -71,9 +71,9 @@ namespace SOVATestSuite
             NoteModel createdNote = JsonConvert.DeserializeObject<NoteModel>(note);
 
             // Create note with same favorite_id as created note above
-            
+
             var (note2, StatusCode2) = PostData($"{NoteApi}", data);
-            
+
             Assert.True(string.IsNullOrEmpty(note2));
 
             Assert.Equal(HttpStatusCode.Conflict, StatusCode2);
@@ -240,13 +240,15 @@ namespace SOVATestSuite
             Assert.Equal(PostsApi + "/19", postModel.Url);
         }
 
+        // Obsolete
+        /*
         [Fact]
         public void PostApi_GetSearchResultFromString_OkAndResultListObject()
         {
             // Search for java
             var (result, StatusCode) = GetObject($"{PostsApi}" + "/search/java");
 
-            var jObject = (JObject) JsonConvert.DeserializeObject(result);
+            var jObject = (JObject)JsonConvert.DeserializeObject(result);
 
             var resultModel = jObject["data"].ToObject<List<ResultModel>>();
 
@@ -259,7 +261,67 @@ namespace SOVATestSuite
             // Url for 388242 should be http://localhost:5001/api/posts/388242
             Assert.Equal("http://localhost:5001/api/posts/388242", resultModel.First().Url);
         }
+        */
 
+        // CoOrcooruingApi tests
+
+        [Fact]
+        public void CoOrcooruingApi_GetCoOrcorruingWord_OkAndCoOrcooruingObject()
+        {
+            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/layout");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+
+            var jArray = (JArray)JsonConvert.DeserializeObject(data);
+
+            Assert.Equal("tabular", jArray.First()["co_term"]);
+            Assert.Equal(2, jArray.First()["score"]);
+        }
+
+        [Fact]
+        public void CoOrcooruingApi_GetCoOrcorruingWordInvalidTerm_BadRequest()
+        {
+            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/");
+            Assert.Equal(HttpStatusCode.BadRequest, statusCode);
+
+        }
+
+        [Fact]
+        public void CoOrcooruingApi_GetCoOrcorruingWordInvalidTerm_NotFound()
+        {
+            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/4");
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
+
+        }
+
+        // Related words tests
+        [Fact]
+        public void RelatedWordApi_GetRelatedWords_OkAndtRelatedWordsObject()
+        {
+            var (data, statusCode) = GetObject($"{RelatedWordApi}/sql");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+
+            var jArray = (JArray)JsonConvert.DeserializeObject(data);
+
+            Assert.Equal("SQL", jArray.First()["term"]);
+            Assert.Equal(0.01935, jArray.First()["rank"]);
+        }
+
+        [Fact]
+        public void RelatedWordApi_GetRelatedWordsInvalidTerm_BadRequest()
+        {
+            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/");
+            Assert.Equal(HttpStatusCode.BadRequest, statusCode);
+
+        }
+        [Fact]
+        public void RelatedWordApi_GetRelatedWordsInvalidTerm_NotFound()
+        {
+            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/4");
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
+
+        }
 
         // Helpers
 
@@ -301,64 +363,5 @@ namespace SOVATestSuite
             var response = client.DeleteAsync(url).Result;
             return response.StatusCode;
         }
-        //JOEY CoOrcooruingApi
-
-        [Fact]
-        public void CoOrcooruingApi_GetCoOrcorruingWord_OkAndCoOrcooruingObject()
-        {
-            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/layout");
-
-            Assert.Equal(HttpStatusCode.OK, statusCode);
-
-            var jArray = (JArray) JsonConvert.DeserializeObject(data);
-
-            Assert.Equal("tabular", jArray.First()["co_term"]);
-            Assert.Equal(2, jArray.First()["score"]);
-        }
-
-        [Fact]
-        public void CoOrcooruingApi_GetCoOrcorruingWordInvalidTerm_BadRequest()
-        {
-            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/");
-            Assert.Equal(HttpStatusCode.BadRequest, statusCode);
-
-        }
-
-        [Fact]
-        public void CoOrcooruingApi_GetCoOrcorruingWordInvalidTerm_NotFound()
-        {
-            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/4");
-            Assert.Equal(HttpStatusCode.BadRequest, statusCode);
-
-        }
-        //JOEY 
-        [Fact]
-        public void RelatedWordApi_GetRelatedWords_OkAndCoOrcooruingObject()
-        {
-            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/sql");
-
-            Assert.Equal(HttpStatusCode.OK, statusCode);
-
-            var jArray = (JArray)JsonConvert.DeserializeObject(data);
-
-            Assert.Equal("SQL", jArray.First()["term"]);
-            Assert.Equal(0.02793, jArray.First()["rank"]);
-        }
-
-        [Fact]
-        public void RelatedWordApi_GetRelatedWordsInvalidTerm_BadRequest()
-        {
-            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/");
-            Assert.Equal(HttpStatusCode.BadRequest, statusCode);
-
-        }
-        [Fact]
-        public void RelatedWordApi_GetRelatedWordsInvalidTerm_NotFound()
-        {
-            var (data, statusCode) = GetObject($"{CocrcorruingwordsApi}/4");
-            Assert.Equal(HttpStatusCode.BadRequest, statusCode);
-
-        }
-
     }
 }

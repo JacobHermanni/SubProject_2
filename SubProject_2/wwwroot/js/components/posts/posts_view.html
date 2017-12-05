@@ -2,8 +2,8 @@
 
 <button data-bind="click: search">Search for posts</button>
 <ul data-bind="foreach: posts">
-    <li>
-        <a href="#" data-bind="text: $data.title, click: $parent.getPost"></a>
+    <li style="margin-bottom: 2em;">
+        <a href="#" data-bind="html: $data.body, click: $parent.getPost"></a>
         <!--<button data-bind="click: getPost">Read post</button>-->
     </li>
 </ul>

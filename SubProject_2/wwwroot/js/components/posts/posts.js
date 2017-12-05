@@ -18,10 +18,10 @@
         // ------------ Search Function: ------------ //
         var search = function () {
 
-            fetchData(window.location + "api/posts", data => {
+            fetchData(window.location + "api/posts/search/java", data => {
                 posts.removeAll();
-                for (i = 0; i < data.items.length; i++) {
-                    posts.push(data.items[i]);
+                for (i = 0; i < data.data.length; i++) {
+                    posts.push(data.data[i]);
                 }
                 next = data.next;
                 prev = data.prev;
@@ -39,8 +39,8 @@
             console.log("pressed next");
             fetchData(next, data => {
                 posts.removeAll();
-                for (i = 0; i < data.items.length; i++) {
-                    posts.push(data.items[i]);
+                for (i = 0; i < data.data.length; i++) {
+                    posts.push(data.data[i]);
                 }
                 next = data.next;
                 prev = data.prev;
@@ -52,8 +52,8 @@
             console.log("pressed prev");
             fetchData(prev, data => {
                 posts.removeAll();
-                for (i = 0; i < data.items.length; i++) {
-                    posts.push(data.items[i]);
+                for (i = 0; i < data.data.length; i++) {
+                    posts.push(data.data[i]);
                 }
                 next = data.next;
                 prev = data.prev;
@@ -71,8 +71,8 @@
         console.log(params);
         if (params != null) {
             posts.removeAll();
-            for (i = 0; i < params.items.length; i++) {
-                posts.push(params.items[i]);
+            for (i = 0; i < params.data.length; i++) {
+                posts.push(params.data[i]);
             }
             next = params.next;
             prev = params.prev;

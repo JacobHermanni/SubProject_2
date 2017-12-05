@@ -19,7 +19,9 @@
         var answers = ko.observableArray([]);
 
         var getQuestion = function (url) {
+            console.log("url:", url);
             fetchData(url, data => {
+                console.log("enkelt post:", data);
                 postTitle(data.title);
                 creationDate(data.creationDate);
                 score(data.score);
@@ -28,7 +30,7 @@
             })
         }
 
-        getQuestion(params.link);
+        getQuestion(params.url);
 
         var getAnswers = function (url) {
             //console.log("Answers", url);

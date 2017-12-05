@@ -40,6 +40,8 @@ namespace SubProject_2
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseFileServer();
+
             app.UseMvc();
         }
 

@@ -34,7 +34,14 @@ namespace DAL
         {
             using (var db = new SOVAContext())
             {
-                return db.Post.Find(id);
+                var post = db.Post.Find(id);
+
+                if (post.question == null)
+                {
+                    post = db.Post.Find(post.answer.parent_Id);
+                }
+
+                return post;
             }
         }
 
@@ -71,11 +78,19 @@ namespace DAL
             if (string.IsNullOrEmpty(searchString)) return null;
             using (var db = new SOVAContext())
             {
-                return db.Weighted_Result.FromSql("call weightedSearch({0})", searchString)
-                    .OrderByDescending(x => x.rank)
+                var results = db.Weighted_Result.FromSql("call weightedSearch({0})", searchString)
+                    .OrderByDescending(x => x.score)
                     .Skip(page * pageSize)
                     .Take(pageSize)
                     .ToList();
+
+                // Fetch title from question even if post is an answer
+                foreach (var result in results)
+                {
+                    result.title = GetPost(result.post_id).question.title;
+                }
+
+                return results;
             }
         }
 

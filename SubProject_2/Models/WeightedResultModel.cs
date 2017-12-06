@@ -18,5 +18,7 @@ namespace WebService.Models
         public decimal rank { get; set; }
 
         public int? parent_id { get; set; }
+
+        public string title { get; set; }
     }
 }

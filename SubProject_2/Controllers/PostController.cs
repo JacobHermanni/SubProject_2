@@ -94,7 +94,9 @@ namespace WebService
                     score = x.score,
                     url = Url.Link(nameof(GetPost), new { id = x.post_id }),
                     post_id = x.post_id,
-                    parent_id = x.parent_id
+                    parent_id = x.parent_id,
+                    title = x.title
+                    
                 }).ToList();
 
             if (!data.Any()) return NotFound();

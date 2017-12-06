@@ -9,6 +9,8 @@
     <Folder Include="wwwroot\js\components\posts\" />
     <Folder Include="wwwroot\js\lib\" />
     <Folder Include="wwwroot\js\services\" />
+    <Folder Include="wwwroot\js\components\frontPage\" />
+    <Folder Include="wwwroot\js\components\navBarSearch\" />
   </ItemGroup>
 
   <ItemGroup>

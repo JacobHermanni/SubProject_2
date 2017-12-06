@@ -25,6 +25,16 @@ require(['knockout'], function (ko) {
         template: { require: "text!components/singlePost/single-post_view.html" }
     });
 
+    ko.components.register("front-page", {
+        viewModel: { require: "components/frontPage/front-page" },
+        template: { require: "text!components/frontPage/front-page_view.html" }
+    });
+
+    ko.components.register("nav-bar-search", {
+        viewModel: { require: "components/navBarSearch/nav-bar-search" },
+        template: { require: "text!components/navBarSearch/nav-bar-search_view.html" }
+    });
+
 });
 
 
@@ -33,7 +43,8 @@ require(["knockout", "jQuery", "broadcaster"], function (ko, jQuery, broadcaster
 
         var vm = (function () {
 
-            var currentView = ko.observable('all-posts');
+            var currentView = ko.observable('front-page');
+            var navSearch = ko.observable('nav-bar-search');
             var currentParams = ko.observable(null);
 
             var switchComponent = function () {
@@ -53,19 +64,29 @@ require(["knockout", "jQuery", "broadcaster"], function (ko, jQuery, broadcaster
 
                     // if there is no data, it means single-post is switching view to all-posts and state is relevant. Else the data is for single-post.
                     if (viewInfo.data !== undefined) {
+                        console.log("changing state info in main");
                         currentParams(viewInfo.data);
                         currentState = viewInfo.state;
                         console.log("currentState", currentState);
+                    } else if (viewInfo.fp_msg) {
+                        console.log("coming from fp_msg", viewInfo.fp_msg);
+                        currentParams({fp_msg : viewInfo.fp_msg});
+                    } else if (viewInfo.nav_msg) {
+                        console.log("coming from nav_msg", viewInfo.nav_msg);
+                        currentParams({nav_msg : viewInfo.nav_msg});
                     } else {
                         currentParams(currentState);
                     }
+
+
                 });
 
             return {
                 currentView,
                 switchComponent,
                 currentParams,
-                currentState
+                currentState,
+                navSearch
             }
 
         })();

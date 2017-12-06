@@ -3,15 +3,15 @@
 <!--<button data-bind="click: search">Search for posts</button>-->
 <p> SearchTest: </p>
 <form data-bind="submit: search">
-    <input data-bind="textInput: userSearchString, submit: test" />
+    <input data-bind="textInput: userSearchString"/>
 </form>
 
 
-<ul data-bind="foreach: posts">
-    <li style="margin-bottom: 2em;">
+<div data-bind="foreach: posts">
+    <div style="margin-bottom: 2em;">
         <a href="#" data-bind="html: $data.body, click: $parent.getPost"></a>
         <!--<button data-bind="click: getPost">Read post</button>-->
-    </li>
-</ul>
+    </div>
+</div>
 <button data-bind="click: prevPage, enable: displayPrev">Prev</button>
 <button data-bind="click: nextPage, enable: displayNext">Next</button>

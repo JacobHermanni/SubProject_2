@@ -1,6 +1,8 @@
 ﻿define(['knockout', 'broadcaster', 'dataservice'], function (ko, bc, dataservice) {
     return function (params) {
-       
+
+        console.log("fra posts:", params);
+
         var posts = ko.observableArray([]);
         var prev = ko.string;
         var next = ko.string;
@@ -23,8 +25,18 @@
             });
         }
 
-        var test = function() {
-            console.log("submitted the form");
+        var searchFromFrontPage = function (searchString) {
+            dataservice.searchedPosts(searchString, data => {
+                console.log("data fra search-func:", data);
+                posts.removeAll();
+                for (i = 0; i < data.data.length; i++) {
+                    posts.push(data.data[i]);
+                }
+                next = data.next;
+                prev = data.prev;
+                navPage();
+                currentState = data;
+            });
         }
 
         // ------------ Page Navigation: ------------ //
@@ -66,8 +78,14 @@
             bc.publish(bc.events.changeView, { name: "single-post", data: this, state: currentState });
         }
 
+        // ------------ Control state: ------------ //
         console.log("params fra posts;", params);
-        if (params != null) {
+        
+        if (params.fp_msg) {
+            searchFromFrontPage(params.fp_msg);
+        } else if (params.nav_msg) {
+            searchFromFrontPage(params.nav_msg);
+        } else if (params != null) {
             posts.removeAll();
             for (i = 0; i < params.data.length; i++) {
                 posts.push(params.data[i]);
@@ -91,7 +109,7 @@
             getPost,
             currentState,
             userSearchString,
-            test
+            searchFromFrontPage
         };
 
     }

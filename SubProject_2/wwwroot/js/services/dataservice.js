@@ -14,8 +14,8 @@
                 console.log('getJSON request failed!');
                 var furb = {
                     data: [ {body: "Ingen søgeresultater"} ],
-                    next: "null",
-                    prev: "null"
+                    next: null,
+                    prev: null
                 };
                 callback(furb);
             })

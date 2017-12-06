@@ -23,6 +23,7 @@
                 navPage();
                 currentState = data;
             });
+            bc.publish(bc.events.changeData, { search_string: userSearchString() });
         }
 
         var searchFromFrontPageOrNav = function (searchString) {
@@ -41,8 +42,8 @@
 
         // ------------ Page Navigation: ------------ //
         var navPage = function (data) {
-            next === null ? displayNext(false) : displayNext(true);
-            prev === null ? displayPrev(false) : displayPrev(true);
+            next === null || undefined ? displayNext(false) : displayNext(true);
+            prev === null || undefined ? displayPrev(false) : displayPrev(true);
         }
 
         var nextPage = function () {
@@ -81,17 +82,22 @@
         // ------------ Control state: ------------ //
         console.log("params fra posts;", params);
         
-        if (params.fp_msg) {
+        if (params.fp_msg || params.fp_msg === "")
+        {
             searchFromFrontPageOrNav(params.fp_msg);
-        } else if (params.nav_msg) {
+        } 
+        else if (params.nav_msg || params.nav_msg === "")
+        {
             searchFromFrontPageOrNav(params.nav_msg);
-        } else if (params != null) {
+        }
+        else if (params != null)
+        {
             posts.removeAll();
             for (i = 0; i < params.data.length; i++) {
                 posts.push(params.data[i]);
             }
-            next = params.next;
-            prev = params.prev;
+            next = null;
+            prev = null;
             navPage();
             currentState = params;
         }

@@ -1,24 +1,16 @@
-﻿define(['knockout', 'broadcaster'], function (ko, broadcaster) {
+﻿define(['knockout', 'broadcaster', 'dataservice'], function (ko, broadcaster, dataservice) {
     return function (params) {
-        
-        fetchData = function (url, callback) {
-            $.getJSON(url, function (data) {
-                console.log("fetched Data:", data);
-                callback(data);
-                currentState = data;
-            });
-        }
-
+       
         var posts = ko.observableArray([]);
         var prev = ko.string;
         var next = ko.string;
         var displayPrev = ko.observable(false);
         var displayNext = ko.observable(false);
+        var userSearchString = ko.observable("");
 
         // ------------ Search Function: ------------ //
         var search = function () {
-
-            fetchData(window.location + "api/posts/search/java", data => {
+            dataservice.searchedPosts(userSearchString(), data => {
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
                     posts.push(data.data[i]);
@@ -26,6 +18,7 @@
                 next = data.next;
                 prev = data.prev;
                 navPage();
+                currentState = data;
             });
         }
 
@@ -68,7 +61,7 @@
             broadcaster.publish(broadcaster.events.changeView, { name: "single-post", data: this, state: currentState });
         }
 
-        console.log(params);
+        console.log("params fra posts;", params);
         if (params != null) {
             posts.removeAll();
             for (i = 0; i < params.data.length; i++) {
@@ -91,7 +84,8 @@
             prevPage,
             navPage,
             getPost,
-            currentState
+            currentState,
+            userSearchString
         };
 
     }

@@ -4,7 +4,8 @@ require.config({
         "jQuery": "lib/jQuery/dist/jquery.min",
         "knockout": "lib/knockout/dist/knockout",
         "text": "lib/text/text",
-        "broadcaster": "services/broadcaster"
+        "broadcaster": "services/broadcaster",
+        "dataservice": "services/dataservice"
     }
 });
 
@@ -63,6 +64,7 @@ require(["knockout", "jQuery", "broadcaster"], function (ko, jQuery, broadcaster
                     if (viewInfo.data !== undefined) {
                         currentParams(viewInfo.data);
                         currentState = viewInfo.state;
+                        console.log("currentState", currentState);
                     } else {
                         currentParams(currentState);
                     }

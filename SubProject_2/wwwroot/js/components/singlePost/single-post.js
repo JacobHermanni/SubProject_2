@@ -33,7 +33,7 @@
         getQuestion(params.url);
 
         var getAnswers = function (url) {
-            //console.log("Answers", url);
+            // console.log("Answers", url);
             fetchData(url, data => {
                 //console.log("fra getANSWERS:::", data);
                 for (i = 0; i < data.length; i++) {
@@ -44,7 +44,7 @@
         }
 
         var back = function() {
-            bc.publish(bc.events.changeView, { name: "all-posts"});
+            bc.publish(bc.events.changeView, { name: "all-posts" } );
         }
 
         return {

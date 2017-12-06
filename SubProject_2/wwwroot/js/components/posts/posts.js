@@ -1,7 +1,7 @@
 ﻿define(['knockout', 'broadcaster', 'dataservice'], function (ko, bc, dataservice) {
     return function (params) {
 
-        console.log("fra posts:", params);
+        // console.log("fra posts:", params);
 
         var posts = ko.observableArray([]);
         var prev = ko.string;
@@ -13,7 +13,7 @@
         // ------------ Search Function: ------------ //
         var search = function () {
             dataservice.searchedPosts(userSearchString(), data => {
-                console.log("data fra search-func:", data);
+                // console.log("data fra search-func:", data);
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
                     posts.push(data.data[i]);
@@ -27,8 +27,9 @@
         }
 
         var searchFromFrontPageOrNav = function (searchString) {
+            userSearchString(searchString);
             dataservice.searchedPosts(searchString, data => {
-                console.log("data fra navOrFront-search-func:", data);
+                // console.log("data fra navOrFront-search-func:", data);
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
                     posts.push(data.data[i]);
@@ -80,7 +81,7 @@
         }
 
         // ------------ Control state: ------------ //
-        console.log("params fra posts;", params);
+        // console.log("params fra posts;", params);
         
         if (params.fp_msg || params.fp_msg === "")
         {

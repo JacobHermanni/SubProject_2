@@ -74,7 +74,7 @@ require(["knockout", "jQuery", "broadcaster"], function (ko, jQuery, broadcaster
 
             broadcaster.subscribe(broadcaster.events.changeView,
                 viewInfo => {
-                    console.log("viewinfo from main", viewInfo);
+                    // console.log("viewinfo from main", viewInfo);
                     currentView(viewInfo.name);
 
                     // if there is no data, it means single-post is switching view to all-posts and state is relevant. Else the data is for single-post.
@@ -82,18 +82,18 @@ require(["knockout", "jQuery", "broadcaster"], function (ko, jQuery, broadcaster
                         console.log("changing state info in main");
                         currentParams(viewInfo.data);
                         currentState = viewInfo.state;
-                        console.log("currentState", currentState);
+                        // console.log("currentState", currentState);
                     } else {
                         currentParams(currentState);
                     }
 
                     if (viewInfo.fp_msg || viewInfo.fp_msg === "") {
-                        console.log("coming from fp_msg", viewInfo.fp_msg);
+                        // console.log("coming from fp_msg", viewInfo.fp_msg);
                         currentParams({ fp_msg : viewInfo.fp_msg });
                     }
 
                     if (viewInfo.nav_msg || viewInfo.nav_msg === "") {
-                        console.log("coming from nav_msg", viewInfo.nav_msg);
+                        // console.log("coming from nav_msg", viewInfo.nav_msg);
                         currentParams({ nav_msg : viewInfo.nav_msg });
                     }
 

@@ -1,24 +1,17 @@
-﻿define(['knockout', 'broadcaster'], function (ko, broadcaster) {
+﻿define(['knockout', 'broadcaster', 'dataservice'], function (ko, bc, dataservice) {
     return function (params) {
-        
-        fetchData = function (url, callback) {
-            $.getJSON(url, function (data) {
-                console.log("fetched Data:", data);
-                callback(data);
-                currentState = data;
-            });
-        }
-
+       
         var posts = ko.observableArray([]);
         var prev = ko.string;
         var next = ko.string;
         var displayPrev = ko.observable(false);
         var displayNext = ko.observable(false);
+        var userSearchString = ko.observable("");
 
         // ------------ Search Function: ------------ //
         var search = function () {
-
-            fetchData(window.location + "api/posts/search/java", data => {
+            dataservice.searchedPosts(userSearchString(), data => {
+                console.log("data fra search-func:", data);
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
                     posts.push(data.data[i]);
@@ -26,7 +19,12 @@
                 next = data.next;
                 prev = data.prev;
                 navPage();
+                currentState = data;
             });
+        }
+
+        var test = function() {
+            console.log("submitted the form");
         }
 
         // ------------ Page Navigation: ------------ //
@@ -37,7 +35,7 @@
 
         var nextPage = function () {
             console.log("pressed next");
-            fetchData(next, data => {
+            dataservice.changePage(next, data => {
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
                     posts.push(data.data[i]);
@@ -50,7 +48,7 @@
 
         var prevPage = function () {
             console.log("pressed prev");
-            fetchData(prev, data => {
+            dataservice.changePage(prev, data => {
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
                     posts.push(data.data[i]);
@@ -65,10 +63,10 @@
 
         // ------------ Get individual post: ------------ //
         var getPost = function () {
-            broadcaster.publish(broadcaster.events.changeView, { name: "single-post", data: this, state: currentState });
+            bc.publish(bc.events.changeView, { name: "single-post", data: this, state: currentState });
         }
 
-        console.log(params);
+        console.log("params fra posts;", params);
         if (params != null) {
             posts.removeAll();
             for (i = 0; i < params.data.length; i++) {
@@ -91,7 +89,9 @@
             prevPage,
             navPage,
             getPost,
-            currentState
+            currentState,
+            userSearchString,
+            test
         };
 
     }

@@ -25,9 +25,9 @@
             });
         }
 
-        var searchFromFrontPage = function (searchString) {
+        var searchFromFrontPageOrNav = function (searchString) {
             dataservice.searchedPosts(searchString, data => {
-                console.log("data fra search-func:", data);
+                console.log("data fra navOrFront-search-func:", data);
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
                     posts.push(data.data[i]);
@@ -82,9 +82,9 @@
         console.log("params fra posts;", params);
         
         if (params.fp_msg) {
-            searchFromFrontPage(params.fp_msg);
+            searchFromFrontPageOrNav(params.fp_msg);
         } else if (params.nav_msg) {
-            searchFromFrontPage(params.nav_msg);
+            searchFromFrontPageOrNav(params.nav_msg);
         } else if (params != null) {
             posts.removeAll();
             for (i = 0; i < params.data.length; i++) {
@@ -109,7 +109,7 @@
             getPost,
             currentState,
             userSearchString,
-            searchFromFrontPage
+            searchFromFrontPageOrNav
         };
 
     }

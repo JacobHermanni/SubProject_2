@@ -1,3 +1,9 @@
 ﻿h1 {
     text-align: center;
 }
+
+.searchResults {
+    max-height: 150px;
+    overflow: hidden;
+    margin-bottom: 2em;
+}

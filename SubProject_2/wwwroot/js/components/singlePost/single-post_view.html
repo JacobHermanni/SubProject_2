@@ -1,13 +1,29 @@
-﻿<h1>Single Post</h1>
-<button data-bind="click: back">back</button>
-<h2 data-bind="text: postTitle"></h2>
-<h3 data-bind="text: creationDate"></h3>
-<b data-bind="text: score"></b>
-<div data-bind="html: body"></div>
-<ul data-bind="foreach: answers">
+﻿<h1 <b data-bind="text: postTitle"></h1>
+
+<p>Score:<b data-bind="text: score"></b></p>
+
+<p>User display name:<b data-bind="text: user_display_name"></b></p>
+
+<p>User id:<b data-bind="text:user_id"></b></p>
+
+<p>CreationDate:<b data-bind="text:creationDate"></b></p>
+
+<div data-bind="html: body"></div> <!--Body:-->
+
+
+<ul data-bind="foreach: comments">
     <li>
-        <p data-bind="text: $data.creationDate"></p>
-        <div data-bind="html: $data.body"></div>
-        <p data-bind="text: $data.score"></p>
+        <p data-bind="text: $data.comment_text"></p>
     </li>
 </ul>
+
+<ul data-bind="foreach: answers">
+     <li>
+        <p data-bind="html: $data.body"></p>
+        <p>Answers Creation date: <b data-bind="text: $data.creation_date"></b></p>
+        <p>Answers score: <b data-bind="text: $data.score"></b></p>
+     </li>
+</ul>
+
+
+<button data-bind="click: back">back</button>

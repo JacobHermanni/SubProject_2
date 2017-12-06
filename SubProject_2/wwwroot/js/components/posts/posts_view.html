@@ -7,11 +7,11 @@
 </form>
 
 
-<div data-bind="foreach: posts">
-    <div style="margin-bottom: 2em;">
-        <a href="#" data-bind="html: $data.body, click: $parent.getPost"></a>
+<div class="list-group" data-bind="foreach: posts">
+ 
+        <a class="searchResults list-group-item" href="#" data-bind="html: $data.body, click: $parent.getPost"></a>
         <!--<button data-bind="click: getPost">Read post</button>-->
-    </div>
+
 </div>
 <button data-bind="click: prevPage, enable: displayPrev">Prev</button>
 <button data-bind="click: nextPage, enable: displayNext">Next</button>

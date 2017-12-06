@@ -52,9 +52,14 @@ namespace DAL
 
         List<Comment> GetUserComments(int userId, int page, int pageSize);
 
-        int GetNumberOfUserComments(int userId);
+        int GetNumberOfUserComments();
+
         List<WeightedResult> GetUserPosts(int userId, int page, int pageSize);
 
-        int GetNumberOfUserPosts(int userId);
+        int GetNumberOfUserPosts();
+
+        List<Post> GetAnswers(int postId, int page, int pageSize);
+
+        int GetNumberOfAnswers();
     }
 }

@@ -62,19 +62,19 @@ namespace WebService
 
             var model = _mapper.Map<PostModel>(post);
             model.Url = Url.Link(nameof(GetPost), new { id = post.post_id });
-            if(model.answer != null) model.answer.parentUrl = Url.Link(nameof(GetPost), new { id = model.answer.parent_Id });
 
-            // Adding self-referencing urls to posts in the case of the returned post being a question.
-            if (model.question != null)
+            var userCtrl = new UserController(_dataService, _mapper);
+
+            model.question.answersUrl = Url.Link(nameof(GetAnswers), new { id = post.post_id });
+
+            // Add referencing links to users and posts on comments
+            if (model.Comments != null)
             {
-                foreach (var answerPost in model.question.Answers)
+                foreach (var comment in model.Comments)
                 {
-                    answerPost.Url = Url.Link(nameof(GetPost), new { id = answerPost.post_id });
-                    answerPost.answer.parentUrl = Url.Link(nameof(GetPost), new { id = answerPost.answer.parent_Id });
+                    comment.userUrl = Url.Link(nameof(userCtrl.GetUser), new {id = comment.user_id});
+                    comment.postUrl = Url.Link(nameof(GetPost), new {id = comment.post_id});
                 }
-                
-                // Adding self-referencing urls to users in posts and comments.
-                model = InsertUserUrls(model);
             }
 
             return Ok(model);
@@ -96,15 +96,15 @@ namespace WebService
                     post_id = x.post_id,
                     parent_id = x.parent_id,
                     title = x.title
-                    
+
                 }).ToList();
 
             if (!data.Any()) return NotFound();
 
-           // Set answer posts urls to reference to parent post
+            // Set answer posts urls to reference to parent post
             foreach (var model in data)
             {
-                if (model.parent_id != null) model.url = Url.Link(nameof(GetPost), new {id = model.parent_id});
+                if (model.parent_id != null) model.url = Url.Link(nameof(GetPost), new { id = model.parent_id });
             }
 
             var total = _dataService.GetNumberOfWeightedSearchresults();
@@ -157,34 +157,58 @@ namespace WebService
             return Ok(result);
         }
 
-        private PostModel InsertUserUrls(PostModel model)
+        [HttpGet("answers/{id}", Name = nameof(GetAnswers))]
+        public IActionResult GetAnswers(int id, int page = 0, int pageSize = 5)
         {
+            CheckPageSize(ref pageSize);
+
+            var data = _dataService.GetAnswers(id, page, pageSize);
+            if (data == null) return NotFound();
+
             var userCtrl = new UserController(_dataService, _mapper);
 
-            // Set post user link.
-            model.userUrl = Url.Link(nameof(userCtrl.GetUser), new {id = model.user_id});
-
-            // Set post comments users links and comments post links
-            foreach (var modelComment in model.Comments)
-            {
-                modelComment.userUrl = Url.Link(nameof(userCtrl.GetUser), new { id = modelComment.user_id });
-                modelComment.postUrl = Url.Link(nameof(GetPost), new { id = modelComment.post_id });
-            }
-
-            // Set answers user links.
-            foreach (var answer in model.question.Answers)
-            {
-                answer.userUrl = Url.Link(nameof(userCtrl.GetUser), new { id = answer.user_id });
-
-                // Set comments users links and comments post links
-                foreach (var answerComment in answer.Comments)
+            var answers = data
+                .Select(x => new
                 {
-                    answerComment.userUrl = Url.Link(nameof(userCtrl.GetUser), new { id = answerComment.user_id });
-                    answerComment.postUrl = Url.Link(nameof(GetPost), new { id = answerComment.post_id });
+                    x.post_id,
+                    x.body,
+                    x.score,
+                    x.creation_date,
+                    x.user_display_name,
+                    x.user_id,
+                    userUrl = Url.Link(nameof(userCtrl.GetUser), new { id = x.user_id }),
+                    Comments = _mapper.Map<List<Comment>, List<CommentModel>>(x.Comments)
+                }).ToList();
+
+            foreach (var answer in answers)
+            {
+                if (answer.Comments != null)
+                {
+                    foreach (var answerComment in answer.Comments)
+                    {
+                        answerComment.userUrl = Url.Link(nameof(userCtrl.GetUser), new { id = answer.user_id });
+                        answerComment.postUrl = Url.Link(nameof(GetPost), new { id = answer.post_id });
+                    }
                 }
             }
 
-            return model;
+
+            var total = _dataService.GetNumberOfAnswers();
+            var totalPages = GetTotalPages(pageSize, total);
+
+            var result = new
+            {
+                Total = total,
+                Pages = totalPages,
+                Page = page,
+                Prev = Link(nameof(GetAnswers), page, pageSize, -1, () => page > 0),
+                Next = Link(nameof(GetAnswers), page, pageSize, 1, () => page < totalPages - 1),
+                Url = Link(nameof(GetAnswers), page, pageSize),
+                Answers = answers
+            };
+
+            return Ok(result);
         }
+
     }
 }

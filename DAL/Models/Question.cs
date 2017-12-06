@@ -37,28 +37,28 @@ namespace DAL.Models
             set { }
         }
 
-        [NotMapped]
-        public List<Post> Answers
-        {
-            get
-            {
-                using (var db = new SOVAContext())
-                {
-                    var getAnswers = db.Answer.Where(a => a.parent_Id == post_id).ToList();
+        //[NotMapped]
+        //public List<Post> Answers
+        //{
+        //    get
+        //    {
+        //        using (var db = new SOVAContext())
+        //        {
+        //            var getAnswers = db.Answer.Where(a => a.parent_Id == post_id).ToList();
 
-                    if (!getAnswers.Any()) return null;
+        //            if (!getAnswers.Any()) return null;
 
-                    var children = new List<Post>();
+        //            var children = new List<Post>();
 
-                    foreach (var answer in getAnswers)
-                    {
-                        children.Add(db.Post.Where(p => p.post_id == answer.post_id).First());
-                    }
+        //            foreach (var answer in getAnswers)
+        //            {
+        //                children.Add(db.Post.Where(p => p.post_id == answer.post_id).First());
+        //            }
 
-                    return children.OrderByDescending(c => c.score).ToList();
-                }
-            }
-            set { }
-        }
+        //            return children.OrderByDescending(c => c.score).ToList();
+        //        }
+        //    }
+        //    set { }
+        //}
     }
 }

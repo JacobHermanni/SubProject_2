@@ -30,6 +30,30 @@ namespace DAL
             }
         }
 
+        public List<Post> GetAnswers(int postId, int page, int pageSize)
+        {
+            using (var db = new SOVAContext())
+            {
+                var totalAnswers = db.Post.Where(a => a.answer.parent_Id == postId);
+                TotalAnswers = totalAnswers.Count();
+
+                if (!totalAnswers.Any()) return null;
+
+                return totalAnswers
+                    .OrderByDescending(x => x.score)
+                    .Skip(page * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+            }
+        }
+
+        public int GetNumberOfAnswers()
+        {
+            return TotalAnswers;
+        }
+
+        public int TotalAnswers { get; set; }
+
         public Post GetPost(int id)
         {
             using (var db = new SOVAContext())
@@ -278,7 +302,7 @@ namespace DAL
 
         public int TotalUserComments { get; set; }
 
-        public int GetNumberOfUserComments(int userId)
+        public int GetNumberOfUserComments()
         {
             return TotalUserComments;
         }
@@ -305,7 +329,7 @@ namespace DAL
 
         public int TotalUserPosts { get; set; }
 
-        public int GetNumberOfUserPosts(int userId)
+        public int GetNumberOfUserPosts()
         {
             return TotalUserPosts;
         }

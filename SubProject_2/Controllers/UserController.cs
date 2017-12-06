@@ -68,35 +68,6 @@ namespace WebService.Controllers
                 UserPostsUrl = Url.Link(nameof(GetUserPosts), new { id = id })
             };
 
-            //var postCtrl = new PostController(_dataService, _mapper);
-
-            //// Add self-referencing urls to posts.
-            //if (model.posts != null)
-            //{
-            //    model.posts = model.posts.Select(x => new ResultModel
-            //    {
-            //        Url = Url.Link(nameof(postCtrl.GetPost), new { id = x.post_id }),
-            //        post_id = x.post_id,
-            //        body = x.body,
-            //        score = x.score
-            //    }).ToList();
-
-            //    foreach (var resultModel in model.posts)
-            //    {
-            //        var post = _dataService.GetPost(resultModel.post_id);
-            //        if (post.post_type_id == 1) resultModel.title = post.question.title;
-            //    }
-            //}
-
-            //// Add post-referencing urls to comments.
-            //if (model.comments != null)
-            //{
-            //    foreach (var commentModel in model.comments)
-            //    {
-            //        commentModel.postUrl = Url.Link(nameof(postCtrl.GetPost), new { id = commentModel.post_id });
-            //    }
-            //}
-
             return Ok(returnUser);
         }
 
@@ -121,7 +92,7 @@ namespace WebService.Controllers
                 });
 
 
-            var total = _dataService.GetNumberOfUserComments(id);
+            var total = _dataService.GetNumberOfUserComments();
             var totalPages = GetTotalPages(pageSize, total);
 
             var result = new
@@ -158,7 +129,7 @@ namespace WebService.Controllers
                 });
 
 
-            var total = _dataService.GetNumberOfUserPosts(id);
+            var total = _dataService.GetNumberOfUserPosts();
             var totalPages = GetTotalPages(pageSize, total);
 
             var result = new

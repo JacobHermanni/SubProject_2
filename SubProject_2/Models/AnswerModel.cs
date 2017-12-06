@@ -13,6 +13,6 @@ namespace WebService.Models
 
         public int parent_Id { get; set; }
 
-        public string parentUrl { get; set; }
+        //public string parentUrl { get; set; }
     }
 }

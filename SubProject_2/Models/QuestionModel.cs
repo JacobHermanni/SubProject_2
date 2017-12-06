@@ -17,7 +17,9 @@ namespace WebService.Models
 
         public int post_id { get; set; }
 
-        public List<PostModel> Answers { get; set; }
+        //public List<PostModel> Answers { get; set; }
+
+        public string answersUrl { get; set; }
 
         public List<TagModel> Tags { get; set; }
 

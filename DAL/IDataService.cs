@@ -15,6 +15,7 @@ namespace DAL
         List<Result> GetPostsByString(string search, int page, int pageSize);
 
         int GetNumberOfSearchresults();
+
         List<WeightedResult> GetWeightedPostsByString(string search, int page, int pageSize);
 
         int GetNumberOfWeightedSearchresults();
@@ -49,5 +50,11 @@ namespace DAL
 
         List<CoOrcorruingWordList> GetCoOrcorruingWord(string word);
 
+        List<Comment> GetUserComments(int userId, int page, int pageSize);
+
+        int GetNumberOfUserComments(int userId);
+        List<WeightedResult> GetUserPosts(int userId, int page, int pageSize);
+
+        int GetNumberOfUserPosts(int userId);
     }
 }

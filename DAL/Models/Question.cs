@@ -21,6 +21,23 @@ namespace DAL.Models
         public int post_id { get; set; }
 
         [NotMapped]
+        public List<Tags> Tags
+        {
+            get
+            {
+                using (var db = new SOVAContext())
+                {
+                    var getTags = db.Tags.Where(t => t.post_id == post_id).ToList();
+
+                    if (!getTags.Any()) return null;
+
+                    return getTags;
+                }
+            }
+            set { }
+        }
+
+        [NotMapped]
         public List<Post> Answers
         {
             get
@@ -29,7 +46,7 @@ namespace DAL.Models
                 {
                     var getAnswers = db.Answer.Where(a => a.parent_Id == post_id).ToList();
 
-                    if (getAnswers.Count == 0) return null;
+                    if (!getAnswers.Any()) return null;
 
                     var children = new List<Post>();
 

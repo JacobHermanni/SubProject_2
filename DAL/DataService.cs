@@ -261,14 +261,77 @@ namespace DAL
             }
         }
 
-        public List<RelatedWordList> GetRelatedWords (string word){
+        public int TotalUserComments { get; set; }
+
+        public int GetNumberOfUserComments(int userId)
+        {
+            return TotalUserComments;
+        }
+
+        public List<Comment> GetUserComments(int userId, int page, int pageSize)
+        {
+            using (var db = new SOVAContext())
+            {
+                // Ensure count is reset each api call.
+                TotalUserComments = 0;
+
+                var getComments = db.Comment.Where(p => p.user_id == userId);
+                if (!getComments.Any()) return null;
+                TotalUserComments = getComments.Count();
+
+                var returnComments = getComments
+                    .Skip(page * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+
+                return returnComments;
+            }
+        }
+
+        public int TotalUserPosts { get; set; }
+
+        public int GetNumberOfUserPosts(int userId)
+        {
+            return TotalUserPosts;
+        }
+
+        public List<WeightedResult> GetUserPosts(int userId, int page, int pageSize)
+        {
+            using (var db = new SOVAContext())
+            {
+                // Ensure count is reset each api call.
+                TotalUserPosts = 0;
+
+                var getPosts = db.Post.Where(p => p.user_id == userId);
+                if (!getPosts.Any()) return null;
+                TotalUserPosts = getPosts.Count();
+
+                var returnPosts = getPosts
+                    .Skip(page * pageSize)
+                    .Take(pageSize)
+                    .Select(x => new WeightedResult()
+                    {
+                        post_id = x.post_id,
+                        body = x.body,
+                        score = x.score
+                    })
+                    .ToList();
+
+                return returnPosts;
+            }
+
+        }
+
+
+        public List<RelatedWordList> GetRelatedWords(string word)
+        {
 
             using (var db = new SOVAContext())
             {
                 var relatedword = db.RelatedWordList.FromSql("call findRelatedWords_tf_idf({0})", word)
                     .ToList();
 
-                if (! relatedword.Any())
+                if (!relatedword.Any())
                 {
                     return null;
                 }
@@ -276,7 +339,8 @@ namespace DAL
             }
         }
 
-        public List<CoOrcorruingWordList> GetCoOrcorruingWord (string word){
+        public List<CoOrcorruingWordList> GetCoOrcorruingWord(string word)
+        {
 
             using (var db = new SOVAContext())
             {

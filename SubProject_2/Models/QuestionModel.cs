@@ -18,5 +18,24 @@ namespace WebService.Models
         public int post_id { get; set; }
 
         public List<PostModel> Answers { get; set; }
+
+        public List<TagModel> Tags { get; set; }
+
+        public List<string> TagsStrings
+        {
+            get
+            {
+                if (!Tags.Any()) return null;
+
+                List<string> strings = new List<string>();
+                foreach (var tag in Tags)
+                {
+                    strings.Add(tag.tag);
+                }
+
+                return strings;
+            }
+            set { }
+        }
     }
 }

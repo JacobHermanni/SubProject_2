@@ -34,7 +34,7 @@ namespace WebService
             var data = _dataService.GetHistory(page, pageSize)
                 .Select(x => new HistoryModel
                 {
-                    URL = Url.Link(nameof(postCtrl.GetPostsByString), new { searchstring = x.search_string }),
+                    URL = Url.Link(nameof(postCtrl.GetWeightedPostsByString), new { searchstring = x.search_string }),
                     history_id = x.history_id,
                     search_string = x.search_string,
                     history_timestamp = x.history_timestamp

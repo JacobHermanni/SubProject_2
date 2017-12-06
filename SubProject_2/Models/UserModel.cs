@@ -19,8 +19,8 @@ namespace WebService.Models
 
         public string user_location { get; set; }
 
-        public List<ResultModel> posts { get; set; }
+        //public List<ResultModel> posts { get; set; }
 
-        public List<CommentModel> comments { get; set; }
+        //public List<CommentModel> comments { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DAL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebService.Models;
 
 namespace WebService.Controllers
@@ -30,7 +31,7 @@ namespace WebService.Controllers
             var totalPages = GetTotalPages(pageSize, total);
 
             var data = _dataService.GetUsers(page, pageSize)
-                .Select(x => new 
+                .Select(x => new
                 {
                     Url = Url.Link(nameof(GetUser), new { id = x.user_id }),
                     user_id = x.user_id,
@@ -60,36 +61,118 @@ namespace WebService.Controllers
             var model = _mapper.Map<UserModel>(user);
             model.Url = Url.Link(nameof(GetUser), new { id = user.user_id });
 
+            var returnUser = new
+            {
+                User = model,
+                UserCommentsUrl = Url.Link(nameof(GetUserComments), new { id = id }),
+                UserPostsUrl = Url.Link(nameof(GetUserPosts), new { id = id })
+            };
+
+            //var postCtrl = new PostController(_dataService, _mapper);
+
+            //// Add self-referencing urls to posts.
+            //if (model.posts != null)
+            //{
+            //    model.posts = model.posts.Select(x => new ResultModel
+            //    {
+            //        Url = Url.Link(nameof(postCtrl.GetPost), new { id = x.post_id }),
+            //        post_id = x.post_id,
+            //        body = x.body,
+            //        score = x.score
+            //    }).ToList();
+
+            //    foreach (var resultModel in model.posts)
+            //    {
+            //        var post = _dataService.GetPost(resultModel.post_id);
+            //        if (post.post_type_id == 1) resultModel.title = post.question.title;
+            //    }
+            //}
+
+            //// Add post-referencing urls to comments.
+            //if (model.comments != null)
+            //{
+            //    foreach (var commentModel in model.comments)
+            //    {
+            //        commentModel.postUrl = Url.Link(nameof(postCtrl.GetPost), new { id = commentModel.post_id });
+            //    }
+            //}
+
+            return Ok(returnUser);
+        }
+
+        [HttpGet("usercomments/{id}", Name = nameof(GetUserComments))]
+        public IActionResult GetUserComments(int id, int page = 0, int pageSize = 5)
+        {
+            CheckPageSize(ref pageSize);
+
             var postCtrl = new PostController(_dataService, _mapper);
 
-            // Add self-referencing urls to posts.
-            if (model.posts != null)
+            var data = _dataService.GetUserComments(id, page, pageSize);
+            if (data == null) return NotFound();
+
+            var userComments = data
+                .Select(x => new
+                {
+                    x.comment_id,
+                    x.comment_score,
+                    x.comment_creation_date,
+                    x.comment_text,
+                    postUrl = Url.Link(nameof(postCtrl.GetPost), new { id = x.post_id })
+                });
+
+
+            var total = _dataService.GetNumberOfUserComments(id);
+            var totalPages = GetTotalPages(pageSize, total);
+
+            var result = new
             {
-                model.posts = model.posts.Select(x => new ResultModel
-                {
-                    Url = Url.Link(nameof(postCtrl.GetPost), new { id = x.post_id }),
-                    post_id = x.post_id,
-                    body = x.body,
-                    score = x.score
-                }).ToList();
+                Total = total,
+                Pages = totalPages,
+                Page = page,
+                Prev = Link(nameof(GetUserComments), page, pageSize, -1, () => page > 0),
+                Next = Link(nameof(GetUserComments), page, pageSize, 1, () => page < totalPages - 1),
+                Url = Link(nameof(GetUserComments), page, pageSize),
+                UserComments = userComments
+            };
 
-                foreach (var resultModel in model.posts)
-                {
-                    var post = _dataService.GetPost(resultModel.post_id);
-                    if (post.post_type_id == 1) resultModel.title = post.question.title;
-                }
-            }
+            return Ok(result);
+        }
 
-            // Add post-referencing urls to comments.
-            if (model.comments != null)
+        [HttpGet("userposts/{id}", Name = nameof(GetUserPosts))]
+        public IActionResult GetUserPosts(int id, int page = 0, int pageSize = 5)
+        {
+            CheckPageSize(ref pageSize);
+
+            var postCtrl = new PostController(_dataService, _mapper);
+
+            var data = _dataService.GetUserPosts(id, page, pageSize);
+            if (data == null) return NotFound();
+
+            var userPosts = data
+                .Select(x => new
+                {
+                    x.post_id,
+                    x.body,
+                    x.score,
+                    postUrl = Url.Link(nameof(postCtrl.GetPost), new { id = x.post_id })
+                });
+
+
+            var total = _dataService.GetNumberOfUserPosts(id);
+            var totalPages = GetTotalPages(pageSize, total);
+
+            var result = new
             {
-                foreach (var commentModel in model.comments)
-                {
-                    commentModel.postUrl = Url.Link(nameof(postCtrl.GetPost), new { id = commentModel.post_id });
-                }
-            }
+                Total = total,
+                Pages = totalPages,
+                Page = page,
+                Prev = Link(nameof(GetUserComments), page, pageSize, -1, () => page > 0),
+                Next = Link(nameof(GetUserComments), page, pageSize, 1, () => page < totalPages - 1),
+                Url = Link(nameof(GetUserComments), page, pageSize),
+                UserPosts = userPosts
+            };
 
-            return Ok(model);
+            return Ok(result);
         }
     }
 }

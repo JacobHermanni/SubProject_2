@@ -19,41 +19,41 @@ namespace DAL.Models
 
         public string user_location { get; set; }
 
-        public List<Result> posts
-        {
-            get
-            {
-                using (var db = new SOVAContext())
-                {
-                    var getposts = db.Post.Where(p => p.user_id == user_id).Select(x => new Result()
-                    {
-                        post_id = x.post_id,
-                        body = x.body,
-                        score = x.score
-                    }).ToList();
+        //public List<Result> posts
+        //{
+        //    get
+        //    {
+        //        using (var db = new SOVAContext())
+        //        {
+        //            var getposts = db.Post.Where(p => p.user_id == user_id).Select(x => new Result()
+        //            {
+        //                post_id = x.post_id,
+        //                body = x.body,
+        //                score = x.score
+        //            }).ToList();
 
-                    if (!getposts.Any()) return null;
+        //            if (!getposts.Any()) return null;
 
-                    return getposts;
-                }
-            }
-            set { }
-        }
+        //            return getposts;
+        //        }
+        //    }
+        //    set { }
+        //}
 
-        public List<Comment> comments
-        {
-            get
-            {
-                using (var db = new SOVAContext())
-                {
-                    var getComments = db.Comment.Where(p => p.user_id == user_id).ToList();
+        //public List<Comment> comments
+        //{
+        //    get
+        //    {
+        //        using (var db = new SOVAContext())
+        //        {
+        //            var getComments = db.Comment.Where(p => p.user_id == user_id).ToList();
 
-                    if (!getComments.Any()) return null;
+        //            if (!getComments.Any()) return null;
 
-                    return getComments;
-                }
-            }
-            set { }
-        }
+        //            return getComments;
+        //        }
+        //    }
+        //    set { }
+        //}
     }
 }

@@ -17,7 +17,7 @@ namespace DAL
         public DbSet<Result> Result { get; set; }
 
         public DbSet<Question> Question { get; set; }
-        
+
         public DbSet<User> User { get; set; }
 
         public DbSet<Comment> Comment { get; set; }
@@ -38,7 +38,9 @@ namespace DAL
 
         public DbSet<CoOrcorruingWordList> CoOrcorruingWordList { get; set; }
 
-       
+        public DbSet<Tags> Tags { get; set; }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -47,8 +49,18 @@ namespace DAL
                 "server=localhost;" +
                 "database=SOVA;" +
                 "uid=root;" +
-                "pwd=theis9953;"
+                "pwd=root;"
             );
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Tags>().HasKey(t => new { t.post_id, t.tag });
+
+        }
+
     }
 }
+

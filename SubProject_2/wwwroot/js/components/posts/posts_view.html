@@ -1,7 +1,12 @@
 ﻿<h1>All Posts</h1>
 
-<button data-bind="click: search">Search for posts</button>
-<p> SearchTest: <input data-bind="textInput: userSearchString" /></p>
+<!--<button data-bind="click: search">Search for posts</button>-->
+<p> SearchTest: </p>
+<form data-bind="submit: search">
+    <input data-bind="textInput: userSearchString, submit: test" />
+</form>
+
+
 <ul data-bind="foreach: posts">
     <li style="margin-bottom: 2em;">
         <a href="#" data-bind="html: $data.body, click: $parent.getPost"></a>

@@ -25,19 +25,11 @@ require(['knockout'], function (ko) {
         template: { require: "text!components/singlePost/single-post_view.html" }
     });
 
-
 });
 
 
 require(["knockout", "jQuery", "broadcaster"], function (ko, jQuery, broadcaster) {
     (function () {
-
-        fetchData = function (url, callback) {
-            $.getJSON(url, function (data) {
-                console.log("fetched Data:", data);
-                callback(data);
-            });
-        }
 
         var vm = (function () {
 
@@ -50,7 +42,6 @@ require(["knockout", "jQuery", "broadcaster"], function (ko, jQuery, broadcaster
                 } else {
                     currentView("all-posts");
                 }
-
             }
 
             var currentState = {};

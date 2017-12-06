@@ -1,4 +1,4 @@
-﻿define(['knockout', 'broadcaster', 'dataservice'], function (ko, broadcaster, dataservice) {
+﻿define(['knockout', 'broadcaster', 'dataservice'], function (ko, bc, dataservice) {
     return function (params) {
        
         var posts = ko.observableArray([]);
@@ -11,6 +11,7 @@
         // ------------ Search Function: ------------ //
         var search = function () {
             dataservice.searchedPosts(userSearchString(), data => {
+                console.log("data fra search-func:", data);
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
                     posts.push(data.data[i]);
@@ -22,6 +23,10 @@
             });
         }
 
+        var test = function() {
+            console.log("submitted the form");
+        }
+
         // ------------ Page Navigation: ------------ //
         var navPage = function (data) {
             next === null ? displayNext(false) : displayNext(true);
@@ -30,7 +35,7 @@
 
         var nextPage = function () {
             console.log("pressed next");
-            fetchData(next, data => {
+            dataservice.changePage(next, data => {
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
                     posts.push(data.data[i]);
@@ -43,7 +48,7 @@
 
         var prevPage = function () {
             console.log("pressed prev");
-            fetchData(prev, data => {
+            dataservice.changePage(prev, data => {
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
                     posts.push(data.data[i]);
@@ -58,7 +63,7 @@
 
         // ------------ Get individual post: ------------ //
         var getPost = function () {
-            broadcaster.publish(broadcaster.events.changeView, { name: "single-post", data: this, state: currentState });
+            bc.publish(bc.events.changeView, { name: "single-post", data: this, state: currentState });
         }
 
         console.log("params fra posts;", params);
@@ -85,7 +90,8 @@
             navPage,
             getPost,
             currentState,
-            userSearchString
+            userSearchString,
+            test
         };
 
     }

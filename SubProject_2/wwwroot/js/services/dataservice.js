@@ -9,9 +9,15 @@
             {
                 console.log('getJSON request succeeded!');
             })
-            .fail(function(jqXHR, textStatus, errorThrown)
+            .fail(function()
             {
-                console.log('getJSON request failed! ' + textStatus);
+                console.log('getJSON request failed!');
+                var furb = {
+                    data: [ {body: "Ingen søgeresultater"} ],
+                    next: "null",
+                    prev: "null"
+                };
+                callback(furb);
             })
             .always(function()
             {
@@ -19,8 +25,34 @@
             });
     }
 
+    var changePage = function (url, callback) {
+        $.getJSON(url, function (data) {
+            console.log("changed page");
+            callback(data);
+        });
+    }
+
+    var getQuestion = function (url, callback) {
+        $.getJSON(url, function (data) {
+            console.log("got question:", data);
+            callback(data);
+        });
+    }
+
+    var getAnswers = function (url, callback) {
+        $.getJSON(url, function (data) {
+            console.log("got answers:", data);
+            callback(data);
+        });
+    }
+
+
+
     return {
         searchedPosts,
+        changePage,
+        getQuestion,
+        getAnswers
     };
 
 });

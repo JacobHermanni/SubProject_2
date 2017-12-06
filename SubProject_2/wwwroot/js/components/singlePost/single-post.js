@@ -1,15 +1,7 @@
-﻿define(['knockout', 'broadcaster'], function (ko, bc) {
+﻿define(['knockout', 'broadcaster', 'dataservice'], function (ko, bc, dataservice) {
     return function (params) {
 
-        console.log("params fra singlepost:", params);
-
-        fetchData = function (url, callback) {
-            $.getJSON(url, function (data) {
-                //console.log("fetched Data single-post:", data);
-                callback(data);
-
-            });
-        }
+        // console.log("params fra singlepost:", params);
 
         var postTitle = ko.observable();
         var creationDate = ko.observable();
@@ -18,24 +10,18 @@
 
         var answers = ko.observableArray([]);
 
-        var getQuestion = function (url) {
-            console.log("url:", url);
-            fetchData(url, data => {
-                console.log("enkelt post:", data);
+        var getQuestion = (function () {
+            dataservice.getQuestion(params.url, data => {
                 postTitle(data.title);
                 creationDate(data.creationDate);
                 score(data.score);
                 body(data.body);
                 getAnswers(data.answers);
             })
-        }
-
-        getQuestion(params.url);
+        })();
 
         var getAnswers = function (url) {
-            // console.log("Answers", url);
-            fetchData(url, data => {
-                //console.log("fra getANSWERS:::", data);
+            dataservice.getAnswers(url, data => {
                 for (i = 0; i < data.length; i++) {
                     answers.push(data[i]);
                     //console.log(data[i]);

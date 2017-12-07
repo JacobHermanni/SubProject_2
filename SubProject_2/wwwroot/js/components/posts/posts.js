@@ -105,8 +105,6 @@
 
         return {
             posts,
-            prev,
-            next,
             displayPrev,
             displayNext,
             search,

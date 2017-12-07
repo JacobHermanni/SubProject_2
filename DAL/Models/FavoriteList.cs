@@ -18,7 +18,7 @@ namespace DAL.Models
 
         public string title { get; set; }
 
-        public int accepted_answer_id { get; set; }
+        public Nullable<int> accepted_answer_id { get; set; }
 
         public Note note
         {

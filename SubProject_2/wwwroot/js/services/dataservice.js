@@ -13,10 +13,11 @@
             {
                 console.log('getJSON request failed!');
                 var furb = {
-                    data: [ {body: "Ingen søgeresultater"} ],
+                    data: [ {body: "No search result"} ],
                     next: null,
                     prev: null
                 };
+                console.log('Failed search returns object: ', furb);
                 callback(furb);
             })
             .always(function()

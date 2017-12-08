@@ -10,18 +10,17 @@
         var displayNext = ko.observable(false);
         var userSearchString = ko.observable("");
         var searchingString = ko.observable("");
-        var searchVisible = ko.observable(false);
-        var searchHasResults = ko.observable(false);
+        var searchHasResults = ko.observable(true);
 
 
         // ------------ Search Function: ------------ //
         var search = function () {
             dataservice.searchedPosts(userSearchString(),
                 data => {
-                    if (data === "error") {
-                        console.log("error");
+                    if (data.data[0].body === "No search result") {
+                        console.log("No search result from dataservice");
                         searchHasResults(false);
-                        this.searchingString('No search result');
+                        searchingString(data.body);
                     } else {
                         console.log("data fra search-func:", data);
                         posts.removeAll();
@@ -33,33 +32,32 @@
                         navPage();
                         currentState = data;
                         searchHasResults(true);
-                        this.searchingString('Search result of "' + userSearchString() + '"');
+                        searchingString('Search result of "' + userSearchString() + '"');
                     }
                 });
             bc.publish(bc.events.changeData, { search_string: userSearchString() });
         }
 
-        var searchFromFrontPageOrNav = function (searchString) {
-            userSearchString(searchString);
-            dataservice.searchedPosts(searchString, data => {
-                // console.log("data fra navOrFront-search-func:", data);
-                posts.removeAll();
-                for (i = 0; i < data.data.length; i++) {
-                    posts.push(data.data[i]);
-                }
-                next = data.next;
-                prev = data.prev;
-                navPage();
-                currentState = data;
-            });
-        }
+        //var searchFromFrontPageOrNav = function (searchString) {
+        //    userSearchString(searchString);
+        //    dataservice.searchedPosts(searchString, data => {
+        //        // console.log("data fra navOrFront-search-func:", data);
+        //        posts.removeAll();
+        //        for (i = 0; i < data.data.length; i++) {
+        //            posts.push(data.data[i]);
+        //        }
+        //        next = data.next;
+        //        prev = data.prev;
+        //        navPage();
+        //        currentState = data;
+        //    });
+        //}
 
         // ------------ Page Navigation: ------------ //
         var navPage = function (data) {
             next === null ? displayNext(false) : displayNext(true);
             prev === null ? displayPrev(false) : displayPrev(true);
             $('html,body').animate({ scrollTop: 120 }, 300);
-            searchVisible(true);
         }
 
         var nextPage = function () {
@@ -100,11 +98,13 @@
         
         if (params.fp_msg || params.fp_msg === "")
         {
-            searchFromFrontPageOrNav(params.fp_msg);
+            userSearchString(params.fp_msg);
+            search();
         } 
         else if (params.nav_msg || params.nav_msg === "")
         {
-            searchFromFrontPageOrNav(params.nav_msg);
+            userSearchString(params.nav_msg);
+            search();
         }
         else if (params != null)
         {
@@ -129,8 +129,6 @@
             getPost,
             currentState,
             userSearchString,
-            searchFromFrontPageOrNav,
-            searchVisible,
             searchingString,
             searchHasResults
         };

@@ -1,6 +1,18 @@
 ﻿<h1>Your Search History</h1>
-<div class="list-group" data-bind="foreach: histories">
-    <a class="searchResults list-group-item" href="#" data-bind="html: $data.body"></a>
+<div class="list-group""col-sm-6 col-sm-offset-3" data-bind="foreach: histories">
+    <p> History id: <b data-bind="text: history_id"></b></p>
+    <p> Search String: <b data-bind="text: search_string"></b></p>
+    <p> History Timestamp: <b data-bind="text: history_timestamp"></b></p>
+    <p> History Url: <b data-bind="html: url"></b></p>
+
+
+    <button data-bind="click: , text: search_string"></button>
+
+    <p> </p>
+
 </div>
 <button data-bind="click: prevPage, enable: displayPrev">Prev</button>
 <button data-bind="click: nextPage, enable: displayNext">Next</button>
+
+
+

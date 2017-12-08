@@ -56,7 +56,7 @@
             bc.publish(bc.events.changeView, { name: "single-post", data: this });
         }
 
-        var readNote = function () {
+        var getNote = function () {
             
         }
 
@@ -67,7 +67,7 @@
             displayNext,
             displayPrev,
             getPost,
-            readNote
+            getNote
         };
 
     }

@@ -1,3 +1,13 @@
-﻿<form class="navbar-form navbar-right form-grpu" role="search" data-bind="submit: navSearched">
+﻿<!--<button type="button" class="btn btn-default navbar-btn"> Posts </button>
+<button type="button" class="btn btn-default navbar-btn"> Favorites </button>
+<button type="button" class="btn btn-default navbar-btn"> History </button>-->
+
+<ul class="nav navbar-nav" data-bind="foreach: pages">
+    <li data-bind="css: $parent.isActive($data)">
+        <a href="#" data-bind="click: $parent.changeView, text: name"></a>
+    </li>
+</ul>
+<form class="navbar-form navbar-right" role="search" data-bind="submit: navSearched">
         <input data-bind="textInput: navSearchString" class="form-control" placeholder="Search">
 </form>
+

@@ -18,7 +18,7 @@ namespace WebService.Models
 
         public string title { get; set; }
 
-        public int accepted_answer_id { get; set; }
+        public Nullable<int> accepted_answer_id { get; set; }
 
         public NoteModel note { get; set; }
     }

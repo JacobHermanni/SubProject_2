@@ -8,6 +8,21 @@
     margin-bottom: 2em;
 }
 
+.frontPage {
+    text-align: center;
+    height: 70vh;
+}
+
+.frontPage .row {
+    position: relative;
+    top: 20%;
+}
+
+.frontPage .fp-form {
+    border: none;
+    border-bottom: 1px solid;
+}
+
 .top-buffer {
     margin-top: 20px;
 }

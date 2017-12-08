@@ -12,12 +12,12 @@
             .fail(function()
             {
                 console.log('getJSON request failed!');
-                //var furb = {
-                //    data: [ {body: "Ingen søgeresultater"} ],
-                //    next: "null",
-                //    prev: "null"
-                ////};
-                callback("error");
+                var furb = {
+                    data: [ {body: "Ingen søgeresultater"} ],
+                    next: null,
+                    prev: null
+                };
+                callback(furb);
             })
             .always(function()
             {
@@ -27,7 +27,7 @@
 
     var changePage = function (url, callback) {
         $.getJSON(url, function (data) {
-            console.log("changed page");
+            console.log("changed page, new data:", data);
             callback(data);
         });
     }
@@ -46,13 +46,27 @@
         });
     }
 
+    var getFavorites = function (callback) {
+        $.getJSON("http://localhost:5001/api/favorite/", function (data) {
+            console.log("got favorites:", data);
+            callback(data);
+        });
+    }
 
+    var getHistory = function (callback) {
+        $.getJSON("http://localhost:5001/api/history/", function (data) {
+            console.log("got history:", data);
+            callback(data);
+        });
+    }
 
     return {
         searchedPosts,
         changePage,
         getQuestion,
-        getAnswers
+        getAnswers,
+        getFavorites,
+        getHistory
     };
 
 });

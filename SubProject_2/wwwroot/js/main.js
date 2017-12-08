@@ -35,6 +35,21 @@ require(['knockout'], function (ko) {
         template: { require: "text!components/navBarSearch/nav-bar-search_view.html" }
     });
 
+    ko.components.register("user-page", {
+        viewModel: { require: "components/userPage/user-page" },
+        template: { require: "text!components/userPage/user-page_view.html" }
+    });
+
+    ko.components.register("favorites-page", {
+        viewModel: { require: "components/favoritesPage/favorites-page" },
+        template: { require: "text!components/favoritesPage/favorites-page_view.html" }
+    });
+
+    ko.components.register("history-page", {
+        viewModel: { require: "components/historyPage/history-page" },
+        template: { require: "text!components/historyPage/history-page_view.html" }
+    });
+
 });
 
 
@@ -59,7 +74,7 @@ require(["knockout", "jQuery", "broadcaster"], function (ko, jQuery, broadcaster
 
             broadcaster.subscribe(broadcaster.events.changeView,
                 viewInfo => {
-                    console.log("viewinfo from main", viewInfo);
+                    // console.log("viewinfo from main", viewInfo);
                     currentView(viewInfo.name);
 
                     // if there is no data, it means single-post is switching view to all-posts and state is relevant. Else the data is for single-post.
@@ -67,18 +82,24 @@ require(["knockout", "jQuery", "broadcaster"], function (ko, jQuery, broadcaster
                         console.log("changing state info in main");
                         currentParams(viewInfo.data);
                         currentState = viewInfo.state;
-                        console.log("currentState", currentState);
-                    } else if (viewInfo.fp_msg) {
-                        console.log("coming from fp_msg", viewInfo.fp_msg);
-                        currentParams({fp_msg : viewInfo.fp_msg});
-                    } else if (viewInfo.nav_msg) {
-                        console.log("coming from nav_msg", viewInfo.nav_msg);
-                        currentParams({nav_msg : viewInfo.nav_msg});
+                        // console.log("currentState", currentState);
                     } else {
                         currentParams(currentState);
                     }
 
+                    if (viewInfo.fp_msg || viewInfo.fp_msg === "") {
+                        // console.log("coming from fp_msg", viewInfo.fp_msg);
+                        currentParams({ fp_msg : viewInfo.fp_msg });
+                    }
 
+                    if (viewInfo.nav_msg || viewInfo.nav_msg === "") {
+                        // console.log("coming from nav_msg", viewInfo.nav_msg);
+                        currentParams({ nav_msg : viewInfo.nav_msg });
+                    }
+
+                    if (viewInfo === null || viewInfo === undefined) {
+                        currentParams("");
+                    }
                 });
 
             return {
@@ -86,7 +107,7 @@ require(["knockout", "jQuery", "broadcaster"], function (ko, jQuery, broadcaster
                 switchComponent,
                 currentParams,
                 currentState,
-                navSearch
+                navSearch,
             }
 
         })();

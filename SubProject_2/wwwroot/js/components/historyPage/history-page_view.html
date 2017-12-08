@@ -1,0 +1,6 @@
+﻿<h1>Your Search History</h1>
+<div class="list-group" data-bind="foreach: histories">
+    <a class="searchResults list-group-item" href="#" data-bind="html: $data.body"></a>
+</div>
+<button data-bind="click: prevPage, enable: displayPrev">Prev</button>
+<button data-bind="click: nextPage, enable: displayNext">Next</button>

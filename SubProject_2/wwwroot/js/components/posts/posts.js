@@ -1,7 +1,7 @@
 ﻿define(['knockout', 'broadcaster', 'dataservice'], function (ko, bc, dataservice) {
     return function (params) {
 
-        console.log("fra posts:", params);
+        // console.log("fra posts:", params);
 
         var posts = ko.observableArray([]);
         var prev = ko.string;
@@ -22,8 +22,7 @@
                         console.log("error");
                         searchHasResults(false);
                         this.searchingString('No search result');
-                    }
-                    else {
+                    } else {
                         console.log("data fra search-func:", data);
                         posts.removeAll();
                         for (i = 0; i < data.data.length; i++) {
@@ -36,12 +35,14 @@
                         searchHasResults(true);
                         this.searchingString('Search result of "' + userSearchString() + '"');
                     }
-                })
+                });
+            bc.publish(bc.events.changeData, { search_string: userSearchString() });
         }
 
         var searchFromFrontPageOrNav = function (searchString) {
+            userSearchString(searchString);
             dataservice.searchedPosts(searchString, data => {
-                console.log("data fra navOrFront-search-func:", data);
+                // console.log("data fra navOrFront-search-func:", data);
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
                     posts.push(data.data[i]);
@@ -95,27 +96,30 @@
         }
 
         // ------------ Control state: ------------ //
-        console.log("params fra posts;", params);
-
-        if (params.fp_msg) {
+        // console.log("params fra posts;", params);
+        
+        if (params.fp_msg || params.fp_msg === "")
+        {
             searchFromFrontPageOrNav(params.fp_msg);
-        } else if (params.nav_msg) {
+        } 
+        else if (params.nav_msg || params.nav_msg === "")
+        {
             searchFromFrontPageOrNav(params.nav_msg);
-        } else if (params != null) {
+        }
+        else if (params != null)
+        {
             posts.removeAll();
             for (i = 0; i < params.data.length; i++) {
                 posts.push(params.data[i]);
             }
-            next = params.next;
-            prev = params.prev;
+            next = null;
+            prev = null;
             navPage();
             currentState = params;
         }
 
         return {
             posts,
-            prev,
-            next,
             displayPrev,
             displayNext,
             search,

@@ -11,6 +11,9 @@
     <Folder Include="wwwroot\js\services\" />
     <Folder Include="wwwroot\js\components\frontPage\" />
     <Folder Include="wwwroot\js\components\navBarSearch\" />
+    <Folder Include="wwwroot\js\components\userPage\" />
+    <Folder Include="wwwroot\js\components\favoritesPage\" />
+    <Folder Include="wwwroot\js\components\historyPage\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,4 +27,7 @@
     <ProjectReference Include="..\DAL\DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="wwwroot\js\components\searchHistory\EmptyHTMLFile.html" />
+  </ItemGroup>
 </Project>

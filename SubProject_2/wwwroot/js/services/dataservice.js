@@ -12,12 +12,12 @@
             .fail(function()
             {
                 console.log('getJSON request failed!');
-                var furb = {
-                    data: [ {body: "Ingen søgeresultater"} ],
-                    next: "null",
-                    prev: "null"
-                };
-                callback(furb);
+                //var furb = {
+                //    data: [ {body: "Ingen søgeresultater"} ],
+                //    next: "null",
+                //    prev: "null"
+                ////};
+                callback("error");
             })
             .always(function()
             {

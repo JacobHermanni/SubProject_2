@@ -1,17 +1,28 @@
-﻿<h1>All Posts</h1>
+﻿<h1>Post Search</h1>
 
 <!--<button data-bind="click: search">Search for posts</button>-->
-<p> SearchTest: </p>
+<h3> Search: </h3>
 <form data-bind="submit: search">
-    <input data-bind="textInput: userSearchString"/>
+    <input data-bind="textInput: userSearchString" />
 </form>
+<!--<div data-bind="visible: searchVisible, text: 'Search result of &quot;' + $duserSearchString + '&quot;:'">-->
+<div class="top-buffer bot-buffer" data-bind="text: searchingString">
+</div>
 
+<div class="list-group top-buffer" data-bind="foreach: posts, visible: searchHasResults">
 
-<div class="list-group" data-bind="foreach: posts">
- 
-        <a class="searchResults list-group-item" href="#" data-bind="html: $data.body, click: $parent.getPost"></a>
-        <!--<button data-bind="click: getPost">Read post</button>-->
+    <a class="searchResults list-group-item" href="#" data-bind="click: $parent.getPost">
+        <div class="container">
+            <div class="col-lg-2">
+                <span data-bind="text: 'Score: ' + $data.score"></span>
+            </div>
+            <div class="col-lg-10">
+                <h3 data-bind="text: $data.title"></h3>
+                <p data-bind="html: $data.body"></p>
+            </div>
+        </div>
+    </a>
 
 </div>
-<button data-bind="click: prevPage, enable: displayPrev">Prev</button>
-<button data-bind="click: nextPage, enable: displayNext">Next</button>
+<button class="btn btn-default" data-bind="click: prevPage, enable: displayPrev">Prev</button>
+<button class="btn btn-default" data-bind="click: nextPage, enable: displayNext">Next</button>

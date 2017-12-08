@@ -9,20 +9,34 @@
         var displayPrev = ko.observable(false);
         var displayNext = ko.observable(false);
         var userSearchString = ko.observable("");
+        var searchingString = ko.observable("");
+        var searchVisible = ko.observable(false);
+        var searchHasResults = ko.observable(false);
+
 
         // ------------ Search Function: ------------ //
         var search = function () {
-            dataservice.searchedPosts(userSearchString(), data => {
-                console.log("data fra search-func:", data);
-                posts.removeAll();
-                for (i = 0; i < data.data.length; i++) {
-                    posts.push(data.data[i]);
-                }
-                next = data.next;
-                prev = data.prev;
-                navPage();
-                currentState = data;
-            });
+            dataservice.searchedPosts(userSearchString(),
+                data => {
+                    if (data === "error") {
+                        console.log("error");
+                        searchHasResults(false);
+                        this.searchingString('No search result');
+                    }
+                    else {
+                        console.log("data fra search-func:", data);
+                        posts.removeAll();
+                        for (i = 0; i < data.data.length; i++) {
+                            posts.push(data.data[i]);
+                        }
+                        next = data.next;
+                        prev = data.prev;
+                        navPage();
+                        currentState = data;
+                        searchHasResults(true);
+                        this.searchingString('Search result of "' + userSearchString() + '"');
+                    }
+                })
         }
 
         var searchFromFrontPageOrNav = function (searchString) {
@@ -43,6 +57,8 @@
         var navPage = function (data) {
             next === null ? displayNext(false) : displayNext(true);
             prev === null ? displayPrev(false) : displayPrev(true);
+            $('html,body').animate({ scrollTop: 120 }, 300);
+            searchVisible(true);
         }
 
         var nextPage = function () {
@@ -80,7 +96,7 @@
 
         // ------------ Control state: ------------ //
         console.log("params fra posts;", params);
-        
+
         if (params.fp_msg) {
             searchFromFrontPageOrNav(params.fp_msg);
         } else if (params.nav_msg) {
@@ -109,7 +125,10 @@
             getPost,
             currentState,
             userSearchString,
-            searchFromFrontPageOrNav
+            searchFromFrontPageOrNav,
+            searchVisible,
+            searchingString,
+            searchHasResults
         };
 
     }

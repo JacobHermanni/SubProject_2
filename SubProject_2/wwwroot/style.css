@@ -3,7 +3,15 @@
 }
 
 .searchResults {
-    max-height: 150px;
+    max-height: 190px;
     overflow: hidden;
     margin-bottom: 2em;
+}
+
+.top-buffer {
+    margin-top: 20px;
+}
+
+.bot-buffer {
+    margin-top: 20px;
 }

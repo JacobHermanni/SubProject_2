@@ -27,4 +27,7 @@
     <ProjectReference Include="..\DAL\DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="wwwroot\js\components\searchHistory\EmptyHTMLFile.html" />
+  </ItemGroup>
 </Project>

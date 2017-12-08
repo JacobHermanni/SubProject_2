@@ -60,7 +60,6 @@
         });
     }
 
-
     return {
         searchedPosts,
         changePage,

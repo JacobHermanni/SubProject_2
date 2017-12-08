@@ -1,14 +1,11 @@
 ﻿<h1 <b data-bind="text: postTitle"></h1>
 
-<p>Score:<b data-bind="text: score"></b></p>
+<p>Score: <b data-bind="text: score"></b></p>
+<p>User display name: <b data-bind="text: user_display_name"></b></p>
+<p>User id: <b data-bind="text:user_id"></b></p>
+<p>CreationDate: <b data-bind="text:creationDate"></b></p>
 
-<p>User display name:<b data-bind="text: user_display_name"></b></p>
-
-<p>User id:<b data-bind="text:user_id"></b></p>
-
-<p>CreationDate:<b data-bind="text:creationDate"></b></p>
-
-<div data-bind="html: body"></div> <!--Body:-->
+<div data-bind="html: body"></div> <!--Body-->
 
 
 <ul data-bind="foreach: comments">
@@ -17,13 +14,16 @@
     </li>
 </ul>
 
-<ul data-bind="foreach: answers">
+
+<ul data-bind="foreach: test">
      <li>
-        <p data-bind="html: $data.body"></p>
-        <p>Answers Creation date: <b data-bind="text: $data.creation_date"></b></p>
-        <p>Answers score: <b data-bind="text: $data.score"></b></p>
+         <p>Answer user display name: <b data-bind="text: $data.user_display_name"></b></p>
+         <p>Answer score: <b data-bind="text: $data.score"></b></p>
+         <p>Answer creationDate: <b data-bind="text: $data.creation_date"></b></p>
+         <p data-bind="html: $data.body"></p>
      </li>
 </ul>
 
-
+<button data-bind="click: getPrev">Prev</button>
 <button data-bind="click: back">back</button>
+<button data-bind="click: getNext">Next</button>

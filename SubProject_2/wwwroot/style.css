@@ -63,4 +63,9 @@
 .favoritePage .dataCol {
     cursor: pointer;
 }
+
+/* -- MODAL --*/
+#commentModal .noteTimeStamp {
+    float: left;
+}
 /* --- END FAVORITE-PAGE --- */

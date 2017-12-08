@@ -40,13 +40,15 @@
                     <h4 class="modal-title">Your note</h4>
                 </div>
                 <div class="modal-body">
-                    <p> her </p>
-
-
-                    <p>Some text in the modal.</p>
+                    <h4 data-bind="text: noteBody"></h4>
                 </div>
                 <div class="modal-footer">
+                    <div class="noteTimeStamp">
+                        <span>This note was created:</span>
+                        <p data-bind="text: noteTime"></p>
+                    </div>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default">Edit</button>
                 </div>
             </div>
 

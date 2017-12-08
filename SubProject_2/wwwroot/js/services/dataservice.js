@@ -61,13 +61,21 @@
         });
     }
 
+    var getNote = function (fav_id, callback) {
+        $.getJSON("http://localhost:5001/api/favorite/note/" + fav_id, function (data) {
+            console.log("got note:", data);
+            callback(data);
+        });
+    }
+
     return {
         searchedPosts,
         changePage,
         getQuestion,
         getAnswers,
         getFavorites,
-        getHistory
+        getHistory,
+        getNote
     };
 
 });

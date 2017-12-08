@@ -6,6 +6,9 @@
         var displayPrev = ko.observable(false);
         var displayNext = ko.observable(false);
 
+        var noteBody = ko.observable();
+        var noteTime = ko.observable();
+
         // ------------ Find favorites self-invoking function: ------------ //
         var findFavorites = (function () {
             dataservice.getFavorites( data => {
@@ -56,8 +59,11 @@
             bc.publish(bc.events.changeView, { name: "single-post", data: this });
         }
 
-        var getNote = function () {
-            
+        var getNote = function (favorite) {
+            dataservice.getNote(favorite.favorite_id, data => {
+                 noteBody(data.body);
+                 noteTime(data.created_timestamp);
+            });
         }
 
         return {
@@ -67,7 +73,9 @@
             displayNext,
             displayPrev,
             getPost,
-            getNote
+            getNote,
+            noteBody,
+            noteTime
         };
 
     }

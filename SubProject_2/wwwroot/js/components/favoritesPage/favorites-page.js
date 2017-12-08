@@ -1,4 +1,4 @@
-﻿define(['knockout', 'broadcaster', 'dataservice'], function (ko, bc, dataservice) {
+﻿define(['knockout', 'broadcaster', 'dataservice', 'bootstrap'], function (ko, bc, dataservice, bootstrap) {
     return function (params) {
 
 
@@ -56,13 +56,18 @@
             bc.publish(bc.events.changeView, { name: "single-post", data: this });
         }
 
+        var readNote = function () {
+            
+        }
+
         return {
             favorites,
             nextPage,
             prevPage,
             displayNext,
             displayPrev,
-            getPost
+            getPost,
+            readNote
         };
 
     }

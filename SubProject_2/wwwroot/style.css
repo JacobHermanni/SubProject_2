@@ -1,4 +1,4 @@
-﻿h1 {
+h1 {
     text-align: center;
 }
 
@@ -8,10 +8,22 @@
     margin-bottom: 2em;
 }
 
+<<<<<<< HEAD
 .container .inputSearch {
     padding-left: 0;
 }
 
+=======
+.top-buffer {
+    margin-top: 20px;
+}
+
+.bot-buffer {
+    margin-top: 20px;
+}
+
+/* --- STYLE SPECIFIC FOR FRONT-PAGE --- */
+>>>>>>> f5fbea1... implemented a modal for notes on the favorite page
 .frontPage {
     text-align: center;
     height: 70vh;
@@ -26,11 +38,15 @@
     border: none;
     border-bottom: 1px solid;
 }
+/* --- END FRONT-PAGE --- */
 
-.top-buffer {
-    margin-top: 20px;
+
+/* --- STYLE SPECIFIC FOR FAVORITE-PAGE --- */
+.favoritePage .commentBtn {
+    width: 100%;
 }
 
+<<<<<<< HEAD
 .bot-buffer {
     margin-bottom: 20px;
 }
@@ -46,3 +62,14 @@
 .posts .datacol {
     cursor: pointer;
 }
+=======
+.favoritePage .commentCol {
+    text-align: center;
+}
+
+.favoritePage .dataCol {
+    cursor: pointer;
+}
+
+/* --- END FAVORITE-PAGE --- */
+>>>>>>> f5fbea1... implemented a modal for notes on the favorite page

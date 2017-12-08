@@ -95,7 +95,8 @@ namespace WebService
                     url = Url.Link(nameof(GetPost), new { id = x.post_id }),
                     post_id = x.post_id,
                     parent_id = x.parent_id,
-                    title = x.title
+                    title = x.title,
+                    creation_date = x.creation_date
 
                 }).ToList();
 

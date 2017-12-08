@@ -19,6 +19,8 @@ namespace DAL.Models
 
         public int? parent_id { get; set; }
 
+        public DateTime creation_date { get; set; }
+
         [NotMapped]
         public string title { get; set; }
     }

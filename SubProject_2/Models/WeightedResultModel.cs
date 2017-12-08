@@ -20,5 +20,7 @@ namespace WebService.Models
         public int? parent_id { get; set; }
 
         public string title { get; set; }
+
+        public DateTime creation_date { get; set; }
     }
 }

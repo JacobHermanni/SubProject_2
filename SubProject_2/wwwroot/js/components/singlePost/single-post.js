@@ -10,6 +10,8 @@
         var comments = ko.observable();
         var answers = ko.observable();
         var test = ko.observable();
+        var displayPrev = ko.observable(false);
+        var displayNext = ko.observable(false);
 
 
         var getQuestion = (function () {
@@ -27,6 +29,10 @@
             })
         })();
 
+         var navPage = function (data) {
+            next === null || undefined ? displayNext(false) : displayNext(true);
+            prev === null || undefined ? displayPrev(false) : displayPrev(true);
+        }
 
         var getAnswers = function (url) {
             dataservice.getAnswers(url, data => {
@@ -34,6 +40,7 @@
             next = data.next;
             prev = data.prev;
             console.log("mit link", prev);
+            navPage();
             });
         }
 
@@ -42,6 +49,7 @@
             test (data.answers);
             next = data.next;
             prev = data.prev;
+            navPage();
             });
         }
 
@@ -50,6 +58,7 @@
             test (data.answers);
             prev = data.prev;
             next = data.next;
+            navPage();
             });
         }
 
@@ -72,6 +81,8 @@
             test,
             getNext,
             getPrev,
+            displayNext,
+            displayPrev,
             back
 
         };

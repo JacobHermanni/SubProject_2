@@ -11,7 +11,7 @@
         var userSearchString = ko.observable("");
         var searchingString = ko.observable("");
         var searchHasResults = ko.observable(true);
-
+        var showSearch = ko.observable(false);
 
         // ------------ Search Function: ------------ //
         var search = function () {
@@ -20,7 +20,7 @@
                     if (data.data[0].body === "No search result") {
                         console.log("No search result from dataservice");
                         searchHasResults(false);
-                        searchingString(data.body);
+                        searchingString(data.data[0].body);
                     } else {
                         console.log("data fra search-func:", data);
                         posts.removeAll();
@@ -35,23 +35,9 @@
                         searchingString('Search result of "' + userSearchString() + '"');
                     }
                 });
+            showSearch(true);
             bc.publish(bc.events.changeData, { search_string: userSearchString() });
         }
-
-        //var searchFromFrontPageOrNav = function (searchString) {
-        //    userSearchString(searchString);
-        //    dataservice.searchedPosts(searchString, data => {
-        //        // console.log("data fra navOrFront-search-func:", data);
-        //        posts.removeAll();
-        //        for (i = 0; i < data.data.length; i++) {
-        //            posts.push(data.data[i]);
-        //        }
-        //        next = data.next;
-        //        prev = data.prev;
-        //        navPage();
-        //        currentState = data;
-        //    });
-        //}
 
         // ------------ Page Navigation: ------------ //
         var navPage = function (data) {
@@ -101,12 +87,12 @@
             userSearchString(params.fp_msg);
             search();
         } 
-        else if (params.nav_msg || params.nav_msg === "")
-        {
+        else if (params.nav_msg || params.nav_msg === "") {
+            console.log(params.nav_msg);
             userSearchString(params.nav_msg);
             search();
         }
-        else if (params != null)
+        else if (!jQuery.isEmptyObject(params))
         {
             posts.removeAll();
             for (i = 0; i < params.data.length; i++) {
@@ -116,6 +102,8 @@
             prev = null;
             navPage();
             currentState = params;
+            searchHasResults(true);
+            searchingString('Search result of "' + userSearchString() + '"');
         }
 
         return {
@@ -130,7 +118,8 @@
             currentState,
             userSearchString,
             searchingString,
-            searchHasResults
+            searchHasResults,
+            showSearch
         };
 
     }

@@ -88,13 +88,13 @@ require(["knockout", "jQuery", "broadcaster"], function (ko, jQuery, broadcaster
                     }
 
                     if (viewInfo.fp_msg || viewInfo.fp_msg === "") {
-                        // console.log("coming from fp_msg", viewInfo.fp_msg);
-                        currentParams({ fp_msg : viewInfo.fp_msg });
+                        console.log("coming from fp_msg", viewInfo.fp_msg);
+                        currentParams({ fp_msg: viewInfo.fp_msg });
                     }
 
                     if (viewInfo.nav_msg || viewInfo.nav_msg === "") {
-                        // console.log("coming from nav_msg", viewInfo.nav_msg);
-                        currentParams({ nav_msg : viewInfo.nav_msg });
+                        console.log("coming from nav_msg", viewInfo.nav_msg);
+                        currentParams({ nav_msg: viewInfo.nav_msg });
                     }
 
                     if (viewInfo === null || viewInfo === undefined) {

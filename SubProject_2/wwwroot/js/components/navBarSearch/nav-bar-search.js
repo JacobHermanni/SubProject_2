@@ -33,7 +33,7 @@
         var changeView = function(menu) {
             navBarView(menu.view);
             console.log("nav-view:", navBarView());
-            bc.publish(bc.events.changeView, { name: navBarView(), nav_msg: navSearchString() });
+            bc.publish(bc.events.changeView, { name: navBarView()});
         }
 
 

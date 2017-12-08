@@ -8,6 +8,10 @@
     margin-bottom: 2em;
 }
 
+.container .inputSearch {
+    padding-left: 0;
+}
+
 .frontPage {
     text-align: center;
     height: 70vh;
@@ -28,5 +32,13 @@
 }
 
 .bot-buffer {
-    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.right-buffer {
+    margin-right: 20px;
+}
+
+.left-buffer {
+    margin-left: 20px;
 }

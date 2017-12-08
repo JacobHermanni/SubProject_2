@@ -32,6 +32,7 @@
          var navPage = function (data) {
             next === null || undefined ? displayNext(false) : displayNext(true);
             prev === null || undefined ? displayPrev(false) : displayPrev(true);
+            $('html,body').animate({ scrollTop: 120 }, 300);
         }
 
         var getAnswers = function (url) {

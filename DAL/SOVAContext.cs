@@ -49,11 +49,8 @@ namespace DAL
                 "server=localhost;" +
                 "database=SOVA;" +
                 "uid=root;" +
-<<<<<<< HEAD
-                "pwd=theis9953;"
-=======
                 "pwd=Arsenal05;"
->>>>>>> f94e7e5... Single-post Next Prev button
+
 
             );
         }

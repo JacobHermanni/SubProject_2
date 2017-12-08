@@ -1,7 +1,19 @@
 ﻿<h1>Your Favorites</h1>
 
-<div class="list-group" data-bind="foreach: favorites">
-    <a class="searchResults list-group-item" href="#" data-bind="html: $data.body"></a>
+<div class="list-group top-buffer" data-bind="foreach: favorites">
+
+    <a class="searchResults list-group-item" href="#" data-bind="click: $parent.getPost">
+        <div class="container">
+            <div class="col-lg-2">
+                <span data-bind="text: 'Score: ' + $data.score"></span>
+            </div>
+            <div class="col-lg-10 col-sm-11 col-xs-12">
+                <h3 data-bind="text: $data.title"></h3>
+                <p data-bind="html: $data.body"></p>
+            </div>
+        </div>
+    </a>
+
 </div>
 <button data-bind="click: prevPage, enable: displayPrev">Prev</button>
 <button data-bind="click: nextPage, enable: displayNext">Next</button>

@@ -24,7 +24,6 @@
                 comments(data.comments);
                 answers(data.question);
                 getAnswers(data.question.answersUrl);
-             
             })
         })();
 

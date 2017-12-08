@@ -51,12 +51,18 @@
             });
         }
 
+        // ------------ Get individual post: ------------ //
+        var getPost = function () {
+            bc.publish(bc.events.changeView, { name: "single-post", data: this });
+        }
+
         return {
             favorites,
             nextPage,
             prevPage,
             displayNext,
-            displayPrev
+            displayPrev,
+            getPost
         };
 
     }

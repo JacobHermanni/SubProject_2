@@ -1,7 +1,6 @@
 ﻿<h1>Post Search</h1>
 
 
-
 <h3> Search: </h3>
 <form data-bind="submit: search">
     <div class="container inputSearch">
@@ -11,21 +10,29 @@
 </form>
 <div class="top-buffer bot-buffer" data-bind="text: searchingString, visible: showSearch">
 </div>
+<div class="posts" data-bind="visible: searchHasResults">
+    <span data-bind="text: 'Matches: ' + totalPosts()"></span><br />
+    <span data-bind="text: 'Pages: ' + totalPages()"></span><br />
+    <span data-bind="text: 'Current page: ' + currentPage()"></span><br />
 
-<div class="list-group top-buffer" data-bind="foreach: posts, visible: searchHasResults">
-
-    <a class="searchResults list-group-item" href="#" data-bind="click: $parent.getPost">
-        <div class="container">
-            <div class="col-sm-2 top-buffer">
-                <span data-bind="text: 'Score: ' + $data.score"></span>
+    <div id="searchList" class="list-group top-buffer" data-bind="foreach: posts">
+        <a class="searchResults list-group-item">
+            <div class="container">
+                <div class="col-sm-2 top-buffer">
+                    <strong>Score</strong> <br />
+                    <span data-bind="text: $data.score"></span><br /><br />
+                    <strong>Created</strong><br />
+                    <button data-bind="click: $parent.favTest, text: 'lets try favorites!'"></button>
+                    <span data-bind="text: $data.formatted_date"></span>
+                </div>
+                <div class="col-sm-8 datacol" data-bind="click: $parent.getPost">
+                    <h3 data-bind="text: $data.title"></h3>
+                    <p data-bind="html: $data.body"></p>
+                </div>
             </div>
-            <div class="col-sm-8 ">
-                <h3 data-bind="text: $data.title"></h3>
-                <p data-bind="html: $data.body"></p>
-            </div>
-        </div>
-    </a>
+        </a>
 
+    </div>
+    <button class="btn btn-default" data-bind="click: prevPage, enable: displayPrev">Prev</button>
+    <button class="btn btn-default" data-bind="click: nextPage, enable: displayNext">Next</button>
 </div>
-<button class="btn btn-default" data-bind="click: prevPage, enable: displayPrev">Prev</button>
-<button class="btn btn-default" data-bind="click: nextPage, enable: displayNext">Next</button>

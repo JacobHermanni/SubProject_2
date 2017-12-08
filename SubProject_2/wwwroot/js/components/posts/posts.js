@@ -10,8 +10,11 @@
         var displayNext = ko.observable(false);
         var userSearchString = ko.observable("");
         var searchingString = ko.observable("");
-        var searchHasResults = ko.observable(true);
+        var searchHasResults = ko.observable(false);
         var showSearch = ko.observable(false);
+        var currentPage = ko.observable();
+        var totalPages = ko.observable();
+        var totalPosts = ko.observable();
 
         // ------------ Search Function: ------------ //
         var search = function () {
@@ -33,6 +36,9 @@
                         currentState = data;
                         searchHasResults(true);
                         searchingString('Search result of "' + userSearchString() + '"');
+                        currentPage((data.page) +1);
+                        totalPages(data.pages);
+                        totalPosts(data.total);
                     }
                 });
             showSearch(true);
@@ -55,6 +61,7 @@
                 }
                 next = data.next;
                 prev = data.prev;
+                currentPage((data.page) + 1);
                 navPage();
             });
         }
@@ -68,6 +75,7 @@
                 }
                 next = data.next;
                 prev = data.prev;
+                currentPage((data.page) + 1);
                 navPage();
             });
         }
@@ -81,19 +89,17 @@
 
         // ------------ Control state: ------------ //
         // console.log("params fra posts;", params);
-        
-        if (params.fp_msg || params.fp_msg === "")
-        {
+
+        if (params.fp_msg || params.fp_msg === "") {
             userSearchString(params.fp_msg);
             search();
-        } 
+        }
         else if (params.nav_msg || params.nav_msg === "") {
             console.log(params.nav_msg);
             userSearchString(params.nav_msg);
             search();
         }
-        else if (!jQuery.isEmptyObject(params))
-        {
+        else if (!jQuery.isEmptyObject(params)) {
             posts.removeAll();
             for (i = 0; i < params.data.length; i++) {
                 posts.push(params.data[i]);
@@ -104,7 +110,23 @@
             currentState = params;
             searchHasResults(true);
             searchingString('Search result of "' + userSearchString() + '"');
+            currentPage(params.data.page);
+            totalPages(params.data.pages);
+            totalPosts(params.data.total);
         }
+
+        var favTest = function() {
+            console.log("kommer favTest igennem??", this);
+        }
+
+        var favorites;
+
+        var getFavorites = function () {
+            dataservice.getFavorites(data => {
+                console.log("data from favorites: ", data.data);
+                favorites = data.data;
+            });
+        }();
 
         return {
             posts,
@@ -119,7 +141,11 @@
             userSearchString,
             searchingString,
             searchHasResults,
-            showSearch
+            showSearch,
+            currentPage,
+            totalPages,
+            totalPosts,
+            favTest
         };
 
     }

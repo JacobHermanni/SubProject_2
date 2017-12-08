@@ -42,3 +42,7 @@
 .left-buffer {
     margin-left: 20px;
 }
+
+.posts .datacol {
+    cursor: pointer;
+}

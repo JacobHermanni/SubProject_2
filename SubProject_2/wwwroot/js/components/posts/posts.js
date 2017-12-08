@@ -15,6 +15,7 @@
         var currentPage = ko.observable();
         var totalPages = ko.observable();
         var totalPosts = ko.observable();
+        var showFavorite = ko.observable(false);
 
         // ------------ Search Function: ------------ //
         var search = function () {
@@ -117,10 +118,20 @@
 
         var favTest = function() {
             console.log("kommer favTest igennem??", this);
+            var show = false;
+            for (var i = 0; i < favorites.length; i++) {
+                if (favorites[i].post_id == this.post_id) {
+                    show = true;
+                    break;
+                }
+            }
+            return show;
         }
 
         var favorites;
 
+
+        // Get favorites every pageload to check if results are on list
         var getFavorites = function () {
             dataservice.getFavorites(data => {
                 console.log("data from favorites: ", data.data);
@@ -145,7 +156,8 @@
             currentPage,
             totalPages,
             totalPosts,
-            favTest
+            favTest,
+            getFavorites
         };
 
     }

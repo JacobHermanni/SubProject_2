@@ -22,7 +22,7 @@
                     <strong>Score</strong> <br />
                     <span data-bind="text: $data.score"></span><br /><br />
                     <strong>Created</strong><br />
-                    <button data-bind="click: $parent.favTest, text: 'lets try favorites!'"></button>
+                    <button data-bind="click: $parent.favTest, text: 'lets try favorites!', visible: $parent.favTest"></button>
                     <span data-bind="text: $data.formatted_date"></span>
                 </div>
                 <div class="col-sm-8 datacol" data-bind="click: $parent.getPost">

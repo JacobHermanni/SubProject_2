@@ -1,32 +1,50 @@
 ﻿<h1 <b data-bind="text: postTitle"></h1>
 
-<p>Score: <b data-bind="text: score"></b></p>
-<p>User display name: <b data-bind="text: user_display_name"></b></p>
-<p>User id: <b data-bind="text:user_id"></b></p>
-<p>CreationDate: <b data-bind="text:creationDate"></b></p>
+<br/>
 
-<div data-bind="html: body"></div> <!--Body-->
+<div class="jumbotron" "col-sm-6 col-sm-offset-3">
+    <p class="lead">
+        <p>Score: <b data-bind="text: score"></b></p>
+        <p>User display name: <b data-bind="text: user_display_name"></b></p>
+        <p>User id: <b data-bind="text:user_id"></b></p>
+        <p>CreationDate: <b data-bind="text:creationDate"></b></p>
 
-
-<ul data-bind="foreach: comments">
-    <li>
-        <p data-bind="text: $data.comment_text"></p>
-    </li>
-</ul>
-
-
-<ul data-bind="foreach: test">
-     <li>
-         <p>Answer user display name: <b data-bind="text: $data.user_display_name"></b></p>
-         <p>Answer score: <b data-bind="text: $data.score"></b></p>
-         <p>Answer creationDate: <b data-bind="text: $data.creation_date"></b></p>
-         <p data-bind="html: $data.body"></p>
-     </li>
-</ul>
-
-<button data-bind="click: back">back</button>
-<button data-bind="click: getPrev, enable: displayPrev">Prev</button>
-<button data-bind="click: getNext, enable: displayNext">Next</button>
+        <div data-bind="html: body"></div> <!--Body--> 
+    </p>        
+</div>
 
 
-/* git er noget lort */
+<div "col-sm-6 col-sm-offset-3">
+    <h3> Posts comments </h3>
+    <p class="lead" "col-sm-6 col-sm-offset-3">
+    <p Comments> </p>
+    <ul data-bind="foreach: comments">
+        <li>
+            <p data-bind="text: $data.comment_text"></p>
+        </li>
+    </ul>
+    </p>
+</div>
+
+<br/>
+ 
+<div "col-sm-6 col-sm-offset-3">
+    <h3> Posts answers </h3>
+    <ul data-bind="foreach: test">
+    <br/>
+    <div class="list-group top-buffer" "col-sm-6 col-sm-offset-3" ">
+    <a class="searchResultsSinglePost list-group-item">
+        <div>
+            <p>Answer user display name: <b data-bind="text: $data.user_display_name"></b></p>
+            <p>Answer score: <b data-bind="text: $data.score"></b></p>
+            <p>Answer creationDate: <b data-bind="text: $data.creation_date"></b></p>
+            <p data-bind="html: $data.body"></p>
+        </div>
+     </a>
+     </ul>      
+</div>
+
+
+<button class="btn btn-default" data-bind="click: getPrev, enable: displayPrev">Prev</button>
+<!--<button class="btn btn-default" data-bind="click: back">back</button>-->
+<button class="btn btn-default" data-bind="click: getNext, enable: displayNext">Next</button>

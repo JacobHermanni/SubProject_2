@@ -66,6 +66,14 @@
             });
         }
 
+        var editNote = function () {
+            console.log("ok nu skal der altså ske noget");
+        }
+
+        var createNote = function() {
+            console.log("wanting to create note");
+        }
+
         return {
             favorites,
             nextPage,
@@ -75,7 +83,9 @@
             getPost,
             getNote,
             noteBody,
-            noteTime
+            noteTime,
+            editNote,
+            createNote
         };
 
     }

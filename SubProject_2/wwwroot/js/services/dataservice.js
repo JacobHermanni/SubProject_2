@@ -68,6 +68,21 @@
         });
     }
 
+    var postNote = function (fav_id, noteString, callback) {
+        
+        var jsonData = JSON.stringify({favorite_id: fav_id, body: noteString});
+
+        $.ajax("http://localhost:5001/api/favorite/note/", {
+            data : jsonData,
+            contentType : 'application/json',
+            type : 'POST',
+            success: function(){
+                console.log("succesfully created a note");
+            }
+        });
+
+    }
+
     return {
         searchedPosts,
         changePage,
@@ -75,7 +90,8 @@
         getAnswers,
         getFavorites,
         getHistory,
-        getNote
+        getNote,
+        postNote
     };
 
 });

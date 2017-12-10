@@ -9,8 +9,10 @@
         var noteBody = ko.observable();
         var noteTime = ko.observable();
 
-        // ------------ Find favorites self-invoking function: ------------ //
-        var findFavorites = (function () {
+        var newNoteBody = ko.observable("");
+
+        // ------------ Find favorites function: ------------ //
+        var findFavorites = function () {
             dataservice.getFavorites( data => {
                 favorites.removeAll();
                 for (i = 0; i < data.data.length; i++) {
@@ -20,7 +22,9 @@
                 prev = data.prev;
                 navPage();
             });
-        })();
+        };
+
+        findFavorites();
 
         // ------------ Page Navigation: ------------ //
         var navPage = function (data) {
@@ -70,8 +74,22 @@
             console.log("ok nu skal der altså ske noget");
         }
 
+        var tempFavId;
+
+        var getFavId = function(favorite) {
+            tempFavId = favorite.favorite_id;
+            console.log("tempFavID:", tempFavId);
+        }
+
         var createNote = function() {
-            console.log("wanting to create note");
+            // console.log("we are going to create a note");
+            // console.log("wiv this bod:", newNoteBody());
+            // console.log("wiv this fav_id:", tempFavId);
+
+            dataservice.postNote(tempFavId, newNoteBody(), data => {
+                
+            });
+            findFavorites();
         }
 
         return {
@@ -85,7 +103,9 @@
             noteBody,
             noteTime,
             editNote,
-            createNote
+            createNote,
+            newNoteBody,
+            getFavId
         };
 
     }

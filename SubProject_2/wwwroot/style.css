@@ -52,11 +52,11 @@
 
 
 /* --- STYLE SPECIFIC FOR FAVORITE-PAGE --- */
-.favoritePage .commentBtn {
+.favoritePage .noteBtn {
     width: 100%;
 }
 
-.favoritePage .commentCol {
+.favoritePage .noteCol {
     text-align: center;
 }
 
@@ -65,7 +65,11 @@
 }
 
 /* -- MODAL --*/
-#commentModal .noteTimeStamp {
+#noteModal .noteTimeStamp {
+    float: left;
+}
+
+#editNoteModal .createNew {
     float: left;
 }
 /* --- END FAVORITE-PAGE --- */

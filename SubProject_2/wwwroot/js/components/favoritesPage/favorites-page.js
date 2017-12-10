@@ -10,6 +10,10 @@
         var noteTime = ko.observable();
 
         var newNoteBody = ko.observable("");
+        var displayNewSave = ko.observable(false);
+        var displayNormalSave = ko.observable(true);
+
+        var displayOptions = ko.observable(false);
 
         // ------------ Find favorites function: ------------ //
         var findFavorites = function () {
@@ -59,6 +63,29 @@
         }
 
         // ------------ Get individual post: ------------ //
+        var tempFavId;
+
+        var resetNewNote = function() {
+            newNoteBody("");
+            displayNewSave(false);
+        }
+
+        var bool = false;
+        var showOptions = function () {
+            if (bool == false) {
+                bool = true;
+                displayOptions(true);
+            } else {
+                bool = false;
+                displayOptions(false);
+            }
+        }
+
+        var getFavId = function(favorite) {
+            tempFavId = favorite.favorite_id;
+            console.log("tempFavID:", tempFavId);
+        }
+
         var getPost = function () {
             bc.publish(bc.events.changeView, { name: "single-post", data: this });
         }
@@ -68,27 +95,29 @@
                  noteBody(data.body);
                  noteTime(data.created_timestamp);
             });
+            getFavId(favorite);
         }
 
         var editNote = function () {
-            console.log("ok nu skal der altså ske noget");
+            displayNewSave(true);
+            displayNormalSave(false);
+            dataservice.getNote(tempFavId, data => {
+                 newNoteBody(data.body);
+            });
         }
 
-        var tempFavId;
-
-        var getFavId = function(favorite) {
-            tempFavId = favorite.favorite_id;
-            console.log("tempFavID:", tempFavId);
+        var updateNote = function () {
+            dataservice.putNote(tempFavId, newNoteBody());
+            resetNewNote();
         }
 
         var createNote = function() {
-            // console.log("we are going to create a note");
-            // console.log("wiv this bod:", newNoteBody());
-            // console.log("wiv this fav_id:", tempFavId);
+            dataservice.postNote(tempFavId, newNoteBody());
+            findFavorites();
+        }
 
-            dataservice.postNote(tempFavId, newNoteBody(), data => {
-                
-            });
+        var deleteNote = function () {
+            dataservice.deleteNote(tempFavId);
             findFavorites();
         }
 
@@ -105,7 +134,14 @@
             editNote,
             createNote,
             newNoteBody,
-            getFavId
+            getFavId,
+            deleteNote,
+            updateNote,
+            resetNewNote,
+            displayNewSave,
+            displayNormalSave,
+            showOptions,
+            displayOptions
         };
 
     }

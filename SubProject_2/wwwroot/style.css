@@ -73,6 +73,10 @@
     float: left;
 }
 
+#noteModal .options {
+    float: left;
+}
+
 #editNoteModal .createNew {
     float: left;
 }

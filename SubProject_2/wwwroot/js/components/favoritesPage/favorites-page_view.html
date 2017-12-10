@@ -47,7 +47,14 @@
                     <h4 data-bind="text: noteBody"></h4>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-bind="click: editNote" class="btn btn-default">Edit</button>
+                    <div class="options" data-bind="visible: displayOptions">
+                        <button type="button" data-bind="click: deleteNote" class="btn btn-default" data-dismiss="modal">Delete Note</button>
+                        <button type="button" data-bind="click: editNote" data-dismiss="modal" data-toggle="modal" data-target="#editNoteModal" class="btn btn-default">Edit Note</button>
+                    </div>
+                    <button data-bind="click: showOptions" type="button" class="btn btn-default btn-md optionsWheel">
+                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                    </button>
+
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -60,19 +67,20 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <div class="createNew">
-                        <p>Create a new note</p>
+                        <p>Note</p>
                     </div>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="comment">What do you want to add?</label>
+                        <label for="comment">What do you wish to add?</label>
                         <textarea data-bind="textInput: newNoteBody" class="form-control" rows="5" id="comment"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-bind="click: createNote" class="btn btn-default" data-dismiss="modal">Save</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" data-bind="visible: displayNormalSave, click: createNote" class="btn btn-default" data-dismiss="modal">Save</button>
+                    <button type="button" data-bind="visible: displayNewSave, click: updateNote" class="btn btn-default" data-dismiss="modal">Save (update) </button>
+                    <button type="button" class="btn btn-default" data-bind="click: resetNewNote" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@
 
         var searched = function() {
             bc.publish(bc.events.changeView, { name: "all-posts", fp_msg: fpSearchString()} );
-           /* bc.publish(bc.events.changeData, { search_string: fpSearchString() });*/
+            bc.publish(bc.events.changeData, { search_string: fpSearchString() });
         }
 
         return {

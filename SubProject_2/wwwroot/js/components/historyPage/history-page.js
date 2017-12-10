@@ -9,6 +9,12 @@
         var historyTimestamp = ko.observable();
         var historyUrl = ko.observable();
 
+       
+
+        var test = ko.observable();
+
+
+
 
         var getHistory = (function () {
         dataservice.getQuestion(params.url, data => {
@@ -33,6 +39,29 @@
                 navPage();
             });
         })();
+
+          var getAnswers = function (url) {
+            dataservice.getAnswers(url, data => {
+            test (data.answers);
+            navPage();
+            });
+        }
+
+        var fpSearchString = ko.observable();
+        fpSearchString(searchString());
+
+        var searched = function() {
+
+            console.log(searchString());
+            console.log(this.search_string);
+            
+            bc.publish(bc.events.changeView, { name: "all-posts", fp_msg: this.search_string} );
+            bc.publish(bc.events.changeData, { search_string: fpSearchString() });
+
+
+           $('html').animate({ scrollTop: 120 }, 300)
+        }
+
 
 
 
@@ -87,7 +116,11 @@
             historyID,
             searchString,
             historyTimestamp,
-            historyUrl
+            historyUrl,
+            searched,   
+            fpSearchString,
+            test,
+            getAnswers
 
         };
 

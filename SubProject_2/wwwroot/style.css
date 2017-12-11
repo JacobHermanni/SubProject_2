@@ -7,11 +7,36 @@
     overflow: hidden;
     margin-bottom: 2em;
 }
+.searchResultsSinglePost {
+    
+}
+
 
 .container .inputSearch {
     padding-left: 0;
 }
 
+.top-buffer {
+    margin-top: 20px;
+}
+
+.bot-buffer {
+    margin-top: 20px;
+}
+
+.right-buffer {
+    margin-right: 20px;
+}
+
+.left-buffer {
+    margin-left: 20px;
+}
+
+.posts .datacol {
+    cursor: pointer;
+}
+
+/* --- STYLE SPECIFIC FOR FRONT-PAGE --- */
 .frontPage {
     text-align: center;
     height: 70vh;
@@ -26,25 +51,34 @@
     border: none;
     border-bottom: 1px solid;
 }
+/* --- END FRONT-PAGE --- */
 
-.top-buffer {
-    margin-top: 20px;
+
+
+/* --- STYLE SPECIFIC FOR FAVORITE-PAGE --- */
+.favoritePage .noteBtn {
+    width: 100%;
 }
 
-.bot-buffer {
-    margin-bottom: 20px;
+.favoritePage .noteCol {
+    text-align: center;
 }
 
-.right-buffer {
-    margin-right: 20px;
-}
-
-.left-buffer {
-    margin-left: 20px;
-}
-
-.posts .datacol {
+.favoritePage .dataCol {
     cursor: pointer;
+}
+
+/* -- MODAL --*/
+#noteModal .noteTimeStamp {
+    float: left;
+}
+
+#noteModal .options {
+    float: left;
+}
+
+#editNoteModal .createNew {
+    float: left;
 }
 
 .favoritestar {

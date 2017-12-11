@@ -5,7 +5,8 @@ require.config({
         "knockout": "lib/knockout/dist/knockout",
         "text": "lib/text/text",
         "broadcaster": "services/broadcaster",
-        "dataservice": "services/dataservice"
+        "dataservice": "services/dataservice",
+        "bootstrap": "lib/bootstrap/dist/js/bootstrap.min"
     }
 });
 

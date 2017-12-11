@@ -84,16 +84,60 @@
         });
     }
 
+    var getNote = function (fav_id, callback) {
+        $.getJSON("http://localhost:5001/api/favorite/note/" + fav_id, function (data) {
+            console.log("got note:", data);
+            callback(data);
+        });
+    }
+
+    var postNote = function (fav_id, noteString) {
+        var jsonData = JSON.stringify({favorite_id: fav_id, body: noteString});
+        $.ajax("http://localhost:5001/api/favorite/note/", {
+            data : jsonData,
+            contentType : 'application/json',
+            type : 'POST',
+            success: function(){
+                console.log("succesfully created a note");
+            }
+        });
+    }
+
+    var deleteNote = function (fav_id) {
+        $.ajax("http://localhost:5001/api/favorite/note/" + fav_id, {
+            type : 'DELETE',
+            success: function(){
+                console.log("succesfully deleted note on favorite with id:", fav_id);
+            }
+        });
+    }
+
+    var putNote = function (fav_id, noteString) {
+        var jsonData = JSON.stringify({favorite_id: fav_id, body: noteString});
+        $.ajax("http://localhost:5001/api/favorite/note/", {
+            data : jsonData,
+            contentType : 'application/json',
+            type : 'PUT',
+            success: function(){
+                console.log("succesfully updated a note");
+            }
+        });
+    }
+
     return {
         searchedPosts,
         changePage,
         getQuestion,
         getAnswers,
         getFavorites,
-        getHistory,
         postFavorite,
         deleteFavorite,
-        getAllFavorites
+        getAllFavorites,
+        getNote,
+        postNote,
+        deleteNote,
+        putNote,
+        getHistory
     };
 
 });

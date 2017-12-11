@@ -1,4 +1,4 @@
-﻿define(['knockout', 'broadcaster', 'dataservice'], function (ko, bc, dataservice) {
+﻿define(['knockout', 'broadcaster', 'dataservice', 'bootstrap'], function (ko, bc, dataservice, bootstrap) {
     return function (params) {
 
 
@@ -6,8 +6,17 @@
         var displayPrev = ko.observable(false);
         var displayNext = ko.observable(false);
 
-        // ------------ Find favorites self-invoking function: ------------ //
-        var findFavorites = (function () {
+        var noteBody = ko.observable();
+        var noteTime = ko.observable();
+
+        var newNoteBody = ko.observable("");
+        var displayNewSave = ko.observable(false);
+        var displayNormalSave = ko.observable(true);
+
+        var displayOptions = ko.observable(false);
+
+        // ------------ Find favorites function: ------------ //
+        var findFavorites = function () {
             dataservice.getFavorites( data => {
                 favorites.removeAll();
                 for (i = 0; i < data.data.length; i++) {
@@ -17,7 +26,9 @@
                 prev = data.prev;
                 navPage();
             });
-        })();
+        };
+
+        findFavorites();
 
         // ------------ Page Navigation: ------------ //
         var navPage = function (data) {
@@ -52,9 +63,91 @@
         }
 
         // ------------ Get individual post: ------------ //
+        var tempFavId;
+
+        var resetNewNote = function() {
+            newNoteBody("");
+            displayNewSave(false);
+        }
+
+        var visibleOptions = false;
+
+        var setOptionsFalse = function () {
+            visibleOptions = false;
+            displayOptions(false);
+        }
+
+        var showOptions = function () {
+            if (visibleOptions == false) {
+                visibleOptions = true;
+                displayOptions(true);
+            } else {
+                visibleOptions = false;
+                displayOptions(false);
+            }
+        }
+
+        var getFavId = function(favorite) {
+            tempFavId = favorite.favorite_id;
+            console.log("tempFavID:", tempFavId);
+        }
+
         var getPost = function () {
             bc.publish(bc.events.changeView, { name: "single-post", data: this });
         }
+
+        var getNote = function (favorite) {
+            dataservice.getNote(favorite.favorite_id, data => {
+                 noteBody(data.body);
+                 noteTime(data.created_timestamp);
+            });
+            getFavId(favorite);
+        }
+
+        var editNote = function () {
+            displayNewSave(true);
+            displayNormalSave(false);
+            dataservice.getNote(tempFavId, data => {
+                 newNoteBody(data.body);
+            });
+        }
+
+        var updateNote = function () {
+            dataservice.putNote(tempFavId, newNoteBody());
+            resetNewNote();
+            findFavorites();
+            setOptionsFalse();
+            displayNormalSave(true);
+        }
+
+        var createNote = function() {
+            dataservice.postNote(tempFavId, newNoteBody());
+            resetNewNote();
+            findFavorites();
+        }
+
+        var deleteNote = function () {
+            dataservice.deleteNote(tempFavId);
+            findFavorites();
+            setOptionsFalse();
+        }
+
+
+        // Here's a custom Knockout binding that makes elements shown/hidden via jQuery's fadeIn()/fadeOut() methods
+        // Could be stored in a separate utility library - snatched directly from: http://knockoutjs.com/examples/animatedTransitions.html
+        ko.bindingHandlers.fadeVisible = {
+            init: function(element, valueAccessor) {
+                // Initially set the element to be instantly visible/hidden depending on the value
+                var value = valueAccessor();
+                $(element).toggle(ko.unwrap(value)); // Use "unwrapObservable" so we can handle values that may or may not be observable
+            },
+            update: function(element, valueAccessor) {
+                // Whenever the value subsequently changes, slowly fade the element in or out
+                var value = valueAccessor();
+                ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
+            }
+        };
+
 
         return {
             favorites,
@@ -62,7 +155,22 @@
             prevPage,
             displayNext,
             displayPrev,
-            getPost
+            getPost,
+            getNote,
+            noteBody,
+            noteTime,
+            editNote,
+            createNote,
+            newNoteBody,
+            getFavId,
+            deleteNote,
+            updateNote,
+            resetNewNote,
+            displayNewSave,
+            displayNormalSave,
+            showOptions,
+            displayOptions,
+            setOptionsFalse
         };
 
     }

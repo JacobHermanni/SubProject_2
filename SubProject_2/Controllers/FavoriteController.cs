@@ -35,8 +35,6 @@ namespace WebService.Controllers
         [HttpGet(Name = nameof(GetFavorites))]
         public IActionResult GetFavorites(int page = 0, int pageSize = 25)
         {
-            CheckPageSize(ref pageSize);
-
             var postCtrl = new PostController(_dataService, _mapper);
             var noteCtrl = new NoteController(_dataService, _mapper);
 
@@ -53,7 +51,7 @@ namespace WebService.Controllers
                       accepted_answer_id = x.accepted_answer_id,
                       note = _mapper.Map<NoteModel>(x.note)
                   }).ToList();
-            
+
             // Set urls for all notes
             foreach (var favoriteListModel in favorites)
             {
@@ -82,13 +80,22 @@ namespace WebService.Controllers
             return Ok(result);
         }
 
+
+
         [HttpPost]
-        public IActionResult CreateFavorite([FromBody]int post_id)
+        public IActionResult CreateFavorite([FromBody]int postid)
         {
-            var fav = _dataService.CreateFavorite(post_id);
+            var fav = _dataService.CreateFavorite(postid);
 
             if (fav == null) return StatusCode(409);
             return Created(Url.Link(nameof(GetFavorites), null), fav);
         }
+
+        public class FavoriteDataObject
+        {
+            public int postId { get; set; }
+        }
     }
+
+
 }

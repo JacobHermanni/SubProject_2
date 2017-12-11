@@ -46,3 +46,9 @@
 .posts .datacol {
     cursor: pointer;
 }
+
+.favoritestar {
+    padding-top: 20px;
+    color: goldenrod;
+    font-size: 1.3em;
+}

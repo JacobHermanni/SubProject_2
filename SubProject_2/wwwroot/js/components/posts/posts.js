@@ -1,6 +1,7 @@
 ﻿define(['knockout', 'broadcaster', 'dataservice'], function (ko, bc, dataservice) {
     return function (params) {
 
+        self = this;
         // console.log("fra posts:", params);
 
         var posts = ko.observableArray([]);
@@ -15,7 +16,24 @@
         var currentPage = ko.observable();
         var totalPages = ko.observable();
         var totalPosts = ko.observable();
-        var showFavorite = ko.observable(false);
+        var favorites;
+
+        var getFavorites = function () {
+            dataservice.getAllFavorites(data => {
+                console.log("data from favorites: ", data.data);
+                favorites = data.data;
+            });
+        }
+
+        // Get favorites every pageload to check if results are on list
+        getFavorites();
+
+        var DataItem = function (data) {
+            this.mainData = data;
+            this.favorite = ko.observable(checkForFavorite(data));
+        }
+
+        var currentState = {};
 
         // ------------ Search Function: ------------ //
         var search = function () {
@@ -29,15 +47,22 @@
                         console.log("data fra search-func:", data);
                         posts.removeAll();
                         for (i = 0; i < data.data.length; i++) {
-                            posts.push(data.data[i]);
+                            posts.push(new DataItem(data.data[i]));
                         }
                         next = data.next;
                         prev = data.prev;
                         navPage();
-                        currentState = data;
-                        searchHasResults(true);
                         searchingString('Search result of "' + userSearchString() + '"');
-                        currentPage((data.page) +1);
+                        currentState = {
+                            searchData: data,
+                            posts: posts,
+                            searchingString: searchingString(),
+                            currentPage: data.page + 1,
+                            totalPages: data.pages,
+                            totalPosts: data.total
+                        };
+                        searchHasResults(true);
+                        currentPage((data.page) + 1);
                         totalPages(data.pages);
                         totalPosts(data.total);
                     }
@@ -58,11 +83,19 @@
             dataservice.changePage(next, data => {
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
-                    posts.push(data.data[i]);
+                    posts.push(new DataItem(data.data[i]));
                 }
                 next = data.next;
                 prev = data.prev;
                 currentPage((data.page) + 1);
+                currentState = {
+                    searchData: data,
+                    posts: posts,
+                    searchingString: searchingString(),
+                    currentPage: data.page + 1,
+                    totalPages: data.pages,
+                    totalPosts: data.total
+                };
                 navPage();
             });
         }
@@ -72,20 +105,26 @@
             dataservice.changePage(prev, data => {
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
-                    posts.push(data.data[i]);
+                    posts.push(new DataItem(data.data[i]));
                 }
                 next = data.next;
                 prev = data.prev;
                 currentPage((data.page) + 1);
+                currentState = {
+                    searchData: data,
+                    posts: posts,
+                    searchingString: searchingString(),
+                    currentPage: data.page + 1,
+                    totalPages: data.pages,
+                    totalPosts: data.total
+                };
                 navPage();
             });
         }
-
-        var currentState = {};
-
+        
         // ------------ Get individual post: ------------ //
         var getPost = function () {
-            bc.publish(bc.events.changeView, { name: "single-post", data: this, state: currentState });
+            bc.publish(bc.events.changeView, { name: "single-post", data: this.mainData, state: currentState });
         }
 
         // ------------ Control state: ------------ //
@@ -102,25 +141,30 @@
         }
         else if (!jQuery.isEmptyObject(params)) {
             posts.removeAll();
-            for (i = 0; i < params.data.length; i++) {
-                posts.push(params.data[i]);
-            }
-            next = null;
-            prev = null;
+            posts = params.posts;
+            next = params.searchData.next;
+            prev = params.searchData.prev;
             navPage();
+            currentPage(params.currentPage);
+            totalPages(params.totalPages);
+            totalPosts(params.totalPosts);
             currentState = params;
             searchHasResults(true);
-            searchingString('Search result of "' + userSearchString() + '"');
-            currentPage(params.data.page);
-            totalPages(params.data.pages);
-            totalPosts(params.data.total);
+            searchingString(params.searchingString);
+            showSearch(true);
         }
 
-        var favTest = function() {
-            console.log("kommer favTest igennem??", this);
+
+        var checkForFavorite = function (data) {
+            var postId;
+            if (data.parent_id) {
+                postId = data.parent_id;
+            } else {
+                postId = data.post_id;
+            }
             var show = false;
             for (var i = 0; i < favorites.length; i++) {
-                if (favorites[i].post_id == this.post_id) {
+                if (favorites[i].post_id === postId) {
                     show = true;
                     break;
                 }
@@ -128,16 +172,47 @@
             return show;
         }
 
-        var favorites;
+        var createFavorite = function (listObject) {
+            var postId;
+            if (listObject.mainData.parent_id) {
+                console.log("post is answer");
+                postId = listObject.mainData.parent_id;
+            } else {
+                postId = listObject.mainData.post_id;
+                console.log("post is question");
+            }
 
-
-        // Get favorites every pageload to check if results are on list
-        var getFavorites = function () {
-            dataservice.getFavorites(data => {
-                console.log("data from favorites: ", data.data);
-                favorites = data.data;
+            dataservice.postFavorite(postId, data => {
+                console.log("posted data from favorite in posts", data);
+                getFavorites();
             });
-        }();
+
+            listObject.favorite(true);
+        }
+
+        var deleteFavorite = function (listObject) {
+            var postId;
+            if (listObject.mainData.parent_id) {
+                console.log("post is answer");
+                postId = listObject.mainData.parent_id;
+            } else {
+                postId = listObject.mainData.post_id;
+                console.log("post is question");
+            }
+
+            for (var i = 0; i < favorites.length; i++) {
+                if (favorites[i].post_id === postId) {
+                    dataservice.deleteFavorite(favorites[i].favorite_id, data => {
+                        console.log("deleted data from favorite in posts", data);
+                        getFavorites();
+                    });
+                    console.log("deleting favorite", favorites[i].favorite_id, "with post id", postId);
+                    listObject.favorite(false);
+                    break;
+                }
+            }
+
+        }
 
         return {
             posts,
@@ -156,8 +231,10 @@
             currentPage,
             totalPages,
             totalPosts,
-            favTest,
-            getFavorites
+            checkForFavorite,
+            getFavorites,
+            createFavorite,
+            deleteFavorite
         };
 
     }

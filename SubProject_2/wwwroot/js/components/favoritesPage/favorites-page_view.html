@@ -47,7 +47,7 @@
                     <h4 data-bind="text: noteBody"></h4>
                 </div>
                 <div class="modal-footer">
-                    <div class="options" data-bind="visible: displayOptions">
+                    <div class="options" data-bind="fadeVisible: displayOptions">
                         <button type="button" data-bind="click: deleteNote" class="btn btn-default" data-dismiss="modal">Delete Note</button>
                         <button type="button" data-bind="click: editNote" data-dismiss="modal" data-toggle="modal" data-target="#editNoteModal" class="btn btn-default">Edit Note</button>
                     </div>
@@ -55,7 +55,7 @@
                         <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                     </button>
 
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-bind="click: setOptionsFalse" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

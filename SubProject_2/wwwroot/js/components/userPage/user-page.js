@@ -4,8 +4,6 @@
         // --- SKAL ÆNDRES DA DETTE BLOT ER FRA TEST:: --- //
         var userID = params.fp_msg;
 
-        console.log(params.fp_msg);
-
         var user_id = ko.observable();
         var user_name = ko.observable();
         var user_creation_date = ko.observable();
@@ -34,7 +32,14 @@
             });
         })();
 
+
+        // ------------------------ USER POSTS: ------------------------ //
+
         var postBool = false;
+        var nextP;
+        var prevP;
+        var dnP = ko.observable(false);
+        var dpP = ko.observable(false);
 
         var findUserPosts = function () {
             dataservice.getUserPosts(userID, data => {
@@ -44,12 +49,54 @@
                 }
                 totalNumberOfPosts(data.total);
                 numberOfPagesOfPosts(data.pages);
+                nextP = data.next;
+                prevP = data.prev;
+                navPageP();
 
                 if (postBool == false) {                     postBool = true;                     displayPosts(true);                 } else {                     postBool = false;                     displayPosts(false);                 }
             });
         }
 
+        // ------------ Page Navigation: ------------ //
+        var navPageP = function (data) {
+            nextP === null || undefined ? dnP(false) : dnP(true);
+            prevP === null || undefined ? dpP(false) : dpP(true);
+        }
+
+        var nextPageP = function () {
+            console.log("pressed next");
+            dataservice.changePage(nextP, data => {
+                user_posts.removeAll();
+                for (i = 0; i < data.userPosts.length; i++) {
+                    user_posts.push(data.userPosts[i]);
+                }
+                nextP = data.next;
+                prevP = data.prev;
+                navPageP();
+            });
+        }
+
+        var prevPageP = function () {
+            console.log("pressed prev");
+            dataservice.changePage(prevP, data => {
+                user_posts.removeAll();
+                for (i = 0; i < data.userPosts.length; i++) {
+                    user_posts.push(data.userPosts[i]);
+                }
+                nextP = data.next;
+                prevP = data.prev;
+                navPageP();
+            });
+        }
+
+
+        // ------------------------ USER COMMENTS: ------------------------ //
+
         var commentsBool = false;
+        var nextC;
+        var prevC;
+        var dnC = ko.observable(false);
+        var dpC = ko.observable(false);
 
         var findUserComments = function () {
             dataservice.getUserComments(userID, data => {
@@ -59,6 +106,9 @@
                 }
                 totalNumberOfComments(data.total);
                 numberOfPagesOfComments(data.pages);
+                nextC = data.next;
+                prevC = data.prev;
+                navPageC();
 
                 if (commentsBool == false) {
                     commentsBool = true;
@@ -69,6 +119,40 @@
                 }
             });
         }
+
+        // ------------ Page Navigation: ------------ //
+        var navPageC = function (data) {
+            nextC === null || undefined ? dnC(false) : dnC(true);
+            prevC === null || undefined ? dpC(false) : dpC(true);
+        }
+
+        var nextPageC = function () {
+            console.log("pressed next");
+            dataservice.changePage(nextC, data => {
+                user_comments.removeAll();
+                for (i = 0; i < data.userComments.length; i++) {
+                    user_comments.push(data.userComments[i]);
+                }
+                nextC = data.next;
+                prevC = data.prev;
+                navPageC();
+            });
+        }
+
+        var prevPageC = function () {
+            console.log("pressed prev");
+            dataservice.changePage(prevC, data => {
+                user_comments.removeAll();
+                for (i = 0; i < data.userComments.length; i++) {
+                    user_comments.push(data.userComments[i]);
+                }
+                nextC = data.next;
+                prevC = data.prev;
+                navPageC();
+            });
+        }
+
+
 
         return {
             user_id,
@@ -85,7 +169,15 @@
             findUserComments,
             user_comments,
             totalNumberOfComments,
-            numberOfPagesOfComments
+            numberOfPagesOfComments,
+            nextPageP,
+            prevPageP,
+            dnP,
+            dpP,
+            nextPageC,
+            prevPageC,
+            dnC,
+            dpC
         };
 
     }

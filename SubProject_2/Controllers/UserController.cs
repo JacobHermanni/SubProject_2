@@ -137,9 +137,9 @@ namespace WebService.Controllers
                 Total = total,
                 Pages = totalPages,
                 Page = page,
-                Prev = Link(nameof(GetUserComments), page, pageSize, -1, () => page > 0),
-                Next = Link(nameof(GetUserComments), page, pageSize, 1, () => page < totalPages - 1),
-                Url = Link(nameof(GetUserComments), page, pageSize),
+                Prev = Link(nameof(GetUserPosts), page, pageSize, -1, () => page > 0),
+                Next = Link(nameof(GetUserPosts), page, pageSize, 1, () => page < totalPages - 1),
+                Url = Link(nameof(GetUserPosts), page, pageSize),
                 UserPosts = userPosts
             };
 

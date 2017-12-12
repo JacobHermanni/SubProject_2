@@ -1,4 +1,4 @@
-﻿define(['knockout', 'broadcaster', 'dataservice'], function (ko, bc, dataservice) {
+﻿define(['knockout', 'broadcaster', 'dataservice', 'jquery', 'bootstrap'], function (ko, bc, dataservice, $) {
     return function (params) {
 
         var posts = ko.observableArray([]);
@@ -15,6 +15,8 @@
         var totalPosts = ko.observable();
         var favorites;
 
+        var words = ko.observableArray([]);
+
         var getFavorites = function () {
             dataservice.getAllFavorites(data => {
                 console.log("data from favorites: ", data.data);
@@ -26,7 +28,6 @@
         getFavorites();
 
         var DataItem = function (data) {
-            self = this;
             this.mainData = data;
             this.favorite = ko.observable(checkForFavorite(data));
         }
@@ -66,6 +67,17 @@
                         totalPosts(data.total);
                     }
                 });
+
+            dataservice.getRelatedWords(userSearchString(),
+                data => {
+                    words.removeAll();
+                    if (data !== undefined) {
+                        for (i = 0; i < data.length - 1; i++) {
+                            words.push({ text: data[i].term, weight: data[i].rank });
+                        }
+                    }
+                });
+
             showSearch(true);
             bc.publish(bc.events.changeData, { search_string: userSearchString() });
         }
@@ -186,7 +198,7 @@
                 console.log("posted data from favorite in posts", data);
                 getFavorites();
             });
-            
+
 
             dataservice.searchedPosts(userSearchString(),
                 data => {
@@ -229,6 +241,19 @@
                 });
         }
 
+        ko.bindingHandlers.fadeVisible = {
+            init: function (element, valueAccessor) {
+                // Initially set the element to be instantly visible/hidden depending on the value
+                var value = valueAccessor();
+                $(element).toggle(ko.unwrap(value)); // Use "unwrapObservable" so we can handle values that may or may not be observable
+            },
+            update: function (element, valueAccessor) {
+                // Whenever the value subsequently changes, slowly fade the element in or out
+                var value = valueAccessor();
+                ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
+            }
+        };
+
         return {
             posts,
             displayPrev,
@@ -249,7 +274,8 @@
             checkForFavorite,
             getFavorites,
             createFavorite,
-            deleteFavorite
+            deleteFavorite,
+            words
         };
 
     }

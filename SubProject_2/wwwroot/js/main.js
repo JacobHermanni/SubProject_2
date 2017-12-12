@@ -1,18 +1,47 @@
 require.config({
     baseUrl: "js",
     paths: {
-        "jQuery": "lib/jQuery/dist/jquery.min",
+        jquery: "lib/jQuery/dist/jquery.min",
         "knockout": "lib/knockout/dist/knockout",
         "text": "lib/text/text",
         "broadcaster": "services/broadcaster",
         "dataservice": "services/dataservice",
-        "bootstrap": "lib/bootstrap/dist/js/bootstrap.min"
+        "bootstrap": "lib/bootstrap/dist/js/bootstrap.min",
+        jqcloud: "lib/jqcloud2/dist/jqcloud.min"
+    },
+    shim: {
+        jqcloud: {
+            deps: ["jquery"]
+        }
     }
 });
 
 function test() {
     console.log("works");
 }
+
+
+require(['knockout', 'jquery', 'jqcloud'], function (ko, $) {
+    ko.bindingHandlers.cloud = {
+        init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+            // This will be called when the binding is first applied to an element
+            // Set up any initial state, event handlers, etc. here
+            var words = allBindings.get('cloud').words;
+            if (words && ko.isObservable(words)) {
+                words.subscribe(function () {
+                    $(element).jQCloud('update', ko.unwrap(words));
+                });
+            }
+        },
+        update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+            // This will be called once when the binding is first applied to an element,
+            // and again whenever any observables/computeds that are accessed change
+            // Update the DOM element based on the supplied values here.
+            var words = ko.unwrap(allBindings.get('cloud').words) || [];
+            $(element).jQCloud(words);
+        }
+    };
+});
 
 require(['knockout'], function (ko) {
 
@@ -54,7 +83,7 @@ require(['knockout'], function (ko) {
 });
 
 
-require(["knockout", "jQuery", "broadcaster"], function (ko, jQuery, broadcaster) {
+require(["knockout", "jquery", "broadcaster", "jqcloud"], function (ko, jQuery, broadcaster) {
     (function () {
 
         var vm = (function () {

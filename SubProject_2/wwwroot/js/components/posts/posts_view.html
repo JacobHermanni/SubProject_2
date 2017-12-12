@@ -3,12 +3,37 @@
 
 <h3> Search: </h3>
 <form data-bind="submit: search">
-    <div class="container inputSearch">
-        <input class="col-lg-5" data-bind="textInput: userSearchString" />
-        <button class="col-lg-2 btn btn-sm left-buffer" data-bind="click: search, textInput: userSearchString">Search for posts</button>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 inputSearch">
+                <input class="col-sm-5" data-bind="textInput: userSearchString" />
+                <button class="col-sm-2 btn btn-sm left-buffer" data-bind="click: search, textInput: userSearchString"><span class="glyphicon glyphicon-search"></span></button>
+                <button type="button" class="btn btn-default btn-sm" data-bind="modal" data-toggle="modal" data-target="#myModal">Open Modal</button>
+            </div>
+        </div>
     </div>
 </form>
-<div class="top-buffer bot-buffer" data-bind="text: searchingString, visible: showSearch">
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Related words</h4>
+            </div>
+            <div data-bind="cloud: {words}, visible: searchHasResults" style="width: 200px; height: 200px" />
+            <
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="top-buffer bot-buffer container" data-bind="visible: showSearch">
+    <div data-bind="text: searchingString"></div>
 </div>
 <div class="posts container" data-bind="visible: searchHasResults">
     <span data-bind="text: 'Matches: ' + totalPosts()"></span><br />

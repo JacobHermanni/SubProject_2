@@ -23,6 +23,13 @@
             });
     }
 
+    var getRelatedWords = function (words, callback) {
+        $.getJSON("http://localhost:5001/api/relatedwords/" + words, function (data) {
+            console.log("got related words:", data);
+            callback(data);
+        });
+    }
+
     var changePage = function (url, callback) {
         $.getJSON(url, function (data) {
             console.log("changed page, new data:", data);
@@ -131,7 +138,8 @@
         postNote,
         deleteNote,
         putNote,
-        getHistory
+        getHistory,
+        getRelatedWords
     };
 
 });

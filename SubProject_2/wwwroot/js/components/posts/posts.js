@@ -17,6 +17,19 @@
 
         var words = ko.observableArray([]);
 
+        var getRelatedWords = function() {
+            dataservice.getRelatedWords(userSearchString(),
+                data => {
+                    words.removeAll();
+                    if (data !== undefined) {
+                        for (i = 0; i < data.length - 1; i++) {
+                            words.push({ text: data[i].term, weight: data[i].rank });
+                        }
+                    }
+                });
+
+        }
+
         var getFavorites = function () {
             dataservice.getAllFavorites(data => {
                 console.log("data from favorites: ", data.data);
@@ -67,17 +80,6 @@
                         totalPosts(data.total);
                     }
                 });
-
-            dataservice.getRelatedWords(userSearchString(),
-                data => {
-                    words.removeAll();
-                    if (data !== undefined) {
-                        for (i = 0; i < data.length - 1; i++) {
-                            words.push({ text: data[i].term, weight: data[i].rank });
-                        }
-                    }
-                });
-
             showSearch(true);
             bc.publish(bc.events.changeData, { search_string: userSearchString() });
         }
@@ -276,7 +278,8 @@
             getFavorites,
             createFavorite,
             deleteFavorite,
-            words
+            words,
+            getRelatedWords
         };
 
     }

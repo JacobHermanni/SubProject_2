@@ -160,8 +160,7 @@
         deleteNote,
         putNote,
         getHistory,
-        getRelatedWords
-        getHistory,
+        getRelatedWords,
         getUser,
         getUserPosts,
         getUserComments

@@ -8,9 +8,14 @@
             bc.publish(bc.events.changeData, { search_string: fpSearchString() });
         }
 
+        var test = function () {
+            bc.publish(bc.events.changeView, { name: "user-page", fp_msg: "13"} );
+        }
+
         return {
             searched,
-            fpSearchString
+            fpSearchString,
+            test
         };
 
     }

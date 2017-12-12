@@ -21,7 +21,11 @@
 }
 
 .bot-buffer {
-    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.bot-buffer-large {
+    margin-bottom: 60px;
 }
 
 .right-buffer {

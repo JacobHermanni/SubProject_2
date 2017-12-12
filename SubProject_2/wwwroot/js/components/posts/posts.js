@@ -1,9 +1,6 @@
 ﻿define(['knockout', 'broadcaster', 'dataservice'], function (ko, bc, dataservice) {
     return function (params) {
 
-        self = this;
-        // console.log("fra posts:", params);
-
         var posts = ko.observableArray([]);
         var prev = ko.string;
         var next = ko.string;
@@ -59,7 +56,8 @@
                             searchingString: searchingString(),
                             currentPage: data.page + 1,
                             totalPages: data.pages,
-                            totalPosts: data.total
+                            totalPosts: data.total,
+                            userSearchString: userSearchString()
                         };
                         searchHasResults(true);
                         currentPage((data.page) + 1);
@@ -151,6 +149,7 @@
             currentState = params;
             searchHasResults(true);
             searchingString(params.searchingString);
+            userSearchString(params.userSearchString);
             showSearch(true);
         }
 

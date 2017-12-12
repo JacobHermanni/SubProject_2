@@ -10,7 +10,7 @@
 </form>
 <div class="top-buffer bot-buffer" data-bind="text: searchingString, visible: showSearch">
 </div>
-<div class="posts" data-bind="visible: searchHasResults">
+<div class="posts container" data-bind="visible: searchHasResults">
     <span data-bind="text: 'Matches: ' + totalPosts()"></span><br />
     <span data-bind="text: 'Pages: ' + totalPages()"></span><br />
     <span data-bind="text: 'Current page: ' + currentPage()"></span><br />

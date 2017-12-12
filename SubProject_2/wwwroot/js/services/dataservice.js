@@ -1,7 +1,7 @@
 ﻿define([], function () {
 
     var searchedPosts = function (searchString, callback) {
-        $.getJSON("http://localhost:5001/api/posts/search/" + searchString, function (data) {
+        $.getJSON("http://localhost:5001/api/posts/search/" + searchString + "?pageSize=10", function (data) {
             console.log("searchedPosts on:", searchString, data);
             callback(data);
         })

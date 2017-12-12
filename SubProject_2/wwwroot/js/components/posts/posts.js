@@ -26,6 +26,7 @@
         getFavorites();
 
         var DataItem = function (data) {
+            self = this;
             this.mainData = data;
             this.favorite = ko.observable(checkForFavorite(data));
         }
@@ -119,7 +120,7 @@
                 navPage();
             });
         }
-        
+
         // ------------ Get individual post: ------------ //
         var getPost = function () {
             bc.publish(bc.events.changeView, { name: "single-post", data: this.mainData, state: currentState });
@@ -185,8 +186,16 @@
                 console.log("posted data from favorite in posts", data);
                 getFavorites();
             });
+            
 
-            listObject.favorite(true);
+            dataservice.searchedPosts(userSearchString(),
+                data => {
+                    console.log("data fra search-func manually from favorite update:", data);
+                    posts.removeAll();
+                    for (i = 0; i < data.data.length; i++) {
+                        posts.push(new DataItem(data.data[i]));
+                    }
+                });
         }
 
         var deleteFavorite = function (listObject) {
@@ -210,7 +219,14 @@
                     break;
                 }
             }
-
+            dataservice.searchedPosts(userSearchString(),
+                data => {
+                    console.log("data fra search-func manually from favorite update:", data);
+                    posts.removeAll();
+                    for (i = 0; i < data.data.length; i++) {
+                        posts.push(new DataItem(data.data[i]));
+                    }
+                });
         }
 
         return {

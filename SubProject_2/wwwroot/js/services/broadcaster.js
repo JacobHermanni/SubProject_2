@@ -23,7 +23,8 @@
     var events =
     {
         changeView: "changeView",
-        changeData: "changeData"
+        changeData: "changeData",
+        changeFavorite: "changeFavorite"
     };
 
     return {

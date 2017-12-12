@@ -99,3 +99,7 @@
     color: goldenrod;
     font-size: 1.3em;
 }
+
+.cursPointer {
+    cursor: pointer;
+}

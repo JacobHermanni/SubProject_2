@@ -138,6 +138,7 @@
             bc.publish(bc.events.changeView, { name: "single-post", data: this.mainData, state: currentState });
         }
 
+
         // ------------ Control state: ------------ //
         // console.log("params fra posts;", params);
 

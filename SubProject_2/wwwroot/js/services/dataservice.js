@@ -125,6 +125,27 @@
         });
     }
 
+    var getUser = function (user_id, callback) {
+        $.getJSON("http://localhost:5001/api/user/" + user_id, function (data) {
+            console.log("got user:", data);
+            callback(data);
+        });
+    }
+
+    var getUserPosts = function (user_id, callback) {
+        $.getJSON("http://localhost:5001/api/user/userposts/" + user_id, function (data) {
+            console.log("got user posts:", data);
+            callback(data);
+        });
+    }
+
+    var getUserComments = function (user_id, callback) {
+        $.getJSON("http://localhost:5001/api/user/usercomments/" + user_id, function (data) {
+            console.log("got user comments:", data);
+            callback(data);
+        });
+    }
+
     return {
         searchedPosts,
         changePage,
@@ -140,6 +161,10 @@
         putNote,
         getHistory,
         getRelatedWords
+        getHistory,
+        getUser,
+        getUserPosts,
+        getUserComments
     };
 
 });

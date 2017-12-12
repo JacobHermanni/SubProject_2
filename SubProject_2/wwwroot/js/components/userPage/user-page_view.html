@@ -1,1 +1,60 @@
-﻿
+﻿<div class="jumbotron">
+    <p class="lead">
+        <p>User name: <b data-bind="text: user_name"></b></p>
+        <p>Id: <b data-bind="text: user_id"></b></p>
+        <p>Creation Date: <b data-bind="text: user_creation_date"></b></p>
+        <p>User Age: <b data-bind="text: user_age"></b></p>
+        <p>User Location: <b data-bind="text: user_location"></b></p>
+    </p>
+    <br />
+    <button class="btn btn-default" data-bind="click: findUserPosts">Show the posts created by this user</button>
+    <button class="btn btn-default pull-right" data-bind="click: findUserComments">Show the comments written by this user</button>
+</div>
+
+<div data-bind="visible: displayPosts">
+    <h3> User Posts </h3>
+    <p>Total: <b data-bind="text: totalNumberOfPosts"></b></p>
+    <p>Pages: <b data-bind="text: numberOfPagesOfPosts"></b></p>
+    <div id="searchList" class="list-group top-buffer" data-bind="foreach: user_posts">
+        <a class="searchResults list-group-item">
+            <div class="container">
+                <div class="col-sm-2 top-buffer">
+                    <strong>Score</strong> <br />
+                    <span data-bind="text: $data.score"></span><br /><br />
+                </div>
+                <div class="col-sm-8 datacol" data-bind="click: $parent.getPost">
+                    <p data-bind="html: $data.body"></p>
+                </div>
+                <div class="col-sm-1 datacol">
+                </div>
+            </div>
+        </a>
+    </div>
+    <button type="button" class="btn btn-default" data-bind="click: prevPageP, enable: dpP">Prev</button>
+    <button type="button" class="btn btn-default" data-bind="click: nextPageP, enable: dnP">Next</button>
+</div>
+
+<div data-bind="visible: displayComments">
+    <h3> User Comments </h3>
+    <p>Total: <b data-bind="text: totalNumberOfComments"></b></p>
+    <p>Pages: <b data-bind="text: numberOfPagesOfComments"></b></p>
+    <div id="searchList" class="list-group top-buffer" data-bind="foreach: user_comments">
+        <a class="searchResults list-group-item">
+            <div class="container">
+                <div class="col-sm-2 top-buffer">
+                    <strong>Score</strong> <br />
+                    <span data-bind="text: $data.comment_score"></span><br /><br />
+                    <strong>Creation Date</strong> <br />
+                    <span data-bind="text: $data.comment_creation_date"></span><br /><br />
+                </div>
+                <div class="col-sm-8 datacol" data-bind="click: $parent.getPost">
+                    <p data-bind="html: $data.comment_text"></p>
+                </div>
+                <div class="col-sm-1 datacol">
+                </div>
+            </div>
+        </a>
+    </div>
+    <button type="button" class="btn btn-default" data-bind="click: prevPageC, enable: dpC">Prev</button>
+    <button type="button" class="btn btn-default" data-bind="click: nextPageC, enable: dnC">Next</button>
+</div>

@@ -67,6 +67,12 @@
             bc.publish(bc.events.changeView, { name: "all-posts" } );
         }
 
+        // ------------ Go to user: ------------ //
+        var getUser = function () {
+            console.log(user_id());
+            var userID = user_id();
+            bc.publish(bc.events.changeView, { name: "user-page", fp_msg: userID} );
+        }
 
         return {
             getQuestion,
@@ -84,8 +90,8 @@
             getPrev,
             displayNext,
             displayPrev,
-            back
-
+            back,
+            getUser
         };
 
     }

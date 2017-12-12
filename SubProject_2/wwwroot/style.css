@@ -68,6 +68,15 @@
     cursor: pointer;
 }
 
+.favoritePage .trashBtn {
+    margin-top: 4em;
+}
+
+.favoritePage .confirmButtons {
+    width: 100%;
+    text-align: center;
+    margin-top: 2em;
+}
 /* -- MODAL --*/
 #noteModal .noteTimeStamp {
     float: left;

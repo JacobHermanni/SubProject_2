@@ -63,6 +63,25 @@
         }
 
         // ------------ Get individual post: ------------ //
+
+
+        var getPost = function () {
+            bc.publish(bc.events.changeView, { name: "single-post", data: this });
+        }
+
+
+        // ------------ Favorite Removal functionality: ------------ //
+        
+        var removeFromFavorites = function () {
+            dataservice.deleteFavorite(tempFavId, data => {
+                findFavorites();
+            });
+
+        }
+
+
+        // ------------ Note functionality: ------------ //
+
         var tempFavId;
 
         var resetNewNote = function() {
@@ -92,10 +111,6 @@
             console.log("tempFavID:", tempFavId);
         }
 
-        var getPost = function () {
-            bc.publish(bc.events.changeView, { name: "single-post", data: this });
-        }
-
         var getNote = function (favorite) {
             dataservice.getNote(favorite.favorite_id, data => {
                  noteBody(data.body);
@@ -113,25 +128,27 @@
         }
 
         var updateNote = function () {
-            dataservice.putNote(tempFavId, newNoteBody());
+            dataservice.putNote(tempFavId, newNoteBody(), data => {
+                findFavorites();              
+            });
             resetNewNote();
-            findFavorites();
             setOptionsFalse();
             displayNormalSave(true);
         }
 
         var createNote = function() {
-            dataservice.postNote(tempFavId, newNoteBody());
+            dataservice.postNote(tempFavId, newNoteBody(), data => {
+                findFavorites();              
+            });
             resetNewNote();
-            findFavorites();
         }
 
         var deleteNote = function () {
-            dataservice.deleteNote(tempFavId);
-            findFavorites();
+            dataservice.deleteNote(tempFavId, data => {
+                findFavorites();              
+            });
             setOptionsFalse();
         }
-
 
         // Here's a custom Knockout binding that makes elements shown/hidden via jQuery's fadeIn()/fadeOut() methods
         // Could be stored in a separate utility library - snatched directly from: http://knockoutjs.com/examples/animatedTransitions.html
@@ -170,7 +187,8 @@
             displayNormalSave,
             showOptions,
             displayOptions,
-            setOptionsFalse
+            setOptionsFalse,
+            removeFromFavorites
         };
 
     }

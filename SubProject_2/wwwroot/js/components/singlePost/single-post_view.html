@@ -1,5 +1,6 @@
 ﻿<h1 <b data-bind="text: postTitle"></h1>
-
+<br/>
+<button class="btn btn-default" data-bind="click: back">back</button>
 <br/>
 
 <div class="jumbotron" "col-sm-6 col-sm-offset-3">
@@ -38,6 +39,7 @@
             <p>Answer user display name: <b data-bind="text: $data.user_display_name"></b></p>
             <p>Answer score: <b data-bind="text: $data.score"></b></p>
             <p>Answer creationDate: <b data-bind="text: $data.creation_date"></b></p>
+            <br>
             <p data-bind="html: $data.body"></p>
         </div>
      </a>
@@ -46,5 +48,5 @@
 
 
 <button class="btn btn-default" data-bind="click: getPrev, enable: displayPrev">Prev</button>
-<!--<button class="btn btn-default" data-bind="click: back">back</button>-->
+
 <button class="btn btn-default" data-bind="click: getNext, enable: displayNext">Next</button>

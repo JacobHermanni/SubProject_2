@@ -73,6 +73,11 @@
             });
         }
 
+         var back = function() {
+            bc.publish(bc.events.changeView, { name: "all-posts" } );
+        }
+
+
         return {
             histories,
             nextPage,
@@ -84,7 +89,8 @@
             historyTimestamp,
             historyUrl,
             searched,   
-            fpSearchString
+            fpSearchString,
+            back
 
         };
 

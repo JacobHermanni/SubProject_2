@@ -4,7 +4,13 @@
         <a class="searchResults list-group-item">
             <div class="row">
                 <div class="col-sm-2">
-                    <span data-bind="text: 'Score: ' + $data.score"></span>
+                    <p data-bind="text: 'Score: ' + $data.score"></p>
+                    <button type="button" class="btn btn-default btn-sm trashBtn" data-toggle="modal" data-target="#confirmModal" data-bind="click: $parent.getFavId">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        <p>
+                            Trash
+                        </p>
+                    </button>
                 </div>
                 <div class="col-sm-8 col-xs-12 dataCol" data-bind="click: $parent.getPost">
                     <h3 data-bind="text: $data.title"></h3>
@@ -80,6 +86,30 @@
                 <div class="modal-footer">
                     <button type="button" data-bind="visible: displayNormalSave, click: createNote" class="btn btn-default" data-dismiss="modal">Save</button>
                     <button type="button" data-bind="visible: displayNewSave, click: updateNote" class="btn btn-default" data-dismiss="modal">Save (update) </button>
+                    <button type="button" class="btn btn-default" data-bind="click: resetNewNote" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirmModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="createNew">
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <h1>OBS:</h1>
+                    <h4>Are you sure you wish to delete this favorite? doing so will remove it from the list and delete any note associated with the post</h4>
+                    <div class="confirmButtons">
+                        <button type="button" data-bind="click: removeFromFavorites" class="btn btn-success" data-dismiss="modal">Confirm</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-bind="click: resetNewNote" data-dismiss="modal">Close</button>
                 </div>
             </div>

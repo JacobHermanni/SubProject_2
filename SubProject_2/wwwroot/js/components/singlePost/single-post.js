@@ -40,7 +40,7 @@
             test (data.answers);
             next = data.next;
             prev = data.prev;
-            console.log("mit link", prev);
+            console.log("test", data.answers);
             navPage();
             });
         }

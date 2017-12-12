@@ -8,7 +8,7 @@
             <div class="col-sm-6 inputSearch">
                 <input class="col-sm-5" data-bind="textInput: userSearchString" />
                 <button class="col-sm-2 btn btn-sm left-buffer" data-bind="click: search, textInput: userSearchString"><span class="glyphicon glyphicon-search"></span></button>
-                <button type="button" class="btn btn-default btn-sm" data-bind="click: getRelatedWords" data-toggle="modal" data-target="#searchHelperModal">Search help</button>
+                <button type="button" class="btn btn-default btn-sm left-buffer" data-bind="click: getRelatedWords, visible: showSearch" data-toggle="modal" data-target="#searchHelperModal">Search help</button>
             </div>
         </div>
     </div>
@@ -22,8 +22,15 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Related words</h4>
             </div>
-            <div class="modal-body">
-                <div class="text-center" data-bind="cloud: {words}, visible: searchHasResults" style="width: 200px; height: 200px" />
+            <div class="modal-body container">
+                <div>
+                    <!-- ko if: words().length > 0-->
+                    <div data-bind="cloud: {words}, visible: searchHasResults" style="width: 200px; height: 200px"/>
+                    <!-- /ko -->​
+                    <!-- ko if: words().length == 0-->
+                    <div>No relevant related words</div>
+                    <!-- /ko -->​
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

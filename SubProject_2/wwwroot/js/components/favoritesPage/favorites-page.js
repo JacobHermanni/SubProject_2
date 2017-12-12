@@ -5,6 +5,8 @@
         var favorites = ko.observableArray([]);
         var displayPrev = ko.observable(false);
         var displayNext = ko.observable(false);
+        var prev = ko.string;
+        var next = ko.string;
 
         var noteBody = ko.observable();
         var noteTime = ko.observable();
@@ -14,6 +16,8 @@
         var displayNormalSave = ko.observable(true);
 
         var displayOptions = ko.observable(false);
+
+        
 
         // ------------ Find favorites function: ------------ //
         var findFavorites = function () {
@@ -188,7 +192,9 @@
             showOptions,
             displayOptions,
             setOptionsFalse,
-            removeFromFavorites
+            removeFromFavorites,
+            next,
+            prev
         };
 
     }

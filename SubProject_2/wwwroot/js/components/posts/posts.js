@@ -17,10 +17,11 @@
 
         var words = ko.observableArray([]);
 
-        var getRelatedWords = function() {
+        var getRelatedWords = function () {
+            words.removeAll();
             dataservice.getRelatedWords(userSearchString(),
                 data => {
-                    words.removeAll();
+                    console.log("returning data from relatedwords:", data);
                     if (data !== undefined) {
                         for (i = 0; i < data.length - 1; i++) {
                             words.push({ text: data[i].term, weight: data[i].rank });
@@ -88,7 +89,7 @@
         var navPage = function (data) {
             next === null ? displayNext(false) : displayNext(true);
             prev === null ? displayPrev(false) : displayPrev(true);
-            $('html,body').animate({ scrollTop: 120 }, 300);
+            $('html,body').animate({ scrollTop: 0 }, 300);
         }
 
         var nextPage = function () {

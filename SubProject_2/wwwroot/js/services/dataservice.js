@@ -24,10 +24,15 @@
     }
 
     var getRelatedWords = function (words, callback) {
-        $.getJSON("http://localhost:5001/api/relatedwords/" + words, function (data) {
-            console.log("got related words:", data);
-            callback(data);
-        });
+        $.getJSON("http://localhost:5001/api/relatedwords/" + words,
+            function (data) {
+                console.log("got related words:", data);
+                callback(data);
+            })
+            .fail(function () {
+                console.log('getJSON request failed!');
+                callback(undefined);
+            });
     }
 
     var changePage = function (url, callback) {
@@ -52,7 +57,7 @@
     }
 
     var getFavorites = function (callback) {
-        $.getJSON("http://localhost:5001/api/favorite/", function (data) {
+        $.getJSON("http://localhost:5001/api/favorite?pageSize=10", function (data) {
             console.log("got favorites:", data);
             callback(data);
         });
@@ -99,28 +104,28 @@
     }
 
     var postNote = function (fav_id, noteString, callback) {
-        var jsonData = JSON.stringify({favorite_id: fav_id, body: noteString});
+        var jsonData = JSON.stringify({ favorite_id: fav_id, body: noteString });
         $.ajax("http://localhost:5001/api/favorite/note/", {
-            data : jsonData,
-            contentType : 'application/json',
-            type : 'POST',
+            data: jsonData,
+            contentType: 'application/json',
+            type: 'POST',
             success: callback
         });
     }
 
     var deleteNote = function (fav_id, callback) {
         $.ajax("http://localhost:5001/api/favorite/note/" + fav_id, {
-            type : 'DELETE',
+            type: 'DELETE',
             success: callback
         });
     }
 
     var putNote = function (fav_id, noteString, callback) {
-        var jsonData = JSON.stringify({favorite_id: fav_id, body: noteString});
+        var jsonData = JSON.stringify({ favorite_id: fav_id, body: noteString });
         $.ajax("http://localhost:5001/api/favorite/note/", {
-            data : jsonData,
-            contentType : 'application/json',
-            type : 'PUT',
+            data: jsonData,
+            contentType: 'application/json',
+            type: 'PUT',
             success: callback
         });
     }

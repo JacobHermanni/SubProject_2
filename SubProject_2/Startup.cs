@@ -73,6 +73,8 @@ namespace SubProject_2
                     .ReverseMap();
                 cfg.CreateMap<Tags, TagModel>()
                     .ReverseMap();
+                cfg.CreateMap<TermNetwork, TermNetworkModel>()
+                    .ReverseMap();
             });
 
             return config.CreateMapper();

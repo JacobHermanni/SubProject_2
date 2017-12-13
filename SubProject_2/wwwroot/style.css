@@ -105,6 +105,17 @@
     cursor: pointer;
 }
 
+/* Styles for the network graph */
+.link {
+    stroke: #ccc;
+}
+
+.node text {
+    pointer-events: none;
+    font: 14px sans-serif;
+}
+
+/* -- MEDIA STYLING: --*/
 @media only screen and (max-width: 768px) {
     .conBody {
         width: 100%;

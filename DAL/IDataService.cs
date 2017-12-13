@@ -61,5 +61,7 @@ namespace DAL
         List<Post> GetAnswers(int postId, int page, int pageSize);
 
         int GetNumberOfAnswers();
+
+        List<TermNetwork> GetTermNetwork(string word);
     }
 }

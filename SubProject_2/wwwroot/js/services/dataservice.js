@@ -35,6 +35,20 @@
             });
     }
 
+    var getTermNetwork = function (word, callback) {
+        $.getJSON("http://localhost:5001/api/termnetwork/" + word, function (data) {
+            console.log("got termnetwork:", data);
+            var dataStringified;
+            if (data !== undefined) {
+                dataStringified = data.map(function(elem){
+                    return elem.graph;
+                }).join("");
+            }
+            dataStringified = dataStringified.replace('termNetwork', '');
+            callback(dataStringified);
+        });
+    }
+
     var changePage = function (url, callback) {
         $.getJSON(url, function (data) {
             console.log("changed page, new data:", data);
@@ -168,7 +182,8 @@
         getRelatedWords,
         getUser,
         getUserPosts,
-        getUserComments
+        getUserComments,
+        getTermNetwork
     };
 
 });

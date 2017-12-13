@@ -40,6 +40,8 @@ namespace DAL
 
         public DbSet<Tags> Tags { get; set; }
 
+        public DbSet<TermNetwork> TermNetwork { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

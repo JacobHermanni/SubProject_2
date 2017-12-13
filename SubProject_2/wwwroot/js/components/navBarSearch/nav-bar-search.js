@@ -10,8 +10,13 @@
         var navSearchString = ko.observable("");
 
         var navSearched = function() {
-            console.log("navSearched");
-            bc.publish(bc.events.changeView, { name: "all-posts", nav_msg: navSearchString()} );
+            if (navSearchString().length < 1 || navSearchString().length > 25) {
+                alert("The typed search string is either too long or too short, which one is it?");
+            } else {
+                console.log("navSearched");
+                bc.publish(bc.events.changeView, { name: "all-posts", nav_msg: navSearchString()} );
+            }
+
         }
 
         var navBarView = ko.observable('front-page');

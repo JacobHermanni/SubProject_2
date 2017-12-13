@@ -394,6 +394,22 @@ namespace DAL
             }
         }
 
+        public List<TermNetwork> GetTermNetwork(string word)
+        {
+
+            using (var db = new SOVAContext())
+            {
+                var network = db.TermNetwork.FromSql("call term_network({0})", word)
+                    .ToList();
+
+                if (!network.Any())
+                {
+                    return null;
+                }
+                return network;
+            }
+        }
+
     }
 }
 

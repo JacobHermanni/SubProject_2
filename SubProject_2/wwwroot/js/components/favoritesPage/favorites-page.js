@@ -141,10 +141,14 @@
         }
 
         var createNote = function() {
-            dataservice.postNote(tempFavId, newNoteBody(), data => {
-                findFavorites();              
-            });
-            resetNewNote();
+            if (newNoteBody().length < 1) {
+                alert("A note that long has no real value does it?");
+            } else {
+                dataservice.postNote(tempFavId, newNoteBody(), data => {
+                    findFavorites();
+                    resetNewNote();        
+                });
+            }
         }
 
         var deleteNote = function () {

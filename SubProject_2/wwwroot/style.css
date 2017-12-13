@@ -103,3 +103,12 @@
 .cursPointer {
     cursor: pointer;
 }
+
+@media only screen and (max-width: 768px) {
+    .conBody {
+        width: 100%;
+    }
+    .searchResults {
+        max-height: unset;
+    }
+}

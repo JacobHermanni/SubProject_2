@@ -3,7 +3,7 @@
 <button class="btn btn-default" data-bind="click: back">back</button>
 <br/>
 
-<div class="jumbotron" "col-sm-6 col-sm-offset-3">
+<div class="jumbotron" class="col-sm-12">
     <p class="lead">
         <p>Score: <b data-bind="text: score"></b></p>
         <p>User display name: <b class="cursPointer" data-bind="text: user_display_name, click: getUser"></b></p>
@@ -15,7 +15,7 @@
 </div>
 
 
-<div "col-sm-6 col-sm-offset-3">
+<div class="col-sm-12">
     <h3> Posts comments </h3>
     <p class="lead" "col-sm-6 col-sm-offset-3">
     <p Comments> </p>
@@ -29,9 +29,9 @@
 
 <br/>
  
-<div "col-sm-6 col-sm-offset-3">
+<div class="col-sm-12">
     <h3> Posts answers </h3>
-    <ul data-bind="foreach: test">
+    <div data-bind="foreach: test">
     <br/>
     <div class="list-group top-buffer" "col-sm-6 col-sm-offset-3" ">
     <a class="searchResultsSinglePost list-group-item">
@@ -52,7 +52,7 @@
             <p data-bind="html: $data.comment_text">
         </ul>
      </a>
-     </ul>
+     </div>
 </div>
 
 

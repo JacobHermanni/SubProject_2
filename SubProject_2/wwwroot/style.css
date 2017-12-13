@@ -70,6 +70,7 @@
 
 .favoritePage .dataCol {
     cursor: pointer;
+    z-index: 1;
 }
 
 .favoritePage .trashBtn {

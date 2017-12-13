@@ -12,6 +12,9 @@ require.config({
     shim: {
         jqcloud: {
             deps: ["jquery"]
+        },
+        bootstrap: {
+            deps: ["jquery"]
         }
     }
 });
@@ -83,7 +86,7 @@ require(['knockout'], function (ko) {
 });
 
 
-require(["knockout", "jquery", "broadcaster", "jqcloud"], function (ko, jQuery, broadcaster) {
+require(["knockout", "jquery", "broadcaster", "jqcloud", "bootstrap"], function (ko, jQuery, broadcaster, bootstrap) {
     (function () {
 
         var vm = (function () {

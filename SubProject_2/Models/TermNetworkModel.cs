@@ -3,6 +3,6 @@ namespace WebService.Models
 {
     public class TermNetworkModel
     {
-        public string graph { get; set; }
+        public string termNetwork { get; set; }
     }
 }

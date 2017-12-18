@@ -23,12 +23,21 @@
                 <div class="modal-body container">
                     <div>
                         <!-- ko if: words().length > 0-->
-                        <div data-bind="cloud: {words}, visible: searchHasResults" style="width: 200px; height: 200px" />
+                        <div data-bind="cloud: {words}, visible: searchHasResults" style="width: 60%; height: 200px" />
                         <!-- /ko -->
                         <!-- ko if: words().length == 0-->
                         <div>No relevant related words</div>
                         <!-- /ko -->
                     </div>
+                    <h4>Need more help? try typing in one word</h4>
+                    <form class="netWorkSearch" data-bind="submit: getTermNetwork">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search" data-bind="textInput: netWorkString">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" data-bind="click: getTermNetwork, textInput: netWorkString"><i class="glyphicon glyphicon-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

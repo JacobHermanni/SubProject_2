@@ -38,14 +38,9 @@
     var getTermNetwork = function (word, callback) {
         $.getJSON("http://localhost:5001/api/termnetwork/" + word, function (data) {
             console.log("got termnetwork:", data);
-            var dataStringified;
             if (data !== undefined) {
-                dataStringified = data.map(function(elem){
-                    return elem.graph;
-                }).join("");
+                callback(data);
             }
-            dataStringified = dataStringified.replace('termNetwork', '');
-            callback(dataStringified);
         });
     }
 

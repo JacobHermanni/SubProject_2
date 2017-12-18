@@ -20,7 +20,6 @@
         var words = ko.observableArray([]);
 
         var getRelatedWords = function () {
-            getTermNetwork();
             words.removeAll();
             dataservice.getRelatedWords(userSearchString(),
                 data => {
@@ -33,14 +32,6 @@
                 });
         }
 
-        var termNetworkData;
-
-        var getTermNetwork = function () {
-            dataservice.getTermNetwork(userSearchString(), data => {
-                console.log(data);
-                termNetworkData = data;
-            });
-        }
 
         var getFavorites = function () {
             dataservice.getAllFavorites(data => {
@@ -272,102 +263,134 @@
         };
 
 
-var graph = 
-    {"nodes":[
+        var getTermNetwork = function () {
+            dataservice.getTermNetwork(netWorkString(), data => {
 
-    {"name":"a"},
-    {"name":"an"},
-    {"name":"comes"},
-    {"name":"essay"},
-    {"name":"fine"},
-    {"name":"here"},
-    {"name":"is"},
-    {"name":"text"},
-    {"name":"this"},
-    {"name":"well-written"},
-    ],
+                var nodes = [];
+                var startNodesPos;
+                var EndNodesPos;
 
-    "links":[
-    {"source":  0   ,"target":  2   ,"value":1},
-    {"source":  0   ,"target":  4   ,"value":1},
-    {"source":  0   ,"target":  5   ,"value":1},
-    {"source":  0   ,"target":  7   ,"value":1},
-    {"source":  1   ,"target":  3   ,"value":1},
-    {"source":  1   ,"target":  6   ,"value":1},
-    {"source":  1   ,"target":  7   ,"value":1},
-    {"source":  1   ,"target":  8   ,"value":1},
-    {"source":  2   ,"target":  4   ,"value":1},
-    {"source":  2   ,"target":  5   ,"value":1},
-    {"source":  2   ,"target":  7   ,"value":1},
-    {"source":  3   ,"target":  6   ,"value":1},
-    {"source":  3   ,"target":  7   ,"value":1},
-    {"source":  3   ,"target":  8   ,"value":1},
-    {"source":  4   ,"target":  5   ,"value":1},
-    {"source":  4   ,"target":  7   ,"value":1},
-    {"source":  5   ,"target":  7   ,"value":1},
-    {"source":  6   ,"target":  7   ,"value":2},
-    {"source":  6   ,"target":  8   ,"value":2},
-    {"source":  6   ,"target":  9   ,"value":1},
-    {"source":  7   ,"target":  8   ,"value":2},
-    {"source":  7   ,"target":  9   ,"value":1},
-    {"source":  8   ,"target":  9   ,"value":1}
+                var links = [];
+                var startLinkPos;
+                var EndLinkPos;
 
-]}
+                var sources = [];
+                var targets = [];
+                var values = [];
 
-var width = 540,
-height = 500
 
-var svg = d3.select(".modal-body").append("svg")
-.attr("width", width)
-.attr("height", height);
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].termNetwork == "nodes:") {
+                        startNodesPos = i+1;
+                    }
+                    if (data[i].termNetwork == "links:") {
+                        EndNodesPos = i;
+                        startLinkPos = i+1
+                    }
+                    if (data[i].termNetwork == "endOfLinks:") {
+                        EndLinkPos = i;
+                    }
+                }
 
-var force = d3.layout.force()
-.gravity(0.05)
-.distance(100)
-.charge(-200)
-.size([width, height]);
+                for (i = startNodesPos; i < EndNodesPos; i++) {
+                    nodes.push({name: data[i].termNetwork});
+                }
+                for (i = startLinkPos; i < EndLinkPos; i++) {
+                    var sIdx = data[i].termNetwork.indexOf('s');
+                    var tIdx = data[i].termNetwork.indexOf('t');
+                    var vIdx = data[i].termNetwork.indexOf('v');
 
-//var color = d3.scaleOrdinal(d3.schemeCategory20);
-var color = d3.scale.category20c();
+                    sources.push(parseInt(data[i].termNetwork.substring(sIdx+1, tIdx)));
+                    targets.push(parseInt(data[i].termNetwork.substring(tIdx+1, vIdx)));
+                    values.push(parseInt(data[i].termNetwork.substring(vIdx+1)));
+                }
 
-//d3.json("graph.json", function(error, json) {
-    (function () {
-  //if (error) throw error;
+                var lengthOfLinks;
+                lengthOfLinks = sources.length;
 
-  force
-  .nodes(graph.nodes)
-  .links(graph.links)
-  .start();
+                for (i = 0; i < lengthOfLinks; i++) {
+                    links.push({"source": sources[i], "target": targets[i], "value": values[i]});
+                }
 
-  var link = svg.selectAll(".link")
-  .data(graph.links)
-  .enter().append("line")
-  .attr("class", "link")
-  .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+                nodesForGraph = nodes;
+                linksForGraph = links;
+            });
 
-  var node = svg.selectAll(".node")
-  .data(graph.nodes)
-  .enter().append("g")
-  .attr("class", "node")
-  .call(force.drag);
-  node.append("circle")
-  .attr("r", function(d) { return 5;})
-  .style("fill", "red")
 
-  node.append("text")
-  .attr("dx", function(d) { return -(d.name.length*3) })
-  .attr("dy", ".65em")
-  .text(function(d) { return d.name });
+            var nodesForGraph = [];
+            var linksForGraph = [];
 
-  force.on("tick", function() {
-    link.attr("x1", function(d) { return d.source.x; })
-    .attr("y1", function(d) { return d.source.y; })
-    .attr("x2", function(d) { return d.target.x; })
-    .attr("y2", function(d) { return d.target.y; });
+            // JQeury removal of the existing graph so we don't get two.
+            $( "svg" ).remove();
 
-    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-  });
-})();
+            setTimeout(function(){
+
+                var graph =
+                    {
+                        "nodes": nodesForGraph,
+                        "links": linksForGraph
+                    }
+
+
+                var width = 540,
+                height = 500
+
+                var svg = d3.select(".modal-body").append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+                var force = d3.layout.force()
+                .gravity(0.05)
+                .distance(100)
+                .charge(-200)
+                .size([width, height]);
+
+                //var color = d3.scaleOrdinal(d3.schemeCategory20);
+                var color = d3.scale.category20c();
+
+                //d3.json("graph.json", function(error, json) {
+                    (function () {
+                  //if (error) throw error;
+
+                  force
+                  .nodes(graph.nodes)
+                  .links(graph.links)
+                  .start();
+
+                  var link = svg.selectAll(".link")
+                  .data(graph.links)
+                  .enter().append("line")
+                  .attr("class", "link")
+                  .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
+
+                  var node = svg.selectAll(".node")
+                  .data(graph.nodes)
+                  .enter().append("g")
+                  .attr("class", "node")
+                  .call(force.drag);
+                  node.append("circle")
+                  .attr("r", function(d) { return 5;})
+                  .style("fill", "red")
+
+                  node.append("text")
+                  .attr("dx", function(d) { return -(d.name.length*3) })
+                  .attr("dy", ".65em")
+                  .text(function(d) { return d.name });
+
+                  force.on("tick", function() {
+                    link.attr("x1", function(d) { return d.source.x; })
+                    .attr("y1", function(d) { return d.source.y; })
+                    .attr("x2", function(d) { return d.target.x; })
+                    .attr("y2", function(d) { return d.target.y; });
+
+                    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+                  });
+                })();
+
+            }, 500);
+
+
+        }
 
 
         return {

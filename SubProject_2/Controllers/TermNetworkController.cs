@@ -30,7 +30,7 @@ namespace WebService
             if (data == null) return NotFound();
             var datamodel = data.Select(x => new TermNetworkModel()
             {
-                graph = x.graph,
+                termNetwork = x.termNetwork,
             });
 
             return Ok(datamodel);

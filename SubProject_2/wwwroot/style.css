@@ -115,9 +115,12 @@
     font: 14px sans-serif;
 }
 
+#searchHelperModal .netWorkSearch {
+    width: 60%;
+}
 /* -- MEDIA STYLING: --*/
 @media only screen and (max-width: 768px) {
-    .conBody {
+    .conBody; {
         width: 100%;
     }
     .searchResults {

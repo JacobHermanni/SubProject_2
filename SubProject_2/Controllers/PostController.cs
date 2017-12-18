@@ -174,7 +174,7 @@ namespace WebService
                     x.post_id,
                     x.body,
                     x.score,
-                    x.creation_date,
+                    creationDate = x.creation_date.ToString("MM/dd/yyyy HH:mm"),
                     x.user_display_name,
                     x.user_id,
                     userUrl = Url.Link(nameof(userCtrl.GetUser), new { id = x.user_id }),

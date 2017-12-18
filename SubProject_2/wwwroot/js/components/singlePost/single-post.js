@@ -10,6 +10,7 @@
         var comments = ko.observable();
         var answers = ko.observable();
         var test = ko.observable();
+        var getTags = ko.observable();
         var displayPrev = ko.observable(false);
         var displayNext = ko.observable(false);
 
@@ -17,7 +18,7 @@
         var getQuestion = (function () {
             dataservice.getQuestion(params.url, data => {
                 postTitle(data.title);
-                creationDate(data.creation_date);
+                creationDate(data.formatted_date);
                 user_display_name(data.user_display_name);
                 postTitle(data.question.title);
                 user_id(data.user_id);
@@ -26,6 +27,8 @@
                 comments(data.comments);
                 answers(data.question);
                 getAnswers(data.question.answersUrl);
+                getTags(data.question.tags);
+
             })
         })();
 
@@ -35,12 +38,14 @@
             $('html,body').animate({ scrollTop: 120 }, 300);
         }
 
+
+
+
         var getAnswers = function (url) {
             dataservice.getAnswers(url, data => {
             test (data.answers);
             next = data.next;
             prev = data.prev;
-            console.log("test", data.answers);
             navPage();
             });
         }
@@ -69,7 +74,6 @@
 
         // ------------ Go to user: ------------ //
         var getUser = function () {
-            console.log(user_id());
             var userID = user_id();
             bc.publish(bc.events.changeView, { name: "user-page", fp_msg: userID} );
         }
@@ -91,7 +95,8 @@
             displayNext,
             displayPrev,
             back,
-            getUser
+            getUser,
+            getTags
         };
 
     }

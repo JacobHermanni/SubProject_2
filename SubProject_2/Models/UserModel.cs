@@ -15,6 +15,12 @@ namespace WebService.Models
 
         public DateTime user_creation_date { get; set; }
 
+        public string formatted_date
+        {
+            get { return user_creation_date.ToString("yyyy-MM-dd"); }
+            set { }
+        }
+
         public Nullable<int> user_age { get; set; }
 
         public string user_location { get; set; }

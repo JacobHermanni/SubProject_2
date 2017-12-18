@@ -7,10 +7,6 @@
     overflow: hidden;
     margin-bottom: 2em;
 }
-.searchResultsSinglePost {
-    
-}
-
 
 .container .inputSearch {
     padding-left: 0;
@@ -56,7 +52,6 @@
     border-bottom: 1px solid;
 }
 /* --- END FRONT-PAGE --- */
-
 
 
 /* --- STYLE SPECIFIC FOR FAVORITE-PAGE --- */
@@ -115,9 +110,12 @@
     font: 14px sans-serif;
 }
 
+#searchHelperModal .netWorkSearch {
+    width: 60%;
+}
 /* -- MEDIA STYLING: --*/
 @media only screen and (max-width: 768px) {
-    .conBody {
+    .conBody; {
         width: 100%;
     }
     .searchResults {

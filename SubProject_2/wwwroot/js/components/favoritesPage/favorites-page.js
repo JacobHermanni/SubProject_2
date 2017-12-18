@@ -67,7 +67,6 @@
         }
 
         var nextPage = function () {
-            console.log("pressed next");
             dataservice.changePage(next, data => {
                 favorites.removeAll();
                 for (i = 0; i < data.data.length; i++) {
@@ -83,7 +82,6 @@
         }
 
         var prevPage = function () {
-            console.log("pressed prev");
             dataservice.changePage(prev, data => {
                 favorites.removeAll();
                 for (i = 0; i < data.data.length; i++) {
@@ -154,7 +152,6 @@
 
         var getFavId = function (favorite) {
             tempFavId = favorite.favorite_id;
-            console.log("tempFavID:", tempFavId);
         }
 
         var getNote = function (favorite) {
@@ -214,6 +211,7 @@
                 ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
             }
         };
+
 
 
         return {

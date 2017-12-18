@@ -26,7 +26,7 @@
             dataservice.getUser(userID, data => {
                 user_id(data.user.user_id);
                 user_name(data.user.user_display_name);
-                user_creation_date(data.user.user_creation_date);
+                user_creation_date(data.user.formatted_date);
                 user_age(data.user.user_age);
                 user_location(data.user.user_location);
             });
@@ -64,7 +64,6 @@
         }
 
         var nextPageP = function () {
-            console.log("pressed next");
             dataservice.changePage(nextP, data => {
                 user_posts.removeAll();
                 for (i = 0; i < data.userPosts.length; i++) {
@@ -77,7 +76,6 @@
         }
 
         var prevPageP = function () {
-            console.log("pressed prev");
             dataservice.changePage(prevP, data => {
                 user_posts.removeAll();
                 for (i = 0; i < data.userPosts.length; i++) {
@@ -127,7 +125,6 @@
         }
 
         var nextPageC = function () {
-            console.log("pressed next");
             dataservice.changePage(nextC, data => {
                 user_comments.removeAll();
                 for (i = 0; i < data.userComments.length; i++) {
@@ -140,7 +137,6 @@
         }
 
         var prevPageC = function () {
-            console.log("pressed prev");
             dataservice.changePage(prevC, data => {
                 user_comments.removeAll();
                 for (i = 0; i < data.userComments.length; i++) {

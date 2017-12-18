@@ -37,7 +37,6 @@
         }
 
         var nextPage = function () {
-            console.log("pressed next");
             dataservice.changePage(next, data => {
                 histories.removeAll();
                 for (i = 0; i < data.data.length; i++) {
@@ -55,7 +54,6 @@
         }
 
         var prevPage = function () {
-            console.log("pressed prev");
             dataservice.changePage(prev, data => {
                 histories.removeAll();
                 for (i = 0; i < data.data.length; i++) {

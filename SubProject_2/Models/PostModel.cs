@@ -17,6 +17,12 @@ namespace WebService.Models
 
         public DateTime creation_date { get; set; }
 
+        public string formatted_date
+        {
+            get { return creation_date.ToString("yyyy-MM-dd"); }
+            set { }
+        }
+
         public string body { get; set; }
 
         public int user_id { get; set; }
@@ -32,5 +38,6 @@ namespace WebService.Models
         public AnswerModel answer { get; set; }
 
         public List<CommentModel> Comments { get; set; }
+
     }
 }

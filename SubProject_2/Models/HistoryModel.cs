@@ -20,6 +20,11 @@ namespace WebService.Models
             get;
             set;
         }
+        public string formatted_date
+        {
+            get { return history_timestamp.ToString("MM/dd/yyyy HH:mm"); }
+            set { }
+        }
 
         public string URL
         {

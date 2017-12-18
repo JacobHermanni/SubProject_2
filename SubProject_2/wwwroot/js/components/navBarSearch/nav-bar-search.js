@@ -3,7 +3,6 @@
 
         bc.subscribe(bc.events.changeData,
             dataInfo => {
-                console.log("viewData from nav-bar", dataInfo);
                 navSearchString(dataInfo.search_string);
             });
 
@@ -13,14 +12,12 @@
             if (navSearchString().length < 1 || navSearchString().length > 25) {
                 alert("The typed search string is either too long or too short, which one is it?");
             } else {
-                console.log("navSearched");
                 bc.publish(bc.events.changeView, { to: "all-posts", from: "nav-search", search: navSearchString()} );
             }
 
         }
 
         var navBarView = ko.observable('front-page');
-        console.log("nav-view:", navBarView());
 
         var pages = [
             { name: 'Posts', view: 'all-posts' },
@@ -37,7 +34,6 @@
 
         var changeView = function(menu) {
             navBarView(menu.view);
-            console.log("nav-view:", navBarView());
             bc.publish(bc.events.changeView, { to: navBarView(), from: "nav-bar"});
         }
 

@@ -9,6 +9,6 @@ namespace DAL.Models
     public class TermNetwork
     {
         [Key]
-        public string graph { get; set; }
+        public string termNetwork { get; set; }
     }
 }

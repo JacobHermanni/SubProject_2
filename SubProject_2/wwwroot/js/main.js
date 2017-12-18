@@ -132,8 +132,6 @@ require(["knockout", "jquery", "broadcaster", "jqcloud", "bootstrap"], function 
 
             broadcaster.subscribe(broadcaster.events.changeView,
                 viewInfo => {
-                    // console.log("viewinfo from main", viewInfo);
-                    console.log("Changing view from", viewInfo.from);
 
                     switch (viewInfo.from) {
                         case "all-posts":

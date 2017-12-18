@@ -13,6 +13,12 @@ namespace WebService.Models
 
         public DateTime comment_creation_date { get; set; }
 
+        public string formatted_date
+        {
+            get { return comment_creation_date.ToString("MM/dd/yyyy HH:mm"); }
+            set { }
+        }
+
         public string comment_text { get; set; }
 
         public string user_display_name { get; set; }

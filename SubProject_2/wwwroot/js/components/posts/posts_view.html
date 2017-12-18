@@ -1,69 +1,76 @@
-﻿<h1>Post Search</h1>
-
-    <h3> Search: </h3>
-    <form data-bind="submit: search">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6 inputSearch">
-                    <input class="col-sm-5" data-bind="textInput: userSearchString" />
-                    <button class="col-sm-2 btn btn-sm left-buffer" data-bind="click: search, textInput: userSearchString"><span class="glyphicon glyphicon-search"></span></button>
-                    <button type="button" class="btn btn-default btn-sm left-buffer" data-bind="click: getRelatedWords, visible: showSearch" data-toggle="modal" data-target="#searchHelperModal">Search help</button>
-                </div>
-            </div>
-        </div>
-    </form>
-    <div id="searchHelperModal" class="modal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Related words</h4>
-                </div>
-                <div class="modal-body container">
-                    <div>
-                        <!-- ko if: words().length > 0-->
-                        <div data-bind="cloud: {words}, visible: searchHasResults" style="width: 200px; height: 200px" />
-                        <!-- /ko -->
-                        <!-- ko if: words().length == 0-->
-                        <div>No relevant related words</div>
-                        <!-- /ko -->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
+<h1>Post Search</h1>
+<h3> Search: </h3>
+<form data-bind="submit: search">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 inputSearch">
+                <input class="col-sm-5" data-bind="textInput: userSearchString" />
+                <button class="col-sm-2 btn btn-sm left-buffer" data-bind="click: search, textInput: userSearchString"><span class="glyphicon glyphicon-search"></span></button>
+                <button type="button" class="btn btn-default btn-sm left-buffer" data-bind="click: getRelatedWords, visible: showSearch" data-toggle="modal" data-target="#searchHelperModal">Search help</button>
             </div>
         </div>
     </div>
-
-    <div class="top-buffer bot-buffer container" data-bind="visible: showSearch">
-        <div data-bind="text: searchingString"></div>
-    </div>
-    <div class="posts container" data-bind="visible: searchHasResults">
-        <span data-bind="text: 'Matches: ' + totalPosts()"></span><br />
-        <span data-bind="text: 'Pages: ' + totalPages()"></span><br />
-        <span data-bind="text: 'Current page: ' + currentPage()"></span><br />
-        <div id="searchList" class="list-group top-buffer" data-bind="foreach: posts">
-            <a class="searchResults list-group-item">
-                <div class="container">
-                    <div class="col-sm-2 top-buffer">
-                        <strong>Score</strong> <br />
-                        <span data-bind="text: $data.mainData.score"></span><br /><br />
-                        <strong>Created</strong><br />
-                        <span data-bind="text: $data.mainData.formatted_date"></span>
-                    </div>
-                    <div class="col-sm-8 datacol" data-bind="click: $parent.getPost">
-                        <h3 data-bind="text: $data.mainData.title"></h3>
-                        <p data-bind="html: $data.mainData.body"></p>
-                    </div>
-                    <div class="col-sm-1 datacol">
-                        <div class="glyphicon glyphicon-star favoritestar" data-bind="click: $parent.deleteFavorite, visible: $data.favorite, attr: {title: 'Remove from favorites'}"></div>
-                        <div class="glyphicon glyphicon-star-empty favoritestar" data-bind="click: $parent.createFavorite, visible: !$data.favorite(), attr: {title: 'Add to favorites'}"></div>
-                    </div>
+</form>
+<div id="searchHelperModal" class="modal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Related words</h4>
+            </div>
+            <div class="modal-body container">
+                <div>
+                    <!-- ko if: words().length > 0-->
+                    <div data-bind="cloud: {words}, visible: searchHasResults" style="width: 60%; height: 200px" />
+                    <!-- /ko -->
+                    <!-- ko if: words().length == 0-->
+                    <div>No relevant related words</div>
+                    <!-- /ko -->
                 </div>
-            </a>
+                <h4>Need more help? try typing in one word</h4>
+                <form class="netWorkSearch" data-bind="submit: getTermNetwork">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" data-bind="textInput: netWorkString">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" data-bind="click: getTermNetwork, textInput: netWorkString"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
         </div>
-        <button class="btn btn-default" data-bind="click: prevPage, enable: displayPrev">Prev</button>
-        <button class="btn btn-default" data-bind="click: nextPage, enable: displayNext">Next</button>
     </div>
+</div>
+<div class="top-buffer bot-buffer container" data-bind="visible: showSearch">
+    <div data-bind="text: searchingString"></div>
+</div>
+<div class="posts container" data-bind="visible: searchHasResults">
+    <span data-bind="text: 'Matches: ' + totalPosts()"></span><br />
+    <span data-bind="text: 'Pages: ' + totalPages()"></span><br />
+    <span data-bind="text: 'Current page: ' + currentPage()"></span><br />
+    <div id="searchList" class="list-group top-buffer" data-bind="foreach: posts">
+        <a class="searchResults list-group-item">
+            <div class="container">
+                <div class="col-sm-2 top-buffer">
+                    <strong>Score</strong> <br />
+                    <span data-bind="text: $data.mainData.score"></span><br /><br />
+                    <strong>Created</strong><br />
+                    <span data-bind="text: $data.mainData.formatted_date"></span>
+                </div>
+                <div class="col-sm-8 datacol" data-bind="click: $parent.getPost">
+                    <h3 data-bind="text: $data.mainData.title"></h3>
+                    <p data-bind="html: $data.mainData.body"></p>
+                </div>
+                <div class="col-sm-1 datacol">
+                    <div class="glyphicon glyphicon-star favoritestar" data-bind="click: $parent.deleteFavorite, visible: $data.favorite, attr: {title: 'Remove from favorites'}"></div>
+                    <div class="glyphicon glyphicon-star-empty favoritestar" data-bind="click: $parent.createFavorite, visible: !$data.favorite(), attr: {title: 'Add to favorites'}"></div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <button class="btn btn-default" data-bind="click: prevPage, enable: displayPrev">Prev</button>
+    <button class="btn btn-default" data-bind="click: nextPage, enable: displayNext">Next</button>
+</div>

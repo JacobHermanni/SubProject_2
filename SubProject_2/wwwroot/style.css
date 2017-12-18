@@ -113,6 +113,11 @@
 #searchHelperModal .netWorkSearch {
     width: 60%;
 }
+
+#searchHelperModal svg {
+    width: 60% !important;
+}
+
 /* -- MEDIA STYLING: --*/
 @media only screen and (max-width: 768px) {
     .conBody {
@@ -120,5 +125,14 @@
     }
     .searchResults {
         max-height: unset;
+    }
+    #searchHelperModal .netWorkSearch {
+        width: 100%;
+    }
+    #searchHelperModal svg {
+        width: 100% !important;
+    }
+    .jqcloud {
+        width: 100% !important;
     }
 }

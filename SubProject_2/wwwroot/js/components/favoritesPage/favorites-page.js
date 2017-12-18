@@ -37,8 +37,27 @@
                 totalFavorites(data.total);
                 selfUrl = data.url;
                 navPage();
+                bc.publish(bc.events.updateState, { from: "favorites-page", url: selfUrl });
             });
         };
+
+        var refresh = function(url) {
+            dataservice.refreshFavorites(url,
+                data => {
+                    favorites.removeAll();
+                    for (i = 0; i < data.data.length; i++) {
+                        favorites.push(data.data[i]);
+                    }
+                    next = data.next;
+                    prev = data.prev;
+                    currentPage((data.page) + 1);
+                    totalPages(data.pages);
+                    totalFavorites(data.total);
+                    selfUrl = data.url;
+                    navPage();
+                    bc.publish(bc.events.updateState, { from: "favorites-page", url: selfUrl });
+                });
+        }
 
 
         // ------------ Page Navigation: ------------ //
@@ -82,20 +101,7 @@
         // Check params to recreate same page as user left it
         if (params !== undefined) {
             if (!jQuery.isEmptyObject(params)) {
-                dataservice.refreshFavorites(params,
-                    data => {
-                        favorites.removeAll();
-                        for (i = 0; i < data.data.length; i++) {
-                            favorites.push(data.data[i]);
-                        }
-                        next = data.next;
-                        prev = data.prev;
-                        currentPage((data.page) + 1);
-                        totalPages(data.pages);
-                        totalFavorites(data.total);
-                        selfUrl = data.url;
-                        navPage();
-                    });
+                refresh(params);
             } else {
                 findFavorites();
             }
@@ -114,8 +120,7 @@
 
         var removeFromFavorites = function () {
             dataservice.deleteFavorite(tempFavId, data => {
-                findFavorites();
-                bc.publish("changeFavorites", favorites);
+                refresh(selfUrl);
             });
 
         }
@@ -170,7 +175,7 @@
 
         var updateNote = function () {
             dataservice.putNote(tempFavId, newNoteBody(), data => {
-                findFavorites();
+                refresh(selfUrl);
             });
             resetNewNote();
             setOptionsFalse();
@@ -182,7 +187,7 @@
                 alert("A note that long has no real value does it?");
             } else {
                 dataservice.postNote(tempFavId, newNoteBody(), data => {
-                    findFavorites();
+                    refresh(selfUrl);
                     resetNewNote();
                 });
             }
@@ -190,7 +195,7 @@
 
         var deleteNote = function () {
             dataservice.deleteNote(tempFavId, data => {
-                findFavorites();
+                refresh(selfUrl);
             });
             setOptionsFalse();
         }

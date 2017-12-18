@@ -23,7 +23,6 @@ define(['knockout', 'broadcaster', 'dataservice', 'jquery', 'bootstrap'], functi
             words.removeAll();
             dataservice.getRelatedWords(userSearchString(),
                 data => {
-                    console.log("returning data from relatedwords:", data);
                     if (data !== undefined) {
                         for (i = 0; i < data.length - 1; i++) {
                             words.push({ text: data[i].term, weight: data[i].rank });
@@ -35,7 +34,6 @@ define(['knockout', 'broadcaster', 'dataservice', 'jquery', 'bootstrap'], functi
 
         var getFavorites = function () {
             dataservice.getAllFavorites(data => {
-                console.log("data from favorites: ", data.data);
                 favorites = data.data;
             });
         }
@@ -55,11 +53,9 @@ define(['knockout', 'broadcaster', 'dataservice', 'jquery', 'bootstrap'], functi
             dataservice.searchedPosts(userSearchString(),
                 data => {
                     if (data.data[0].body === "No search result") {
-                        console.log("No search result from dataservice");
                         searchHasResults(false);
                         searchingString(data.data[0].body);
                     } else {
-                        console.log("data fra search-func:", data);
                         posts.removeAll();
                         for (i = 0; i < data.data.length; i++) {
                             posts.push(new DataItem(data.data[i]));
@@ -95,7 +91,6 @@ define(['knockout', 'broadcaster', 'dataservice', 'jquery', 'bootstrap'], functi
         }
 
         var nextPage = function () {
-            console.log("pressed next");
             dataservice.changePage(next, data => {
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
@@ -117,7 +112,6 @@ define(['knockout', 'broadcaster', 'dataservice', 'jquery', 'bootstrap'], functi
         }
 
         var prevPage = function () {
-            console.log("pressed prev");
             dataservice.changePage(prev, data => {
                 posts.removeAll();
                 for (i = 0; i < data.data.length; i++) {
@@ -145,7 +139,6 @@ define(['knockout', 'broadcaster', 'dataservice', 'jquery', 'bootstrap'], functi
 
 
         // ------------ Control state: ------------ //
-        // console.log("params fra posts;", params);
 
         if (params !== undefined) {
             if (params.fp_msg || params.fp_msg === "") {
@@ -153,7 +146,6 @@ define(['knockout', 'broadcaster', 'dataservice', 'jquery', 'bootstrap'], functi
                 search();
             }
             else if (params.nav_msg || params.nav_msg === "") {
-                console.log(params.nav_msg);
                 userSearchString(params.nav_msg);
                 search();
             }
@@ -195,22 +187,18 @@ define(['knockout', 'broadcaster', 'dataservice', 'jquery', 'bootstrap'], functi
         var createFavorite = function (listObject) {
             var postId;
             if (listObject.mainData.parent_id) {
-                console.log("post is answer");
                 postId = listObject.mainData.parent_id;
             } else {
                 postId = listObject.mainData.post_id;
-                console.log("post is question");
             }
 
             dataservice.postFavorite(postId, data => {
-                console.log("posted data from favorite in posts", data);
                 getFavorites();
             });
 
 
             dataservice.searchedPosts(userSearchString(),
                 data => {
-                    console.log("data fra search-func manually from favorite update:", data);
                     posts.removeAll();
                     for (i = 0; i < data.data.length; i++) {
                         posts.push(new DataItem(data.data[i]));
@@ -221,27 +209,22 @@ define(['knockout', 'broadcaster', 'dataservice', 'jquery', 'bootstrap'], functi
         var deleteFavorite = function (listObject) {
             var postId;
             if (listObject.mainData.parent_id) {
-                console.log("post is answer");
                 postId = listObject.mainData.parent_id;
             } else {
                 postId = listObject.mainData.post_id;
-                console.log("post is question");
             }
 
             for (var i = 0; i < favorites.length; i++) {
                 if (favorites[i].post_id === postId) {
                     dataservice.deleteFavorite(favorites[i].favorite_id, data => {
-                        console.log("deleted data from favorite in posts", data);
                         getFavorites();
                     });
-                    console.log("deleting favorite", favorites[i].favorite_id, "with post id", postId);
                     listObject.favorite(false);
                     break;
                 }
             }
             dataservice.searchedPosts(userSearchString(),
                 data => {
-                    console.log("data fra search-func manually from favorite update:", data);
                     posts.removeAll();
                     for (i = 0; i < data.data.length; i++) {
                         posts.push(new DataItem(data.data[i]));

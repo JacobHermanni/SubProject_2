@@ -2,42 +2,34 @@
 
     var searchedPosts = function (searchString, callback) {
         $.getJSON("http://localhost:5001/api/posts/search/" + searchString + "?pageSize=10", function (data) {
-            console.log("searchedPosts on:", searchString, data);
             callback(data);
         })
             .done(function () {
-                console.log('getJSON request succeeded!');
             })
             .fail(function () {
-                console.log('getJSON request failed!');
                 var furb = {
                     data: [{ body: "No search result" }],
                     next: null,
                     prev: null
                 };
-                console.log('Failed search returns object: ', furb);
                 callback(furb);
             })
             .always(function () {
-                console.log('getJSON request ended!');
             });
     }
 
     var getRelatedWords = function (words, callback) {
         $.getJSON("http://localhost:5001/api/relatedwords/" + words,
             function (data) {
-                console.log("got related words:", data);
                 callback(data);
             })
             .fail(function () {
-                console.log('getJSON request failed!');
                 callback(undefined);
             });
     }
 
     var getTermNetwork = function (word, callback) {
         $.getJSON("http://localhost:5001/api/termnetwork/" + word, function (data) {
-            console.log("got termnetwork:", data);
             if (data !== undefined) {
                 callback(data);
             }
@@ -46,42 +38,36 @@
 
     var changePage = function (url, callback) {
         $.getJSON(url, function (data) {
-            console.log("changed page, new data:", data);
             callback(data);
         });
     }
 
     var getQuestion = function (url, callback) {
         $.getJSON(url, function (data) {
-            console.log("got question:", data);
             callback(data);
         });
     }
 
     var getAnswers = function (url, callback) {
         $.getJSON(url, function (data) {
-            console.log("got answers:", data);
             callback(data);
         });
     }
 
     var getFavorites = function (callback) {
         $.getJSON("http://localhost:5001/api/favorite?pageSize=10", function (data) {
-            console.log("got favorites:", data);
             callback(data);
         });
     }
 
     var getAllFavorites = function (callback) {
         $.getJSON("http://localhost:5001/api/favorite?page=0&pageSize=1000", function (data) {
-            console.log("got favorites:", data);
             callback(data);
         });
     }
 
     var postFavorite = function (post_id, callback) {
         var jsonData = { '': post_id };
-        console.log("from dataservice. jsonData = ", jsonData);
         $.ajax("http://localhost:5001/api/favorite/", {
             data: JSON.stringify(post_id),
             contentType: 'application/json; charset=utf-8',
@@ -100,14 +86,12 @@
 
     var getHistory = function (callback) {
         $.getJSON("http://localhost:5001/api/history/", function (data) {
-            console.log("got history:", data);
             callback(data);
         });
     }
 
     var getNote = function (fav_id, callback) {
         $.getJSON("http://localhost:5001/api/favorite/note/" + fav_id, function (data) {
-            console.log("got note:", data);
             callback(data);
         });
     }
@@ -141,21 +125,18 @@
 
     var getUser = function (user_id, callback) {
         $.getJSON("http://localhost:5001/api/user/" + user_id, function (data) {
-            console.log("got user:", data);
             callback(data);
         });
     }
 
     var getUserPosts = function (user_id, callback) {
         $.getJSON("http://localhost:5001/api/user/userposts/" + user_id, function (data) {
-            console.log("got user posts:", data);
             callback(data);
         });
     }
 
     var getUserComments = function (user_id, callback) {
         $.getJSON("http://localhost:5001/api/user/usercomments/" + user_id, function (data) {
-            console.log("got user comments:", data);
             callback(data);
         });
     }

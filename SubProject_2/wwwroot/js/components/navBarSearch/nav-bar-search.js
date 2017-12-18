@@ -14,7 +14,7 @@
                 alert("The typed search string is either too long or too short, which one is it?");
             } else {
                 console.log("navSearched");
-                bc.publish(bc.events.changeView, { name: "all-posts", nav_msg: navSearchString()} );
+                bc.publish(bc.events.changeView, { to: "all-posts", from: "nav-search", search: navSearchString()} );
             }
 
         }
@@ -38,7 +38,7 @@
         var changeView = function(menu) {
             navBarView(menu.view);
             console.log("nav-view:", navBarView());
-            bc.publish(bc.events.changeView, { name: navBarView()});
+            bc.publish(bc.events.changeView, { to: navBarView(), from: "nav-bar"});
         }
 
 

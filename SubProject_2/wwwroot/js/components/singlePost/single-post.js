@@ -64,7 +64,7 @@
         }
 
         var back = function() {
-            bc.publish(bc.events.changeView, { name: "all-posts" } );
+            bc.publish(bc.events.changeView, { to: params.from, from: "single-post" } );
         }
 
         // ------------ Go to user: ------------ //

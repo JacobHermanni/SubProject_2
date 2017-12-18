@@ -1,58 +1,59 @@
-﻿<h1 <b data-bind="text: postTitle"></h1>
-<br/>
+﻿<h1> <b data-bind="text: postTitle" /></h1>
+<br />
 <button class="btn btn-default" data-bind="click: back">back</button>
-<br/>
+<br />
 
-<div class="jumbotron" class="col-sm-12">
+<div class="jumbotron col-sm-12">
     <p class="lead">
-        <p>Score: <b data-bind="text: score"></b></p>
-        <p>User display name: <b class="cursPointer" data-bind="text: user_display_name, click: getUser"></b></p>
-        <p>User id: <b data-bind="text:user_id"></b></p>
-        <p>CreationDate: <b data-bind="text:creationDate"></b></p>
+    <p>Score: <b data-bind="text: score"></b></p>
+    <p>User display name: <b class="cursPointer" data-bind="text: user_display_name, click: getUser"></b></p>
+    <p>User id: <b data-bind="text:user_id"></b></p>
+    <p>CreationDate: <b data-bind="text:creationDate"></b></p>
 
-        <div data-bind="html: body"></div> <!--Body--> 
-    </p>        
+    <div data-bind="html: body"></div> <!--Body-->
+    </p>
 </div>
 
 
 <div class="col-sm-12">
     <h3> Posts comments </h3>
-    <p class="lead" "col-sm-6 col-sm-offset-3">
-    <p Comments> </p>
+    <p class="lead col-sm-6 col-sm-offset-3" />
+    <p> Comments </p>
     <ul data-bind="foreach: comments">
         <li>
             <p data-bind="text: $data.comment_text"></p>
         </li>
     </ul>
-    </p>
+
 </div>
 
-<br/>
- 
+<br />
+
 <div class="col-sm-12">
     <h3> Posts answers </h3>
     <div data-bind="foreach: test">
-    <br/>
-    <div class="list-group top-buffer" "col-sm-6 col-sm-offset-3" ">
-    <a class="searchResultsSinglePost list-group-item">
-        <div>
-            <p>Answer user display name: <b data-bind="text: $data.user_display_name"></b></p>
-            <p>Answer score: <b data-bind="text: $data.score"></b></p>
-            <p>Answer creationDate: <b data-bind="text: $data.creation_date"></b></p>
-            <br>
-            <p data-bind="html: $data.body"></p>
-        </div>
         <br />
-        <h4> Answer Comments </h4>
-        <ul data-bind="foreach: $data.comments">
-            <br/>
-            <p>Score: <b data-bind="text: $data.comment_score"></b></p>
-            <p>User display name: <b data-bind="text: $data.user_display_name"></b></p>
-            <p>Creation date: <b data-bind="text: $data.comment_creation_date"></b>
-            <p data-bind="html: $data.comment_text">
-        </ul>
-     </a>
-     </div>
+        <div class="list-group top-buffer col-sm-12">
+            <a class="searchResultsSinglePost list-group-item">
+                <div>
+                    <p>Answer user display name: <b data-bind="text: $data.user_display_name"></b></p>
+                    <p>Answer score: <b data-bind="text: $data.score"></b></p>
+                    <p>Answer creationDate: <b data-bind="text: $data.creation_date"></b></p>
+                    <br>
+                    <p data-bind="html: $data.body"></p>
+                </div>
+                <br />
+                <h4> Answer Comments </h4>
+                <ul data-bind="foreach: $data.comments">
+                    <br />
+                    <p>Score: <b data-bind="text: $data.comment_score"></b></p>
+                    <p>User display name: <b data-bind="text: $data.user_display_name"></b></p>
+                    <p>Creation date: <b data-bind="text: $data.comment_creation_date"></b>
+                    <p data-bind="html: $data.comment_text">
+                </ul>
+            </a>
+        </div>
+    </div>
 </div>
 
 

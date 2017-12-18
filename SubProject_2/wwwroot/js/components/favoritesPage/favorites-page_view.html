@@ -1,5 +1,16 @@
 ﻿<div class="favoritePage">
     <h1>Your Favorites</h1>
+    <!-- ko if: favorites().length > 0-->
+    <div class="container">
+        <span data-bind="text: 'Favorites: ' + totalFavorites()"></span><br />
+        <span data-bind="text: 'Pages: ' + totalPages()"></span><br />
+        <span data-bind="text: 'Current page: ' + currentPage()"></span><br />
+    </div>
+    <!-- /ko -->
+    <!-- ko if: favorites().length == 0-->
+    <div>No favorites</div>
+    <!-- /ko -->
+   
     <div class="list-group top-buffer" data-bind="foreach: favorites">
         <a class="searchResults list-group-item">
             <div class="row">

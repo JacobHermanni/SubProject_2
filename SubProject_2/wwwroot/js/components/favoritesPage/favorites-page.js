@@ -16,23 +16,30 @@
         var displayNormalSave = ko.observable(true);
 
         var displayOptions = ko.observable(false);
+        var currentPage = ko.observable();
+        var totalPages = ko.observable();
+        var totalFavorites = ko.observable();
+        var selfUrl;
 
-        
+
 
         // ------------ Find favorites function: ------------ //
         var findFavorites = function () {
-            dataservice.getFavorites( data => {
+            dataservice.getFavorites(data => {
                 favorites.removeAll();
                 for (i = 0; i < data.data.length; i++) {
                     favorites.push(data.data[i]);
                 }
                 next = data.next;
                 prev = data.prev;
+                currentPage((data.page) + 1);
+                totalPages(data.pages);
+                totalFavorites(data.total);
+                selfUrl = data.url;
                 navPage();
             });
         };
 
-        findFavorites();
 
         // ------------ Page Navigation: ------------ //
         var navPage = function (data) {
@@ -49,7 +56,10 @@
                 }
                 next = data.next;
                 prev = data.prev;
+                currentPage((data.page) + 1);
+                selfUrl = data.url;
                 navPage();
+                bc.publish(bc.events.updateState, { from: "favorites-page", url: selfUrl });
             });
         }
 
@@ -62,23 +72,50 @@
                 }
                 next = data.next;
                 prev = data.prev;
+                currentPage((data.page) + 1);
+                selfUrl = data.url;
                 navPage();
+                bc.publish(bc.events.updateState, { from: "favorites-page", url: selfUrl });
             });
         }
+
+        // Check params to recreate same page as user left it
+        if (params !== undefined) {
+            if (!jQuery.isEmptyObject(params)) {
+                dataservice.refreshFavorites(params,
+                    data => {
+                        favorites.removeAll();
+                        for (i = 0; i < data.data.length; i++) {
+                            favorites.push(data.data[i]);
+                        }
+                        next = data.next;
+                        prev = data.prev;
+                        currentPage((data.page) + 1);
+                        totalPages(data.pages);
+                        totalFavorites(data.total);
+                        selfUrl = data.url;
+                        navPage();
+                    });
+            } else {
+                findFavorites();
+            }
+        }
+
 
         // ------------ Get individual post: ------------ //
 
 
         var getPost = function () {
-            bc.publish(bc.events.changeView, { name: "single-post", data: this });
+            bc.publish(bc.events.changeView, { to: "single-post", from: "favorites-page", singlePostUrl: this.url, selfUrl: selfUrl });
         }
 
 
         // ------------ Favorite Removal functionality: ------------ //
-        
+
         var removeFromFavorites = function () {
             dataservice.deleteFavorite(tempFavId, data => {
                 findFavorites();
+                bc.publish("changeFavorites", favorites);
             });
 
         }
@@ -88,7 +125,7 @@
 
         var tempFavId;
 
-        var resetNewNote = function() {
+        var resetNewNote = function () {
             newNoteBody("");
             displayNewSave(false);
         }
@@ -110,15 +147,15 @@
             }
         }
 
-        var getFavId = function(favorite) {
+        var getFavId = function (favorite) {
             tempFavId = favorite.favorite_id;
             console.log("tempFavID:", tempFavId);
         }
 
         var getNote = function (favorite) {
             dataservice.getNote(favorite.favorite_id, data => {
-                 noteBody(data.body);
-                 noteTime(data.created_timestamp);
+                noteBody(data.body);
+                noteTime(data.created_timestamp);
             });
             getFavId(favorite);
         }
@@ -127,33 +164,33 @@
             displayNewSave(true);
             displayNormalSave(false);
             dataservice.getNote(tempFavId, data => {
-                 newNoteBody(data.body);
+                newNoteBody(data.body);
             });
         }
 
         var updateNote = function () {
             dataservice.putNote(tempFavId, newNoteBody(), data => {
-                findFavorites();              
+                findFavorites();
             });
             resetNewNote();
             setOptionsFalse();
             displayNormalSave(true);
         }
 
-        var createNote = function() {
+        var createNote = function () {
             if (newNoteBody().length < 1) {
                 alert("A note that long has no real value does it?");
             } else {
                 dataservice.postNote(tempFavId, newNoteBody(), data => {
                     findFavorites();
-                    resetNewNote();        
+                    resetNewNote();
                 });
             }
         }
 
         var deleteNote = function () {
             dataservice.deleteNote(tempFavId, data => {
-                findFavorites();              
+                findFavorites();
             });
             setOptionsFalse();
         }
@@ -161,12 +198,12 @@
         // Here's a custom Knockout binding that makes elements shown/hidden via jQuery's fadeIn()/fadeOut() methods
         // Could be stored in a separate utility library - snatched directly from: http://knockoutjs.com/examples/animatedTransitions.html
         ko.bindingHandlers.fadeVisible = {
-            init: function(element, valueAccessor) {
+            init: function (element, valueAccessor) {
                 // Initially set the element to be instantly visible/hidden depending on the value
                 var value = valueAccessor();
                 $(element).toggle(ko.unwrap(value)); // Use "unwrapObservable" so we can handle values that may or may not be observable
             },
-            update: function(element, valueAccessor) {
+            update: function (element, valueAccessor) {
                 // Whenever the value subsequently changes, slowly fade the element in or out
                 var value = valueAccessor();
                 ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
@@ -198,7 +235,11 @@
             setOptionsFalse,
             removeFromFavorites,
             next,
-            prev
+            prev,
+            currentPage,
+            totalPages,
+            totalFavorites,
+            selfUrl
         };
 
     }

@@ -19,11 +19,6 @@ require.config({
     }
 });
 
-function test() {
-    console.log("works");
-}
-
-
 require(['knockout', 'jquery', 'jqcloud'], function (ko, $) {
     ko.bindingHandlers.cloud = {
         init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
@@ -103,44 +98,108 @@ require(["knockout", "jquery", "broadcaster", "jqcloud", "bootstrap"], function 
                 }
             }
 
-            var currentState = {};
+            var favoritesState = {};
+            var allPostsState = {};
+            var historyState = {};
+
+            broadcaster.subscribe(broadcaster.events.updateState,
+                updateInfo => {
+                    console.log("updating state from", updateInfo.from);
+
+                    switch (updateInfo.from) {
+                        case "all-posts":
+                            if (updateInfo.url !== undefined) {
+                                console.log("coming from posts", updateInfo.url);
+                                allPostsState = { searchString: updateInfo.searchString, url: updateInfo.url };
+                            }
+                            break;
+
+                        case "favorites-page":
+                            console.log("coming from favorites", updateInfo.url);
+                            favoritesState = updateInfo.url;
+                            break;
+
+                        case "history-page":
+                            console.log("coming from history", updateInfo.url);
+                            historyState = { url: updateInfo.url };
+                            break;
+
+                        default:
+                            break;
+                    }
+                });
+
 
             broadcaster.subscribe(broadcaster.events.changeView,
                 viewInfo => {
                     // console.log("viewinfo from main", viewInfo);
-                    currentView(viewInfo.name);
+                    console.log("Changing view from", viewInfo.from);
 
-                    // if there is no data, it means single-post is switching view to all-posts and state is relevant. Else the data is for single-post.
-                    if (viewInfo.data !== undefined) {
-                        console.log("changing state info in main");
-                        currentParams(viewInfo.data);
-                        currentState = viewInfo.state;
-                        // console.log("currentState", currentState);
-                    } else {
-                        currentParams(currentState);
+                    switch (viewInfo.from) {
+                        case "all-posts":
+                            if (viewInfo.url !== undefined) {
+                                allPostsState = { search: viewInfo.searchString, selfUrl: viewInfo.selfUrl };
+                            }
+                            break;
+
+                        case "nav-search":
+                            console.log("coming from navbar", viewInfo.search);
+                            allPostsState = { search: viewInfo.search };
+                            break;
+
+                        case "front-page":
+                            console.log("coming from frontpage", viewInfo.search);
+                            allPostsState = { search: viewInfo.search };
+                            break;
+
+                        case "favorites-page":
+                            console.log("coming from favorites", viewInfo.selfUrl);
+                            favoritesState = viewInfo.selfUrl;
+                            break;
+
+                        case "history-page":
+                            console.log("coming from history", viewInfo.url);
+                            historyState = { url: viewInfo.url };
+                            allPostsState = { search: viewInfo.search };
+                            break;
+
+                        default:
+                            break;
                     }
 
-                    if (viewInfo.fp_msg || viewInfo.fp_msg === "") {
-                        console.log("coming from fp_msg", viewInfo.fp_msg);
-                        currentParams({ fp_msg: viewInfo.fp_msg });
+                    switch (viewInfo.to) {
+                        case "all-posts":
+                            currentParams(allPostsState);
+                            break;
+
+                        case "single-post":
+                            currentParams({ url: viewInfo.singlePostUrl, from: viewInfo.from });
+                            break;
+
+                        case "favorites-page":
+                            currentParams(favoritesState);
+                            break;
+
+                        case "history-page":
+                            currentParams(historyState);
+                            break;
+
+                        default:
+                            break;
                     }
 
-                    if (viewInfo.nav_msg || viewInfo.nav_msg === "") {
-                        console.log("coming from nav_msg", viewInfo.nav_msg);
-                        currentParams({ nav_msg: viewInfo.nav_msg });
-                    }
-
-                    if (viewInfo === null || viewInfo === undefined) {
-                        currentParams("");
-                    }
+                    currentView(viewInfo.to);
                 });
+
 
             return {
                 currentView,
                 switchComponent,
                 currentParams,
-                currentState,
+                favoritesState,
+                allPostsState,
                 navSearch,
+                historyState
             }
 
         })();

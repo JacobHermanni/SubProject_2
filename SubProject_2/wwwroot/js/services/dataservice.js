@@ -56,6 +56,13 @@
         });
     }
 
+    var refreshPostsPage = function (url, callback) {
+        $.getJSON(url, function (data) {
+            console.log("refreshed page, new data:", data);
+            callback(data);
+        });
+    }
+
     var getQuestion = function (url, callback) {
         $.getJSON(url, function (data) {
             console.log("got question:", data);
@@ -73,6 +80,13 @@
     var getFavorites = function (callback) {
         $.getJSON("http://localhost:5001/api/favorite?pageSize=10", function (data) {
             console.log("got favorites:", data);
+            callback(data);
+        });
+    }
+
+    var refreshFavorites = function (url, callback) {
+        $.getJSON(url, function (data) {
+            console.log("refreshed favorites, new data:", data);
             callback(data);
         });
     }
@@ -106,6 +120,13 @@
     var getHistory = function (callback) {
         $.getJSON("http://localhost:5001/api/history/", function (data) {
             console.log("got history:", data);
+            callback(data);
+        });
+    }
+
+    var refreshHistory = function (url, callback) {
+        $.getJSON(url, function (data) {
+            console.log("refreshed history, new data:", data);
             callback(data);
         });
     }
@@ -183,7 +204,10 @@
         getUser,
         getUserPosts,
         getUserComments,
-        getTermNetwork
+        getTermNetwork, 
+        refreshPostsPage,
+        refreshFavorites,
+        refreshHistory
     };
 
 });

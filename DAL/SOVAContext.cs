@@ -51,7 +51,7 @@ namespace DAL
                 "server=localhost;" +
                 "database=SOVA;" +
                 "uid=root;" +
-                "pwd=theis9953;"
+                "pwd=root;"
 
             );
         }

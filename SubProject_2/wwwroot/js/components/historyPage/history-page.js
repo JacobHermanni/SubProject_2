@@ -4,43 +4,32 @@
         var histories = ko.observableArray([]);
         var displayPrev = ko.observable(false);
         var displayNext = ko.observable(false);
-        var historyID = ko.observable();
         var searchString = ko.observable();
         var historyTimestamp = ko.observable();
         var historyUrl = ko.observable();
-        var test = ko.observable();
-
-       
-        // ------------ Find favorites self-invoking function: ------------ //
-        var findSearchHistory = (function () {
-            dataservice.getHistory( data => {
-                histories.removeAll();
-                for (i = 0; i < data.data.length; i++) {
-                    histories.push(data.data[i]);
-                }
-                next = data.next;
-                prev = data.prev;
-                navPage();
-            });
-        })();
+        var selfUrl;
+        var prev = ko.string;
+        var next = ko.string;
+        var currentPage = ko.observable();
+        var totalPages = ko.observable();
+        var totalHistory = ko.observable();
 
 
         // ------------ History search: ------------ //
         var fpSearchString = ko.observable();
         fpSearchString(searchString());
 
-        var searched = function() {
+        var searched = function () {
 
-            console.log(searchString());
-            console.log(this.search_string);
-            
-            bc.publish(bc.events.changeView, { name: "all-posts", fp_msg: this.search_string} );
+            console.log(selfUrl);
+
+            bc.publish(bc.events.changeView, { to: "all-posts", from: "history-page", search: this.search_string, url: selfUrl });
             bc.publish(bc.events.changeData, { search_string: fpSearchString() });
 
-           $('html').animate({ scrollTop: 120 }, 300)
+            $('html').animate({ scrollTop: 120 }, 300)
         }
-      
-  
+
+
         // ------------ Page Navigation: ------------ //
         var navPage = function (data) {
             next === null || undefined ? displayNext(false) : displayNext(true);
@@ -56,7 +45,12 @@
                 }
                 next = data.next;
                 prev = data.prev;
+                currentPage((data.page) + 1);
+                totalPages(data.pages);
+                totalHistory(data.total);
                 navPage();
+                selfUrl = data.url;
+                bc.publish(bc.events.updateState, { from: "history-page", url: selfUrl });
             });
         }
 
@@ -69,13 +63,49 @@
                 }
                 next = data.next;
                 prev = data.prev;
+                currentPage((data.page) + 1);
+                totalPages(data.pages);
+                totalHistory(data.total);
                 navPage();
+                selfUrl = data.url;
+                bc.publish(bc.events.updateState, { from: "history-page", url: selfUrl });
             });
         }
 
-         var back = function() {
-            bc.publish(bc.events.changeView, { name: "all-posts" } );
+        // Check params to recreate same page as user left it
+        if (params !== undefined) {
+            if (!jQuery.isEmptyObject(params)) {
+                dataservice.refreshHistory(params,
+                    data => {
+                        histories.removeAll();
+                        for (i = 0; i < data.data.length; i++) {
+                            histories.push(data.data[i]);
+                        }
+                        next = data.next;
+                        prev = data.prev;
+                        currentPage((data.page) + 1);
+                        totalPages(data.pages);
+                        totalHistory(data.total);
+                        selfUrl = data.url;
+                        navPage();
+                    });
+            } else {
+                dataservice.getHistory(data => {
+                    histories.removeAll();
+                    for (i = 0; i < data.data.length; i++) {
+                        histories.push(data.data[i]);
+                    }
+                    next = data.next;
+                    prev = data.prev;
+                    currentPage((data.page) + 1);
+                    totalPages(data.pages);
+                    totalHistory(data.total);
+                    selfUrl = data.url;
+                    navPage();
+                });
+            }
         }
+
 
 
         return {
@@ -84,14 +114,15 @@
             prevPage,
             displayNext,
             displayPrev,
-            historyID,
             searchString,
             historyTimestamp,
             historyUrl,
-            searched,   
+            searched,
             fpSearchString,
-            back
-
+            currentPage,
+            totalPages,
+            totalHistory,
+            selfUrl
         };
 
     }

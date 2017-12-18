@@ -24,7 +24,7 @@
     {
         changeView: "changeView",
         changeData: "changeData",
-        changeFavorite: "changeFavorite"
+        updateState: "updateState"
     };
 
     return {

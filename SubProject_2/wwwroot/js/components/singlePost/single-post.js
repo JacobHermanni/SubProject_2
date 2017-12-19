@@ -32,7 +32,7 @@
             })
         })();
 
-         var navPage = function (data) {
+        var navPage = function (data) {
             next === null || undefined ? displayNext(false) : displayNext(true);
             prev === null || undefined ? displayPrev(false) : displayPrev(true);
             $('html,body').animate({ scrollTop: 120 }, 300);
@@ -43,39 +43,39 @@
 
         var getAnswers = function (url) {
             dataservice.getAnswers(url, data => {
-            test (data.answers);
-            next = data.next;
-            prev = data.prev;
-            navPage();
+                test(data.answers);
+                next = data.next;
+                prev = data.prev;
+                navPage();
             });
         }
 
         var getNext = function () {
             dataservice.getAnswers(next, data => {
-            test (data.answers);
-            next = data.next;
-            prev = data.prev;
-            navPage();
+                test(data.answers);
+                next = data.next;
+                prev = data.prev;
+                navPage();
             });
         }
 
         var getPrev = function () {
             dataservice.getAnswers(prev, data => {
-            test (data.answers);
-            prev = data.prev;
-            next = data.next;
-            navPage();
+                test(data.answers);
+                prev = data.prev;
+                next = data.next;
+                navPage();
             });
         }
 
-        var back = function() {
-            bc.publish(bc.events.changeView, { to: params.from, from: "single-post" } );
+        var back = function () {
+            bc.publish(bc.events.changeView, { to: params.from, from: "single-post" });
         }
 
         // ------------ Go to user: ------------ //
         var getUser = function () {
             var userID = user_id();
-            bc.publish(bc.events.changeView, { name: "user-page", fp_msg: userID} );
+            bc.publish(bc.events.changeView, { to: "user-page", from: "single-post", id: userID });
         }
 
         return {

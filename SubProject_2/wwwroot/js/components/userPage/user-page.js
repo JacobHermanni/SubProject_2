@@ -1,8 +1,8 @@
 ﻿define(['knockout', 'broadcaster', 'dataservice'], function (ko, bc, dataservice) {
     return function (params) {
 
-        // --- SKAL ÆNDRES DA DETTE BLOT ER FRA TEST:: --- //
-        var userID = params.fp_msg;
+
+        var userID = params;
 
         var user_id = ko.observable();
         var user_name = ko.observable();

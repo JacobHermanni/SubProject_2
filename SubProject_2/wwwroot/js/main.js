@@ -161,6 +161,10 @@ require(["knockout", "jquery", "broadcaster", "jqcloud", "bootstrap"], function 
                             allPostsState = { search: viewInfo.search };
                             break;
 
+                        case "single-page":
+                            console.log("coming from single-post", viewInfo.id);
+                            break;
+
                         default:
                             break;
                     }
@@ -180,6 +184,10 @@ require(["knockout", "jquery", "broadcaster", "jqcloud", "bootstrap"], function 
 
                         case "history-page":
                             currentParams(historyState);
+                            break;
+
+                        case "user-page":
+                            currentParams(viewInfo.id);
                             break;
 
                         default:

@@ -49,9 +49,9 @@ namespace DAL
 
             optionsBuilder.UseMySql(
                 "server=localhost;" +
-                "database=SOVA;" +
-                "uid=root;" +
-                "pwd=root;"
+                "database=raw9;" +
+                "uid=raw9;" +
+                "pwd=raw9;"
 
             );
         }

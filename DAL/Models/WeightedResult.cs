@@ -21,6 +21,7 @@ namespace DAL.Models
 
         public DateTime creation_date { get; set; }
 
+        // title mappes ikke fra db, men indsættes i WSL PostController.cs
         [NotMapped]
         public string title { get; set; }
     }

@@ -69,7 +69,7 @@ namespace SubProject_2
                     .ReverseMap();
                 cfg.CreateMap<RelatedWordList, RelatedWordListModel>()
                     .ReverseMap();
-                cfg.CreateMap<CoOrcorruingWordList, CoOrcorruingWordListModel>()
+                cfg.CreateMap<CoOrcorruingWord, CoOrcorruingWordListModel>()
                     .ReverseMap();
                 cfg.CreateMap<Tags, TagModel>()
                     .ReverseMap();

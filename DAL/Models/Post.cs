@@ -20,6 +20,8 @@ namespace DAL
 
         public int user_id { get; set; }
 
+        // not mapping - displayname is not on post, so we only find them from user on touched 
+        // post objects without help from EF automatic mapping.
         [NotMapped]
         public string user_display_name
         {
@@ -44,6 +46,7 @@ namespace DAL
                     var getQuestions = db.Question.Where(q => q.post_id == post_id);
                     if (!getQuestions.Any()) return null;
 
+                    // first() fordi Iqueryable er en liste
                     return getQuestions.First();
                 }
             }

@@ -17,6 +17,8 @@ namespace DAL.Models
 
         public string comment_text { get; set; }
 
+        // not mapping - displayname is not on comment, so we only find them from user on touched 
+        // comment objects without help from EF automatic mapping.
         [NotMapped]
         public string user_display_name
         {

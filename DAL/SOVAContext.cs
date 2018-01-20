@@ -10,6 +10,8 @@ namespace DAL
 {
     public class SOVAContext : DbContext
     {
+        // database mapping to class models
+
         public DbSet<Post> Post { get; set; }
 
         public DbSet<Result> SearchList { get; set; }
@@ -36,7 +38,7 @@ namespace DAL
 
         public DbSet<RelatedWordList> RelatedWordList { get; set; }
 
-        public DbSet<CoOrcorruingWordList> CoOrcorruingWordList { get; set; }
+        public DbSet<CoOrcorruingWord> CoOrcorruingWordList { get; set; }
 
         public DbSet<Tags> Tags { get; set; }
 
@@ -49,9 +51,9 @@ namespace DAL
 
             optionsBuilder.UseMySql(
                 "server=localhost;" +
-                "database=raw9;" +
-                "uid=raw9;" +
-                "pwd=raw9;"
+                "database=sova;" +
+                "uid=root;" +
+                "pwd=root;"
 
             );
         }
@@ -60,6 +62,7 @@ namespace DAL
         {
             base.OnModelCreating(modelBuilder);
 
+            //TODO: noget med composite key - undersøg mere
             modelBuilder.Entity<Tags>().HasKey(t => new { t.post_id, t.tag });
 
         }

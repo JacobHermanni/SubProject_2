@@ -5,6 +5,7 @@ using System.Text;
 
 namespace DAL
 {
+    // bruges til oprettelse af ny favorite
     public class Favorite
     {
         [Key]

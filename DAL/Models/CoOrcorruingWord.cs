@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DAL.Models
 {
-    public class CoOrcorruingWordList
+    public class CoOrcorruingWord
     {
         [Key]
         public string co_term { get; set; }

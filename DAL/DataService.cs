@@ -10,6 +10,7 @@ namespace DAL
 
     public class DataService : IDataService
     {
+        // obsolete, posts ved søgning findes i form af WeightedResult.cs og enkelte posts findes gennem getPost()
         public List<Post> GetPosts(int page, int pageSize)
         {
             using (var db = new SOVAContext())
@@ -22,6 +23,7 @@ namespace DAL
             }
         }
 
+        // Bruges til paging af obsolete getposts.
         public int GetNumberOfPosts()
         {
             using (var db = new SOVAContext())
@@ -30,6 +32,7 @@ namespace DAL
             }
         }
 
+        // Answers til en enkelt post. Gemmer total antal af answers for pagination.
         public List<Post> GetAnswers(int postId, int page, int pageSize)
         {
             using (var db = new SOVAContext())
@@ -47,6 +50,7 @@ namespace DAL
             }
         }
 
+        // til pagination for answers på en enkelt post. Kun 25 answers sendes op til WSL, så total count forbliver nede i DAL.
         public int GetNumberOfAnswers()
         {
             return TotalAnswers;
@@ -60,7 +64,8 @@ namespace DAL
             {
                 var post = db.Post.Find(id);
 
-                if (post.question == null)
+                // hvis det er et svar-post så returner i stedet parent som er spørgsmål-post.
+                if (post.question == null) // if (post.post_type_id == 2)  post = db.Post.Find(post.answer.parent_Id); - mere letvægt
                 {
                     post = db.Post.Find(post.answer.parent_Id);
                 }
@@ -69,6 +74,7 @@ namespace DAL
             }
         }
 
+        // obsolete resultat fra gammel søgeprocedure
         public int GetNumberOfSearchresults()
         {
             using (var db = new SOVAContext())
@@ -85,6 +91,7 @@ namespace DAL
             }
         }
 
+        // obsolete søgning fra sektion 1
         public List<Result> GetPostsByString(string searchString, int page, int pageSize)
         {
             using (var db = new SOVAContext())
@@ -151,6 +158,7 @@ namespace DAL
         {
             using (var db = new SOVAContext())
             {
+                // tjek for eksisterende note. Hvis der er en så returner null, da redigering ikke skal ske gennem Create (rest)
                 var existingNote = GetNote(favID);
                 var favorite = db.Favorite.Find(favID);
 
@@ -167,6 +175,7 @@ namespace DAL
 
                 db.SaveChanges();
 
+                // returner den nyoprettede note
                 return GetNote(favID);
             }
         }
@@ -175,7 +184,7 @@ namespace DAL
         {
             using (var db = new SOVAContext())
             {
-                // Check if note for favorite_id exists
+                // Check if note for favorite_id exists, if not return null
                 var existingNote = GetNote(favID);
 
                 if (existingNote == null) return null;
@@ -210,6 +219,7 @@ namespace DAL
                     return true;
                 }
             }
+            // statuscode kræver false hvis der ikke kunne findes noget at slette og true, hvis der var noget at slette som slettes.
             return false;
         }
 
@@ -221,11 +231,15 @@ namespace DAL
 
                 if (existingFavorite != null)
                 {
+                    // skulle have benyttet ON DELETE CASCADE i note-relation i db for automatisk at slette note når favorite slettes. kunne have været implenteret her således:
+                    //DeleteNote(existingFavorite);
+
                     db.Favorite.Remove(existingFavorite);
                     db.SaveChanges();
                     return true;
                 }
             }
+            // statuscode kræver false hvis der ikke kunne findes noget at slette og true, hvis der var noget at slette som slettes.
             return false;
         }
         public List<FavoriteList> GetFavorites(int page, int pageSize)
@@ -240,6 +254,7 @@ namespace DAL
             }
         }
 
+        // pagination
         public int GetNumberOfFavorites()
         {
             using (var db = new SOVAContext())
@@ -252,6 +267,7 @@ namespace DAL
         {
             using (var db = new SOVAContext())
             {
+                //TODO: undersøg asnotracking
                 // Check if post_id is valid AsNoTracking to avoid duplicate tracking of user
                 var post = db.Post.AsNoTracking().Where(x => x.post_id == post_id);
 
@@ -272,6 +288,7 @@ namespace DAL
             }
         }
 
+        // obsolete
         public List<User> GetUsers(int page, int pageSize)
         {
             using (var db = new SOVAContext())
@@ -300,6 +317,7 @@ namespace DAL
             }
         }
 
+        // pagination
         public int TotalUserComments { get; set; }
 
         public int GetNumberOfUserComments()
@@ -316,6 +334,8 @@ namespace DAL
 
                 var getComments = db.Comment.Where(p => p.user_id == userId);
                 if (!getComments.Any()) return null;
+
+                // set total comments for pagination
                 TotalUserComments = getComments.Count();
 
                 var returnComments = getComments
@@ -327,6 +347,7 @@ namespace DAL
             }
         }
 
+        // pagination
         public int TotalUserPosts { get; set; }
 
         public int GetNumberOfUserPosts()
@@ -342,9 +363,13 @@ namespace DAL
                 TotalUserPosts = 0;
 
                 var getPosts = db.Post.Where(p => p.user_id == userId);
+                
                 if (!getPosts.Any()) return null;
-                TotalUserPosts = getPosts.Count();
 
+                // set for pagination
+                TotalUserPosts = getPosts.Count();
+                 
+                // userposts behøver ikke fremvisning af alle attributter/properties, så WeightedResult genbruges delvist.
                 var returnPosts = getPosts
                     .Skip(page * pageSize)
                     .Take(pageSize)
@@ -378,7 +403,7 @@ namespace DAL
             }
         }
 
-        public List<CoOrcorruingWordList> GetCoOrcorruingWord(string word)
+        public List<CoOrcorruingWord> GetCoOrcorruingWord(string word)
         {
 
             using (var db = new SOVAContext())

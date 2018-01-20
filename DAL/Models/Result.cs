@@ -5,6 +5,7 @@ using System.Text;
 
 namespace DAL
 {
+    // obsolete - gamle søgeprocedure
     public class Result
     {
         [Key]

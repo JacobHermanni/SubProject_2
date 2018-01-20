@@ -5,6 +5,7 @@ using System.Text;
 
 namespace DAL.Models
 {
+    // model for den type liste vi får fra proceduren i mysql: get_favorites(). Bruges i frontend hver gang favorites kaldes.
     public class FavoriteList
     {
         [Key]

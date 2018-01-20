@@ -48,7 +48,7 @@ namespace DAL
 
         List<RelatedWordList> GetRelatedWords(string word);
 
-        List<CoOrcorruingWordList> GetCoOrcorruingWord(string word);
+        List<CoOrcorruingWord> GetCoOrcorruingWord(string word);
 
         List<Comment> GetUserComments(int userId, int page, int pageSize);
 

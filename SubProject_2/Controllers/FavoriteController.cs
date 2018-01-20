@@ -35,6 +35,7 @@ namespace WebService.Controllers
         [HttpGet(Name = nameof(GetFavorites))]
         public IActionResult GetFavorites(int page = 0, int pageSize = 25)
         {
+            // instantiates for access to link creation methods
             var postCtrl = new PostController(_dataService, _mapper);
             var noteCtrl = new NoteController(_dataService, _mapper);
 
@@ -77,6 +78,7 @@ namespace WebService.Controllers
                 Data = favorites
             };
 
+            // bør have statuskode 404 not found, hvis ingen favorites eksisterer
             return Ok(result);
         }
 
@@ -91,6 +93,7 @@ namespace WebService.Controllers
             return Created(Url.Link(nameof(GetFavorites), null), fav);
         }
 
+        // obsolete
         public class FavoriteDataObject
         {
             public int postId { get; set; }

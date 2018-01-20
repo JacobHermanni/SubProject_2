@@ -37,6 +37,7 @@ namespace WebService
             return Ok(datamodel);
         }
 
+        // catch if no word was sent with request
         [HttpGet]
         public IActionResult GetCoOrcorruingWordBadRequest()
         {

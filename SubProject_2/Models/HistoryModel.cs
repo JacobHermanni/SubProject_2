@@ -6,7 +6,7 @@ namespace WebService.Models
 {
     public class HistoryModel
     {
-        
+
         public int history_id { get; set; }
 
         public string search_string
@@ -20,6 +20,8 @@ namespace WebService.Models
             get;
             set;
         }
+
+        // benyttes i frontend for at undgå en uformateret string.
         public string formatted_date
         {
             get { return history_timestamp.ToString("MM/dd/yyyy HH:mm"); }

@@ -14,6 +14,7 @@ namespace SubProject_2
     {
         public static void Main(string[] args)
         {
+            //TODO: undersøg frameworkets inner workings.   BuildWebHost(args).Run();   og  WebHost.CreateDefaultBuilder(args).UseStartup<Startup>().UseUrls("http://localhost:5001/").Build();
             BuildWebHost(args).Run();
         }
 

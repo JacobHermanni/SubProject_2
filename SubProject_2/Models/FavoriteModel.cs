@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebService.Models
 {
+    // extender ResultModel for at indeholde den samme relevante information.
     public class FavoriteModel : ResultModel
     {
         public NoteModel note { get; set; }

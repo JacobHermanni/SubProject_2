@@ -13,6 +13,7 @@ namespace WebService.Models
 
         public DateTime comment_creation_date { get; set; }
 
+        // benyttes i frontend for at undgå en uformateret string.
         public string formatted_date
         {
             get { return comment_creation_date.ToString("MM/dd/yyyy HH:mm"); }

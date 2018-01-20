@@ -17,6 +17,7 @@ namespace WebService.Models
 
         public DateTime creation_date { get; set; }
 
+        // benyttes i frontend for at undgå en uformateret string.
         public string formatted_date
         {
             get { return creation_date.ToString("yyyy-MM-dd"); }

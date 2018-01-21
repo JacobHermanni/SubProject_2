@@ -110,7 +110,7 @@
 
 
         var getPost = function () {
-            bc.publish(bc.events.changeView, { to: "single-post", from: "favorites-page", singlePostUrl: this.url, selfUrl: selfUrl });
+            bc.publish(bc.events.changeView, { to: "single-post", from: "favorites-page", singlePostUrl: this.url, url: selfUrl });
         }
 
 

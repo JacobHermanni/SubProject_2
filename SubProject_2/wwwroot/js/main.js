@@ -22,8 +22,7 @@ require.config({
 require(['knockout', 'jquery', 'jqcloud'], function (ko, $) {
     ko.bindingHandlers.cloud = {
         init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
-            // This will be called when the binding is first applied to an element
-            // Set up any initial state, event handlers, etc. here
+            // Hvad der først sker når 'cloud' binding benyttes. Word subscriber på en opdateringsfunktion der står nedenfor.
             var words = allBindings.get('cloud').words;
             if (words && ko.isObservable(words)) {
                 words.subscribe(function () {
@@ -31,6 +30,7 @@ require(['knockout', 'jquery', 'jqcloud'], function (ko, $) {
                 });
             }
         },
+        // opdateringsfunktionen, der unwrapper observable arrayet words, så JQCloud kan læse dataen.
         update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
             // This will be called once when the binding is first applied to an element,
             // and again whenever any observables/computeds that are accessed change
@@ -41,6 +41,7 @@ require(['knockout', 'jquery', 'jqcloud'], function (ko, $) {
     };
 });
 
+// templates hvor både hmtl og js filer er wrapped i komponenter. Registreret genne ko.components så ko kan genkende dem per navnene. 
 require(['knockout'], function (ko) {
 
     ko.components.register("all-posts", {
@@ -90,6 +91,7 @@ require(["knockout", "jquery", "broadcaster", "jqcloud", "bootstrap"], function 
             var navSearch = ko.observable('nav-bar-search');
             var currentParams = ko.observable(null);
 
+            // obsolete
             var switchComponent = function () {
                 if (currentView() === "all-posts") {
                     currentView("single-post");
@@ -102,6 +104,8 @@ require(["knockout", "jquery", "broadcaster", "jqcloud", "bootstrap"], function 
             var allPostsState = {};
             var historyState = {};
 
+
+            // gem states fra de undersider, der har pagination og variabler som søgefraser, der skal gemmes til næste besøg af undersiden.
             broadcaster.subscribe(broadcaster.events.updateState,
                 updateInfo => {
                     console.log("updating state from", updateInfo.from);
@@ -122,6 +126,7 @@ require(["knockout", "jquery", "broadcaster", "jqcloud", "bootstrap"], function 
                         case "history-page":
                             console.log("coming from history", updateInfo.url);
                             historyState = { url: updateInfo.url };
+                            allPostsState = { search: updateInfo.search };
                             break;
 
                         default:
@@ -133,11 +138,30 @@ require(["knockout", "jquery", "broadcaster", "jqcloud", "bootstrap"], function 
             broadcaster.subscribe(broadcaster.events.changeView,
                 viewInfo => {
 
+                    // hvor kan et undersideskift komme fra og gem state omkring search frase og pagination
                     switch (viewInfo.from) {
-                        case "all-posts":
-                            if (viewInfo.url !== undefined) {
-                                allPostsState = { search: viewInfo.searchString, selfUrl: viewInfo.selfUrl };
-                            }
+
+                        //obsolete
+
+                        //case "all-posts":
+                        //    if (viewInfo.selfUrl !== undefined) {
+                        //        allPostsState = { searchString: viewInfo.searchString, url: viewInfo.selfUrl };
+                        //    }
+                        //    break;
+
+                        //case "favorites-page":
+                        //    console.log("coming from favorites", viewInfo.selfUrl);
+                        //    favoritesState = viewInfo.selfUrl;
+                        //    break;
+
+                        //case "single-page":
+                        //    console.log("coming from single-post", viewInfo.id);
+                        //    break;
+
+                        case "history-page":
+                            console.log("coming from history", viewInfo.url);
+                            historyState = { url: viewInfo.url };
+                            allPostsState = { search: viewInfo.search };
                             break;
 
                         case "nav-search":
@@ -150,20 +174,6 @@ require(["knockout", "jquery", "broadcaster", "jqcloud", "bootstrap"], function 
                             allPostsState = { search: viewInfo.search };
                             break;
 
-                        case "favorites-page":
-                            console.log("coming from favorites", viewInfo.selfUrl);
-                            favoritesState = viewInfo.selfUrl;
-                            break;
-
-                        case "history-page":
-                            console.log("coming from history", viewInfo.url);
-                            historyState = { url: viewInfo.url };
-                            allPostsState = { search: viewInfo.search };
-                            break;
-
-                        case "single-page":
-                            console.log("coming from single-post", viewInfo.id);
-                            break;
 
                         default:
                             break;
@@ -193,7 +203,8 @@ require(["knockout", "jquery", "broadcaster", "jqcloud", "bootstrap"], function 
                         default:
                             break;
                     }
-
+                    
+                    // opdater currentview
                     currentView(viewInfo.to);
                 });
 
@@ -202,10 +213,11 @@ require(["knockout", "jquery", "broadcaster", "jqcloud", "bootstrap"], function 
                 currentView,
                 switchComponent,
                 currentParams,
-                favoritesState,
-                allPostsState,
-                navSearch,
-                historyState
+                navSearch
+                // obsolete da de ikke er data-bindings
+                //favoritesState,
+                //allPostsState,
+                //historyState
             }
 
         })();

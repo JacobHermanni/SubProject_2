@@ -29,6 +29,7 @@ namespace WebService
             var note = _dataService.GetNote(favId);
             if (note == null) return NotFound();
 
+            // mapper enkelt objekt og derefter indsætter enkel url
             var model = _mapper.Map<NoteModel>(note);
             model.Url = Url.Link(nameof(GetNote), new { favId = note.favorite_id });
 
@@ -45,6 +46,7 @@ namespace WebService
         }
 
         [HttpPut]
+        // frombody henter ikke variablen fra url, men fra json body
         public IActionResult UpdateNote([FromBody]Note sentNote)
         {
             var note = _dataService.UpdateNote(sentNote.favorite_id, sentNote.body);
@@ -56,6 +58,7 @@ namespace WebService
         [HttpDelete("{favID}", Name = nameof(DeleteNote))]
         public IActionResult DeleteNote(int favID)
         {
+            // note is bool to indicate whether the note was deleted or not
             var note = _dataService.DeleteNote(favID);
 
             if (note) return Ok();

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebService.Models
 {
+    // unused
     public class AnswerModel
     {
         public int answer_id { get; set; }

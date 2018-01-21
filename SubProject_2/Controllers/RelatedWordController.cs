@@ -37,6 +37,8 @@ namespace WebService
 
             return Ok(datamodel);
         }
+
+        // for at fange api kaldet med tom string
         [HttpGet]
         public IActionResult GetRelatedWordsBadRequest()
         {

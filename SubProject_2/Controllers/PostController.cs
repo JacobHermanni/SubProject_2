@@ -60,11 +60,13 @@ namespace WebService
             var post = _dataService.GetPost(id);
             if (post == null) return NotFound();
 
+            // mapper og indsætter url
             var model = _mapper.Map<PostModel>(post);
             model.Url = Url.Link(nameof(GetPost), new { id = post.post_id });
 
             var userCtrl = new UserController(_dataService, _mapper);
 
+            // laver url til metoden i denne klasse 'GetAnswers' gennem Question objektet på post-modellen.
             model.question.answersUrl = Url.Link(nameof(GetAnswers), new { id = post.post_id });
 
             // Add referencing links to users and posts on comments
@@ -85,6 +87,7 @@ namespace WebService
         {
             if (string.IsNullOrEmpty(searchstring)) return BadRequest();
 
+            // PageController metode der tjekker at der maks vises 50 per side.
             CheckPageSize(ref pageSize);
 
             var data = _dataService.GetWeightedPostsByString(searchstring, page, pageSize)
@@ -100,6 +103,7 @@ namespace WebService
 
                 }).ToList();
 
+            // statuskode for intet resultat
             if (!data.Any()) return NotFound();
 
             // Set answer posts urls to reference to parent post
@@ -108,6 +112,7 @@ namespace WebService
                 if (model.parent_id != null) model.url = Url.Link(nameof(GetPost), new { id = model.parent_id });
             }
 
+            // dataservice laver count på det seneste søgeresultat som er gemt i et table i db. Yderligere caching benyttes ikke, men det er klart.
             var total = _dataService.GetNumberOfWeightedSearchresults();
             var totalPages = GetTotalPages(pageSize, total);
 
@@ -168,6 +173,7 @@ namespace WebService
 
             var userCtrl = new UserController(_dataService, _mapper);
 
+            // anynomt objekt frem for standard postmodel. 
             var answers = data
                 .Select(x => new
                 {
@@ -178,6 +184,7 @@ namespace WebService
                     x.user_display_name,
                     x.user_id,
                     userUrl = Url.Link(nameof(userCtrl.GetUser), new { id = x.user_id }),
+                    // mapper liste af DAL comments til WSL commentmodels.
                     Comments = _mapper.Map<List<Comment>, List<CommentModel>>(x.Comments)
                 }).ToList();
 

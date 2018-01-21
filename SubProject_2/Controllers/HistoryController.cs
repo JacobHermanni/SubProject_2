@@ -34,6 +34,7 @@ namespace WebService
             var data = _dataService.GetHistory(page, pageSize)
                 .Select(x => new HistoryModel
                 {
+                    // postcontroller link til søgning på søgefrasen via nameof
                     URL = Url.Link(nameof(postCtrl.GetWeightedPostsByString), new { searchstring = x.search_string }),
                     history_id = x.history_id,
                     search_string = x.search_string,
@@ -51,6 +52,7 @@ namespace WebService
                 Data = data
             };
 
+            // bør have statuskode 404 not found, hvis ingen favorites eksisterer
             return Ok(result);
         }
     }

@@ -53,6 +53,7 @@
                 prevP = data.prev;
                 navPageP();
 
+                // toggle synlighed af bruger-posts
                 if (postBool == false) {                     postBool = true;                     displayPosts(true);                 } else {                     postBool = false;                     displayPosts(false);                 }
             });
         }

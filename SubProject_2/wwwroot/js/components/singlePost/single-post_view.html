@@ -5,21 +5,21 @@
 
 <div class="jumbotron col-sm-12">
     <p class="lead">
-        <p>Score: <b data-bind="text: score"></b></p>
-        <p>User display name: <b class="cursPointer" data-bind="text: user_display_name, click: getUser"></b></p>
-        <p>User id: <b data-bind="text:user_id"></b></p>
-        <p>CreationDate: <b data-bind="text:creationDate"></b></p>
-        <div data-bind="html: body"></div> <!--Body--> 
+    <p>Score: <b data-bind="text: score"></b></p>
+    <p>User display name: <b class="cursPointer" data-bind="text: user_display_name, click: getUser"></b></p>
+    <p>User id: <b data-bind="text:user_id"></b></p>
+    <p>CreationDate: <b data-bind="text:creationDate"></b></p>
+    <div data-bind="html: body"></div> <!--Body-->
 
     <br />
 
-        <h4> Tags </h4>
-        <ul data-bind="foreach: getTags">
-            <div class="well well-sm" class="col-sm-12">
-                <b data-bind="text: $data.tag"></b>
-            </div>
-        </ul>
-   </p>        
+    <h4> Tags </h4>
+    <ul data-bind="foreach: getTags">
+        <div class="col-sm-12">
+            <b data-bind="text: $data.tag"></b>
+        </div>
+    </ul>
+    </p>
 </div>
 
 
@@ -39,7 +39,7 @@
 
 <div class="col-sm-12">
     <h3> Posts answers </h3>
-    <div data-bind="foreach: test">
+    <div data-bind="foreach: answerposts">
         <br />
         <div class="list-group top-buffer">
             <a class="searchResultsSinglePost list-group-item">

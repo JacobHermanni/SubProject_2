@@ -26,7 +26,7 @@
             bc.publish(bc.events.changeView, { to: "all-posts", from: "history-page", search: this.search_string, url: selfUrl });
             bc.publish(bc.events.changeData, { search_string: fpSearchString() });
 
-            $('html').animate({ scrollTop: 120 }, 300)
+            $('html').animate({ scrollTop: 120 }, 300);
         }
 
 
@@ -71,6 +71,7 @@
         }
 
         // Check params to recreate same page as user left it
+        // genindlæs samme state hvis den har en. Ellers kald api på ny.
         if (params !== undefined) {
             if (!jQuery.isEmptyObject(params)) {
                 dataservice.refreshHistory(params,

@@ -9,27 +9,31 @@
         var user_display_name = ko.observable();
         var comments = ko.observable();
         var answers = ko.observable();
-        var test = ko.observable();
+        // changed name, should have been array. Still works!
+        var answerposts = ko.observable();
         var getTags = ko.observable();
         var displayPrev = ko.observable(false);
         var displayNext = ko.observable(false);
+        var next;
+        var prev;
 
 
         var getQuestion = (function () {
-            dataservice.getQuestion(params.url, data => {
-                postTitle(data.title);
-                creationDate(data.formatted_date);
-                user_display_name(data.user_display_name);
-                postTitle(data.question.title);
-                user_id(data.user_id);
-                score(data.score);
-                body(data.body);
-                comments(data.comments);
-                answers(data.question);
-                getAnswers(data.question.answersUrl);
-                getTags(data.question.tags);
+            dataservice.getQuestion(params.url,
+                data => {
+                    postTitle(data.title);
+                    creationDate(data.formatted_date);
+                    user_display_name(data.user_display_name);
+                    postTitle(data.question.title);
+                    user_id(data.user_id);
+                    score(data.score);
+                    body(data.body);
+                    comments(data.comments);
+                    answers(data.question);
+                    getAnswers(data.question.answersUrl);
+                    getTags(data.question.tags);
 
-            })
+                });
         })();
 
         var navPage = function (data) {
@@ -43,7 +47,7 @@
 
         var getAnswers = function (url) {
             dataservice.getAnswers(url, data => {
-                test(data.answers);
+                answerposts(data.answers);
                 next = data.next;
                 prev = data.prev;
                 navPage();
@@ -52,7 +56,7 @@
 
         var getNext = function () {
             dataservice.getAnswers(next, data => {
-                test(data.answers);
+                answerposts(data.answers);
                 next = data.next;
                 prev = data.prev;
                 navPage();
@@ -61,7 +65,7 @@
 
         var getPrev = function () {
             dataservice.getAnswers(prev, data => {
-                test(data.answers);
+                answerposts(data.answers);
                 prev = data.prev;
                 next = data.next;
                 navPage();
@@ -89,7 +93,7 @@
             body,
             user_id,
             user_display_name,
-            test,
+            answerposts,
             getNext,
             getPrev,
             displayNext,

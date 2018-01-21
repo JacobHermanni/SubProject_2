@@ -12,11 +12,10 @@
 <!-- /ko -->
 <br>
 <br>
-<div
-    class="list-group top-buffer" data-bind="foreach: histories">
+<div class="list-group top-buffer" data-bind="foreach: histories">
     <a class="searchResults list-group-item">
         Search String: <b data-bind="text: search_string"></b>
-        History Timestamp: <b data-bind="text: history_timestamp"/>
+        History Timestamp: <b data-bind="text: formatted_date" />
         <div class="float-right">
             Search again:
             <button data-bind="click: $parent.searched , text: search_string" class="btn"></button>
@@ -28,6 +27,6 @@
 <button class="btn btn-default" data-bind="click: prevPage, enable: displayPrev">Prev</button>
 <button class="btn btn-default" data-bind="click: nextPage, enable: displayNext">Next</button>
 
-  
+
 
 

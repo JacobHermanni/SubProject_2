@@ -41,6 +41,7 @@
             });
         };
 
+        // opdaterer på den side brugeren er/var på sidst, så pagination fungerer.
         var refresh = function(url) {
             dataservice.refreshFavorites(url,
                 data => {
@@ -66,7 +67,9 @@
             prev === null || undefined ? displayPrev(false) : displayPrev(true);
         }
 
+        // næste side og opdater state i main.js
         var nextPage = function () {
+            // next er url'en til næste side
             dataservice.changePage(next, data => {
                 favorites.removeAll();
                 for (i = 0; i < data.data.length; i++) {
@@ -81,7 +84,9 @@
             });
         }
 
+        // forrige side og opdater state i main.js
         var prevPage = function () {
+            // prev er url'en til forrige side
             dataservice.changePage(prev, data => {
                 favorites.removeAll();
                 for (i = 0; i < data.data.length; i++) {
@@ -118,6 +123,7 @@
 
         var removeFromFavorites = function () {
             dataservice.deleteFavorite(tempFavId, data => {
+                // refresh siden bagefter for at have den rette liste af favorites
                 refresh(selfUrl);
             });
 
@@ -126,10 +132,13 @@
 
         // ------------ Note functionality: ------------ //
 
+        // temp favId er for at vise det berørte listitem. Benyttes under redigering af noter og sletning af favorit,
+        // da en modal skal bekræfte ændringerne og disse modals ikke har selvreferencer til det berørte listitem.
         var tempFavId;
 
         var resetNewNote = function () {
             newNoteBody("");
+            // save knap for at gemme en opdatering på en eksisterende note (save (update))
             displayNewSave(false);
         }
 
@@ -140,16 +149,21 @@
             displayOptions(false);
         }
 
+        // nærmere en 'toggle' options
         var showOptions = function () {
             if (visibleOptions == false) {
                 visibleOptions = true;
+                // observable der bestemmer om tandhjulet er synligt
                 displayOptions(true);
             } else {
+                // toggle af hvis den var synlig
                 visibleOptions = false;
                 displayOptions(false);
             }
         }
 
+        // temp favId er for at vise det berørte listitem. Benyttes under redigering af noter og sletning af favorit,
+        // da en modal skal bekræfte ændringerne og disse modals ikke har selvreferencer til det berørte listitem.
         var getFavId = function (favorite) {
             tempFavId = favorite.favorite_id;
         }
@@ -163,8 +177,11 @@
         }
 
         var editNote = function () {
+            // save(update) synlig
             displayNewSave(true);
+            // skjul save til ny note
             displayNormalSave(false);
+            // sæt redigerings body til eksisterende note, så noten kan redigeres ud fra det allerede eksisterende indhold.
             dataservice.getNote(tempFavId, data => {
                 newNoteBody(data.body);
             });
@@ -172,18 +189,22 @@
 
         var updateNote = function () {
             dataservice.putNote(tempFavId, newNoteBody(), data => {
+                // refresh siden bagefter for at have den rette liste af favorites
                 refresh(selfUrl);
             });
+            // reset modal og options knap + tom tekstboks
             resetNewNote();
             setOptionsFalse();
             displayNormalSave(true);
         }
 
         var createNote = function () {
+            // tjek for om noten er for kort
             if (newNoteBody().length < 1) {
                 alert("A note that long has no real value does it?");
             } else {
                 dataservice.postNote(tempFavId, newNoteBody(), data => {
+                    // refresh siden bagefter for at have den rette liste af favorites
                     refresh(selfUrl);
                     resetNewNote();
                 });
@@ -192,6 +213,7 @@
 
         var deleteNote = function () {
             dataservice.deleteNote(tempFavId, data => {
+                // refresh siden bagefter for at have den rette liste af favorites
                 refresh(selfUrl);
             });
             setOptionsFalse();

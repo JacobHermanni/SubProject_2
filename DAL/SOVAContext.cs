@@ -52,6 +52,7 @@ namespace DAL
             optionsBuilder.UseMySql(
                 "server=localhost;" +
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "database=sova;" +
                 "uid=root;" +
                 "pwd=root;"
@@ -62,14 +63,12 @@ namespace DAL
                 "uid=raw9;" +
                 "pwd=raw9;"
 =======
+=======
+>>>>>>> b4d9ed3... theis - database info
                 "database=SOVA;" +
                 "uid=root;" +
-                "pwd=root;"
-<<<<<<< HEAD
->>>>>>> 626da64... commit so i can pull
-
-=======
                 "pwd=theis9953;"
+<<<<<<< HEAD
 >>>>>>> aa593bd... commit so i can pull
 <<<<<<< HEAD
 >>>>>>> 78b1a23... commit so i can pull
@@ -77,6 +76,8 @@ namespace DAL
 =======
 >>>>>>> 1ac68a0... commit so i can pull
 >>>>>>> 93c8230... commit so i can pull
+=======
+>>>>>>> b4d9ed3... theis - database info
             );
         }
 

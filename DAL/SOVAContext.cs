@@ -64,14 +64,19 @@ namespace DAL
 =======
                 "database=SOVA;" +
                 "uid=root;" +
-<<<<<<< HEAD
                 "pwd=root;"
+<<<<<<< HEAD
 >>>>>>> 626da64... commit so i can pull
 
 =======
                 "pwd=theis9953;"
 >>>>>>> aa593bd... commit so i can pull
+<<<<<<< HEAD
 >>>>>>> 78b1a23... commit so i can pull
+=======
+=======
+>>>>>>> 1ac68a0... commit so i can pull
+>>>>>>> 93c8230... commit so i can pull
             );
         }
 

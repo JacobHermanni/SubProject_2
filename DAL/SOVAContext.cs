@@ -51,10 +51,27 @@ namespace DAL
 
             optionsBuilder.UseMySql(
                 "server=localhost;" +
+<<<<<<< HEAD
                 "database=sova;" +
                 "uid=root;" +
                 "pwd=root;"
 
+=======
+<<<<<<< HEAD
+                "database=raw9;" +
+                "uid=raw9;" +
+                "pwd=raw9;"
+=======
+                "database=SOVA;" +
+                "uid=root;" +
+<<<<<<< HEAD
+                "pwd=root;"
+>>>>>>> 626da64... commit so i can pull
+
+=======
+                "pwd=theis9953;"
+>>>>>>> aa593bd... commit so i can pull
+>>>>>>> 78b1a23... commit so i can pull
             );
         }
 
@@ -62,7 +79,7 @@ namespace DAL
         {
             base.OnModelCreating(modelBuilder);
 
-            //TODO: noget med composite key - undersøg mere
+            //TODO: noget med composite key - undersé´Š mere
             modelBuilder.Entity<Tags>().HasKey(t => new { t.post_id, t.tag });
 
         }
